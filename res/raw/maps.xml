@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<niveles>
+    
+	<nivel id="0">
+		<nombre>mapa0</nombre>
+		<tiempo>3:30</tiempo>	
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">0</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>		
+		<moneda tipo="m_sorpresa">0</moneda>
+	</nivel>	
+	
+	<nivel id="1">
+		<nombre>mapa1</nombre>	
+		<tiempo>2:30</tiempo>	
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">2</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>		
+		<moneda tipo="m_sorpresa">0</moneda>
+	</nivel>	
+	
+	
+	<nivel id="2">
+		<nombre>mapa2</nombre>
+		<tiempo>3:30</tiempo>	
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">1</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">1</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>		
+		<moneda tipo="m_sorpresa">1</moneda>
+	</nivel>	
+		<nivel id="3">
+		<nombre>mapa3</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">1</moneda>		
+		<moneda tipo="m_sorpresa">1</moneda>
+	</nivel>
+	
+	<nivel id="4">
+		<nombre>mapa4</nombre>		 
+		<tiempo>3:30</tiempo>	
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">1</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>
+	</nivel>
+	
+			
+	<nivel id="5">
+		<nombre>mapa5</nombre>		  
+		<tiempo>3:30</tiempo>	
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>
+		
+	</nivel>
+	
+	<nivel id="6">		
+	    <nombre>mapa6</nombre> 
+	    <tiempo>3:30</tiempo>	
+		<moneda tipo="m_bomba">1</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">1</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>		
+	</nivel>
+	
+	<nivel id="7">
+		<nombre>mapa7</nombre> 	
+		<tiempo>3:30</tiempo>	
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>
+		
+	</nivel>
+	
+		
+	<nivel id="8">
+		<nombre>mapa8</nombre>	
+		<tiempo>3:30</tiempo>	
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">1</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>
+		
+	</nivel>
+	<nivel id="9">
+		<nombre>mapa9</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">1</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>
+	</nivel>
+	<nivel id="10">
+		<nombre>mapa10</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">1</moneda>
+		<moneda tipo="m_fuerza">1</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>
+	</nivel>
+	<nivel id="11">
+		<nombre>mapa11</nombre>	
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">1</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>
+	</nivel>
+		<nivel id="12">
+		<nombre>mapa12</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">1</moneda>
+		<moneda tipo="m_potenciador">1</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>
+	</nivel>
+		<nivel id="13">
+		<nombre>mapa13</nombre>	
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">1</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>
+	</nivel>
+		<nivel id="14">
+		<nombre>mapa14</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">1</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">2</moneda>
+	</nivel>
+		<nivel id="15">
+		<nombre>mapa15</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">1</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>
+	</nivel>
+		<nivel id="16">
+		<nombre>mapa16</nombre>	
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">1</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">2</moneda>
+	</nivel>
+		<nivel id="17">
+		<nombre>mapa17</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">2</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>
+	</nivel>
+		<nivel id="18">
+		<nombre>mapa18</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">1</moneda>
+		<moneda tipo="m_fuerza">1</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>
+	</nivel>	
+	
+	<nivel id="19">
+		<nombre>mapa19</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">1</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">1</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">2</moneda>
+	</nivel>
+		
+		
+		
+	<nivel id="20">
+		<nombre>mapa20</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">1</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">1</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">1</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">2</moneda>
+	</nivel>
+		<nivel id="21">
+		<nombre>mapa21</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">2</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">2</moneda>
+	</nivel>
+		<nivel id="22">
+		<nombre>mapa22</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">2</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">2</moneda>
+	</nivel>
+		<nivel id="23">
+		<nombre>mapa23</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">1</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">1</moneda>
+		<moneda tipo="m_fuerza">1</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>
+	</nivel>
+		<nivel id="24">
+		<nombre>mapa24</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">2</moneda>
+	</nivel>
+		<nivel id="25">
+		<nombre>mapa25</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">1</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">1</moneda>
+		<moneda tipo="m_sorpresa">2</moneda>
+	</nivel>
+		<nivel id="26">
+		<nombre>mapa26</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">1</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">2</moneda>
+	</nivel>
+		<nivel id="27">
+		<nombre>mapa27</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">1</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">2</moneda>
+	</nivel>
+		<nivel id="28">
+		<nombre>mapa28</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">1</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">1</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">2</moneda>
+	</nivel>
+		<nivel id="29">
+		<nombre>mapa29</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">1</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">1</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">1</moneda>
+		<moneda tipo="m_fuerza">1</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">0</moneda>
+	</nivel>
+		<nivel id="30">
+		<nombre>mapa31</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">1</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">2</moneda>
+	</nivel>
+		<nivel id="31">
+		<nombre>mapa31</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">1</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">2</moneda>
+	</nivel>
+		<nivel id="32">
+		<nombre>mapa32</nombre>	
+		<tiempo>3:30</tiempo>	
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">1</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">2</moneda>
+	</nivel>
+		<nivel id="33">
+		<nombre>mapa33</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">1</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">2</moneda>
+	</nivel>
+		<nivel id="34">
+		<nombre>mapa34</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">2</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">1</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">0</moneda>
+	</nivel>
+		<nivel id="35">
+		<nombre>mapa35</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">1</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">1</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">2</moneda>
+	</nivel>
+		<nivel id="36">
+		<nombre>mapa36</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">1</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">2</moneda>
+	</nivel>
+		<nivel id="37">
+		<nombre>mapa37</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">1</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">2</moneda>
+	</nivel>
+		<nivel id="38">
+		<nombre>mapa38</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">1</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">1</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">0</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>
+	</nivel>
+		<nivel id="39">
+		<nombre>mapa39</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">1</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>
+	</nivel>
+
+		<nivel id="40">
+		<nombre>mapa40</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">1</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">0</moneda>
+		<moneda tipo="m_fuerza">1</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>
+	</nivel>
+		<nivel id="41">
+		<nombre>mapa41</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">1</moneda>
+		<moneda tipo="m_fuerza">1</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>
+	</nivel>
+		<nivel id="42">
+		<nombre>mapa42</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">2</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">1</moneda>
+		<moneda tipo="m_fuerza">1</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>
+	</nivel>
+		<nivel id="43">
+		<nombre>mapa43</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">0</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">1</moneda>
+		<moneda tipo="m_fuerza">1</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">2</moneda>
+	</nivel>
+		<nivel id="44">
+		<nombre>mapa44</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">1</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">1</moneda>
+		<moneda tipo="m_fuerza">2</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">0</moneda>
+	</nivel>
+	
+	<nivel id="45">
+		<nombre>mapa45</nombre>
+		<tiempo>3:30</tiempo>		
+		<moneda tipo="m_bomba">0</moneda>
+		<moneda tipo="m_corazon">1</moneda>
+		<moneda tipo="m_correr">2</moneda>
+		<moneda tipo="m_detonador">0</moneda>
+		<moneda tipo="m_fantasma">2</moneda>
+		<moneda tipo="m_fuerza">1</moneda>
+		<moneda tipo="m_potenciador">0</moneda>
+		<moneda tipo="m_sorpresa">1</moneda>
+	</nivel>
+	
+
+	
+</niveles>

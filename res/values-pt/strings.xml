@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    
+	<string name="rate">Avalie esta aplicação !!!</string>
+    <string name="rate_dialog">Avalie esta aplicação se você gosta!</string>
+    <string name="yes">sim</string>
+    <string name="no">não</string>
+    <string name="app_name">The Bomber</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="info1_timer">Las bombas explodem com temporizador</string>
+    <string name="info1_det">Las bombas explodem com detonador</string>
+    <string name="info1_vidas">vidas restantes</string>
+    <string name="info1_bombas">numero de bombas disponiveis</string>
+    <string name="info1_tam">tamanho das explosoes</string>
+    <string name="info1_boost">boosters restantes</string>
+    
+    <string name="info2_camp1">Quando voce correr para fora de vidas, voce </string>    
+    <string name="info2_camp2">vai perder todos os boosters</string>
+    <string name="info2_camp3"> voce pode visitar o acampamento de treinamento </string>
+    <string name="info2_camp4">para obter reforcos adicionais.</string>
+    
+       
+	<string name="info3_campa1">clique nesse icone para entrar no </string>
+	<string name="info3_campa2">modo de campanha onde voce </string>
+	<string name="info3_campa3">pode jogar todos os mapas de </string>
+	<string name="info3_campa4">acordo com os mapas que voce desbloquear</string>
+			
+     <string name="info4_corazon">vidas restantes</string>
+     <string name="info4_expl">potencia la explosion</string>
+     <string name="info4_inm">inmune a las explosiones</string>
+	<string name="info4_bom">bomba adicional</string>
+	<string name="info4_det">detonador remoto</string>
+	<string name="info4_vel">aumenta a velocidade</string>
+	<string name="info4_fan">atraves de paredes e bombas</string>
+	<string name="info5_cred1">Desenhado e programado por: </string>
+	<string name="info5_cred2">Miguel Angel Gilperez Alcazar</string>
+	
+	<string name="TXT1">Sair?</string>
+	<string name="TXT2">Perder o seu progresso neste mapa</string>
+</resources>
+
+

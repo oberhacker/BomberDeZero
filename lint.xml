@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="WrongCall">
+        <ignore path="src/xnetcom/bomber/MiEngine.java" />
+        <ignore path="src/xnetcom/bomber/andengine/MiEngine.java" />
+    </issue>
+</lint>

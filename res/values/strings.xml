@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    
+    <string name="rate">Please rate the app!!!</string>
+     <string name="rate_dialog">Do you like this app? rate it!</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="app_name">The Bomber</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="info1_timer">The bombs have a timer detonator</string>
+    <string name="info1_det">The bombs have a remote detonator</string>
+    <string name="info1_vidas">Remaining lives</string>
+    <string name="info1_bombas">available number of bombs</string>
+    <string name="info1_tam">Explosion squares</string>
+    <string name="info1_boost">Remaining boosters</string>
+    
+    <string name="info2_camp1">when you run out of lives, you lose</string>    
+    <string name="info2_camp2">all powerups, you can visit</string>
+    <string name="info2_camp3">the training camp </string>
+    <string name="info2_camp4">to recover your lost powerups.</string>
+    
+       
+	<string name="info3_campa1">click this icon to enter in campaing mode</string>
+	<string name="info3_campa2">and to play the maps of the campaing</string>
+	<string name="info3_campa3"></string>
+	<string name="info3_campa4"></string>
+			
+     <string name="info4_corazon">Lives</string>
+     <string name="info4_expl">Explosion booster</string>
+     <string name="info4_inm">Immune to explosions</string>
+	<string name="info4_bom">Adicional bomb</string>
+	<string name="info4_det">Remote detonator</string>
+	<string name="info4_vel">Speed</string>
+	<string name="info4_fan">Ghost</string>
+	<string name="info5_cred1">Designed and programmed by: </string>
+	<string name="info5_cred2">Miguel Angel Gilperez Alcazar</string>
+	
+	<string name="TXT1">Exit?</string>
+	<string name="TXT2">You`ll lose your progress in this map</string>
+	
+</resources>

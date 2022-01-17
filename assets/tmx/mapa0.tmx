@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="25" height="15" tilewidth="64" tileheight="64">
+ <tileset firstgid="1" name="tileset64" tilewidth="64" tileheight="64">
+  <image source="gfx/tileset64.png" width="832" height="768"/>
+ </tileset>
+ <layer name="suelo" width="25" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACzNnYGCwAGLzUXqUHqVH6VF62NAADicPItwFAAA=
+  </data>
+ </layer>
+ <layer name="piedrasSombra" width="25" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NiYGBgBmIWIGYFYiYa8PmBWACIBYFYiEZ8GSCWBWI5IJanER8GMoE4i4o0NlAGxOVUpLGBUX+M+mPUH7j9MdQBAMtJdZLcBQAA
+  </data>
+ </layer>
+ <layer name="paredesTexturas" width="25" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3NqQ0AMAzAwOzej/YbuCYdIcyWDjvCzMx+BRUNHSPhMbGwcXATHg8q5zLu3AUAAA==
+  </data>
+ </layer>
+ <layer name="capaParedes" width="25" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgoC0Qo7H5o2AUjIJRMAowAQB0++dJ3AUAAA==
+  </data>
+ </layer>
+ <layer name="CapaPraredesTecho" width="25" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgoC0Qo7H5o2AUjIJRMApQQQ4QAwDPsxc43AUAAA==
+  </data>
+ </layer>
+ <layer name="paredesXML" width="25" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgoC0Qo7H5o2AUjIJRMApQQQ4QAwDPsxc43AUAAA==
+  </data>
+ </layer>
+ <layer name="bordeAbajo" width="25" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3JuwrAIAxGYZ/catd6WbX1YT2LS8iQtZADH4Q/IXie5/2riAsJGbe4tb91Oz0oqGjo4tb+1u00MPHiwxK39rduGy7Aia3cBQAA
+  </data>
+ </layer>
+ <layer name="techoPiedras" width="25" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3PuQ6CUBSE4VO6lghaimApoKULlLiVuBAq3N7/CfwTLQyGihMK4yRfTnGLudMQkSZaops2OujCQA+mcoeFPgYYwsYI2ftd4zpwMcYEHny1Ba8EmGKGORZYVvx38a4QIip0aKas47/j+/7Kji122Es9O2KssVHu+NyR4ICjcscJZ6TIccFVueOGOx54AobskkXcBQAA
+  </data>
+ </layer>
+</map>

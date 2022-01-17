@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    
+	<string name="rate">Vota la aplicacion!!!</string>
+    <string name="rate_dialog">Si te gusta esta aplicacion votala!!</string>
+    <string name="yes">si</string>
+    <string name="no">no</string>
+    <string name="app_name">The Bomber</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="info1_timer">Las bombas explotan con temporizador</string>
+    <string name="info1_det">Las bombas explotan con detonador</string>
+    <string name="info1_vidas">vidas restantes</string>
+    <string name="info1_bombas">numero de bombas disponibles</string>
+    <string name="info1_tam">tamano de las explosiones</string>
+    <string name="info1_boost">boosters restantes</string>
+    
+    <string name="info2_camp1">cuando te quedes  sin vidas, perderas </string>    
+    <string name="info2_camp2">todos los boosters, puedes visitar</string>
+    <string name="info2_camp3"> el campo de entrenamiento </string>
+    <string name="info2_camp4">para conseguir boosters adicionales.</string>
+    
+       
+	<string name="info3_campa1">pulsa este icono para meterte en el modo</string>
+	<string name="info3_campa2">campana en donde podras jugar a todos</string>
+	<string name="info3_campa3">los mapas segun los vayas desbloqueando</string>
+	<string name="info3_campa4"></string>
+			
+     <string name="info4_corazon">vidas restantes</string>
+     <string name="info4_expl">potencia la explosion</string>
+     <string name="info4_inm">inmune a las explosiones</string>
+	<string name="info4_bom">bomba adicional</string>
+	<string name="info4_det">detonador remoto</string>
+	<string name="info4_vel">aumenta la velocidad</string>
+	<string name="info4_fan">atraviesa muros y bombas</string>
+	<string name="info5_cred1">Disenado y programado por: </string>
+	<string name="info5_cred2">Miguel Angel Gilperez Alcazar</string>
+	
+	<string name="TXT1">Salir?</string>
+	<string name="TXT2">Perderas tu progreso en este mapa</string>
+</resources>
+
+
