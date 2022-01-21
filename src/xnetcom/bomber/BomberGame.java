@@ -32,7 +32,7 @@ public class BomberGame extends SimpleBaseGameActivity {
 	// Constants
 	// ===========================================================
 
-	public static final int CAMERA_WIDTH = 1200;
+	public static final int CAMERA_WIDTH = 1280;
 	public static final int CAMERA_HEIGHT = 720;	
 	public float factorForma =1.15625f;
 
@@ -49,7 +49,7 @@ public class BomberGame extends SimpleBaseGameActivity {
 
 		this.camaraJuego = new SmoothCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT, 1000f, 1000f, 1);
 		this.camaraJuego.setBoundsEnabled(false);
-		this.camaraJuego.setZoomFactor(2f);
+		this.camaraJuego.setZoomFactor(1.2f);
 //		mCamera.setCenter(10, 10);
 		return new EngineOptions(true, ScreenOrientation.LANDSCAPE_SENSOR, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.camaraJuego);
 	}

@@ -74,7 +74,7 @@ public class EscenaJuego {
 		scene.registerUpdateHandler(new IUpdateHandler() {
 			@Override
 			public void onUpdate(float pSecondsElapsed) {
-				final float[] playerFootCordinates = bomberman.getSprite().convertLocalCoordinatesToSceneCoordinates(16, 1);
+				final float[] playerFootCordinates = bomberman.getSprite().convertLocalCoordinatesToSceneCoordinates(BomberMan.PIES_X, BomberMan.PIES_Y);
 				final TMXLayer tmxLayer = mTMXTiledMap.getTMXLayers().get(0);
 				final TMXTile tmxTile = tmxLayer.getTMXTileAt(playerFootCordinates[Constants.VERTEX_INDEX_X], playerFootCordinates[Constants.VERTEX_INDEX_Y]);
 				if(tmxTile != null) {

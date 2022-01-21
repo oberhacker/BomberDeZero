@@ -39,8 +39,23 @@ public class Hud {
 	
 	
 	private void screenControl(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY){
-		if (physicsHandler!=null){
-			physicsHandler.setVelocity(pValueX * 100, pValueY * 100);
+		if (context.escenaJuego.bomberman!=null){			
+			if (pValueX>0){
+				//derecha
+				context.escenaJuego.bomberman.moverDerecha();
+			}else if (pValueX<0){
+				//izquierda
+				context.escenaJuego.bomberman.moverIzquierda();
+			}else if (pValueY>0){
+				//arriba
+				context.escenaJuego.bomberman.moverArriba();
+			}else if (pValueY<0){
+				//abajo
+				context.escenaJuego.bomberman.moverAbajo();
+			}else{
+				//parado
+				context.escenaJuego.bomberman.parar();
+			}	
 		}		
 	}
 	
@@ -56,9 +71,17 @@ public class Hud {
 		
 				
 		this.mDigitalOnScreenControl = new DigitalOnScreenControl(0, 0, context.camaraJuego, this.mOnScreenControlBaseTextureRegion, this.mOnScreenControlKnobTextureRegion, 0.1f, context.getVertexBufferObjectManager(), new IOnScreenControlListener() {
+			
+			float pValueXAnterior;
+			float pValueYAnterior;
 			@Override
 			public void onControlChange(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
-				screenControl(pBaseOnScreenControl, pValueX, pValueY);
+				if (pValueXAnterior!=pValueX || pValueY!=pValueYAnterior){
+					screenControl(pBaseOnScreenControl, pValueX, pValueY);
+					pValueXAnterior=pValueX;
+					pValueYAnterior=pValueY;
+				}
+				
 			}
 		});
 		final Sprite controlBase = this.mDigitalOnScreenControl.getControlBase();
