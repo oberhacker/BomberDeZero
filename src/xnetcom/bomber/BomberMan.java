@@ -3,10 +3,15 @@ package xnetcom.bomber;
 import java.io.IOException;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.physics.PhysicsHandler;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
+import org.andengine.extension.tmx.TMXLayer;
+import org.andengine.extension.tmx.TMXProperties;
+import org.andengine.extension.tmx.TMXTile;
+import org.andengine.extension.tmx.TMXTileProperty;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -15,14 +20,15 @@ import org.andengine.opengl.texture.bitmap.AssetBitmapTexture;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.opengl.util.GLState;
+import org.andengine.util.Constants;
 
 public class BomberMan {
 	
 	private static long[] ANIMATE_DURATION = new long[]{30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30};
 	
 	public BomberGame context;	
-	public ITexture mPlayerTexture;
-	public TiledTextureRegion mPlayerTextureRegion;	
+
+
 	public Rectangle currentTileRectangle;	
 //	public AnimatedSprite player;
 	public AnimatedSprite bomberArriba;
@@ -38,7 +44,7 @@ public class BomberMan {
 	public static float VELOCIDAD_RECTO_X=150;
 	public static float  VELOCIDAD_RECTO_Y=150;
 	
-	public float FACTOR_ACHATADO=0.9f;
+	public float FACTOR_ACHATADO=0.96f;
 	 
 	public BomberMan(BomberGame context){
 		this.context=context;
@@ -48,13 +54,7 @@ public class BomberMan {
 		return bomberAbajo;
 	}
 	
-	public void carga() throws IOException{
-		this.mPlayerTexture = new AssetBitmapTexture(context.getTextureManager(), context.getAssets(), "gfx/player.png", TextureOptions.DEFAULT);
-		this.mPlayerTextureRegion = TextureRegionFactory.extractTiledFromTexture(this.mPlayerTexture, 3, 4);
-		this.mPlayerTexture.load();		
-//		this.player = new AnimatedSprite(20, context.CAMERA_HEIGHT-100, this.mPlayerTextureRegion, context.getVertexBufferObjectManager());
-//		this.player.setOffsetCenter(0, 0);
-		
+	public void carga() throws IOException{		
 		BitmapTextureAtlas tiledmaster90A = new BitmapTextureAtlas(context.getTextureManager(),2048, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		this.mBombermanTextureRegionAniA=BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(tiledmaster90A, context, "gfx/tiledmaster(125x104)ArribaB.png",0,0, 12, 5); 
 		tiledmaster90A.load();
@@ -90,6 +90,10 @@ public class BomberMan {
 		
 		bomberAbajo.attachChild(bomberArriba);
 		
+		
+		
+
+		
 	}
 	
 	
@@ -104,19 +108,67 @@ public class BomberMan {
 		currentTileRectangle.setPosition(context.escenaJuego.mTMXTiledMap.getTMXLayers().get(0).getTileX(2), context.escenaJuego.mTMXTiledMap.getTMXLayers().get(0).getTileY(2));		
 		currentTileRectangle.setPosition(2*64*context.factorForma, currentTileRectangle.getY());
 		scene.attachChild(currentTileRectangle);
-//		scene.attachChild(player);	
-		
-		
-	
 
+		scene.attachChild(bomberAbajo);		
+		scene.registerUpdateHandler(new IUpdateHandler() {
+			@Override
+			public void onUpdate(float pSecondsElapsed) {
+				updater();
+			}
+			@Override
+			public void reset() {				
+				
+			}			
+		});		
+	}
+
+
+	
+	public void updater(){
+		final float[] playerFootCordinates = getSprite().convertLocalCoordinatesToSceneCoordinates(BomberMan.PIES_X, BomberMan.PIES_Y);
+		 TMXLayer tmxLayer = context.escenaJuego.mTMXTiledMap.getTMXLayers().get(1);
+	
+		 TMXLayer tmxLayer3 = context.escenaJuego.mTMXTiledMap.getTMXLayers().get(0);
+		 
+		TMXTile[][] tiles = tmxLayer.getTMXTiles();
+		for (TMXTile[] tmxTiles : tiles) {
+			for (TMXTile tmxTile : tmxTiles) {
+				tmxTile.setTextureRegion(null);
+			}
+		}
 		
-//		bomberAbajo.animate(ANIMATE_DURATION,24,35,true);
-		scene.attachChild(bomberAbajo);
-//		scene.attachChild(bomberArriba);
 		
+		tiles = tmxLayer3.getTMXTiles();
+		for (TMXTile[] tmxTiles : tiles) {
+			for (TMXTile tmxTile : tmxTiles) {
+				tmxTile.setTextureRegion(null);
+			}
+		}
+		
+		
+		 TMXTile tmxTile = tmxLayer.getTMXTileAt(playerFootCordinates[Constants.VERTEX_INDEX_X], playerFootCordinates[Constants.VERTEX_INDEX_Y]);
+		 TMXTile tmxTile3 = tmxLayer3.getTMXTileAt(playerFootCordinates[Constants.VERTEX_INDEX_X], playerFootCordinates[Constants.VERTEX_INDEX_Y]);
+		if(tmxTile != null) {
+			tmxTile.setTextureRegion(null);
+		}
+		if(tmxTile != null) {
+			try{
+				if (tmxTile.getTMXTileProperties(context.escenaJuego.mTMXTiledMap) != null) {
+					if (tmxTile.getTMXTileProperties(context.escenaJuego.mTMXTiledMap).containsTMXProperty("muro", "true")) {
+//						parar();
+						tmxTile3.setTextureRegion(null); 
+					}
+
+				}	
+			}catch(Exception e){}
+//			 tmxTile.setTextureRegion(null); <-- Eraser-style removing of tiles =D
+			currentTileRectangle.setPosition(tmxLayer.getTileX(tmxTile.getTileColumn())*context.factorForma, tmxLayer.getTileY(tmxTile.getTileRow()));
+
+		}
 	}
 	
-
+	
+	
 	public void moverArriba(){
 		animarArriba();
 		physicsHandler.setVelocity(0,VELOCIDAD_RECTO_Y);

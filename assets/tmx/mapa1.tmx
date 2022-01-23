@@ -215,7 +215,7 @@
  </layer>
  <layer name="capaParedes" width="25" height="15">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NgoC0Qo7H5o2AUjIJRMAowAQB0++dJ3AUAAA==
+   H4sIAAAAAAAAC2NgoC0Qo7H5o4B2YDINzZ2MxKY1oKU/aG0HPcBkBtQ4GQXDAwAAwYOKetwFAAA=
   </data>
  </layer>
  <layer name="bordeAbajo" width="25" height="15">
