@@ -22,7 +22,7 @@ public class HudBomber {
 
 	private static final int VIBRAR_BOTON = 50;
 	public BomberGame context;
-	public BomberMan bomberman;
+
 
 	public HUD hud;
 
@@ -42,13 +42,6 @@ public class HudBomber {
 	Sprite btn_2;
 
 	public DigitalOnScreenControl mDigitalOnScreenControl;
-	PhysicsHandler physicsHandler;
-
-	public void addBomberman(BomberMan bomberman) {
-		AnimatedSprite player = bomberman.getSprite();
-		physicsHandler = new PhysicsHandler(player);
-		player.registerUpdateHandler(physicsHandler);
-	}
 
 	private void screenControl(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
 		if (context.escenaJuego.bomberman != null) {
@@ -66,7 +59,7 @@ public class HudBomber {
 				context.escenaJuego.bomberman.moverAbajo();
 			} else {
 				// parado
-				context.escenaJuego.bomberman.parar();
+				context.escenaJuego.bomberman.detenerPararAnimacion();
 			}
 		}
 	}
@@ -143,12 +136,13 @@ public class HudBomber {
 
 	public void apretarBotonPlantabomba() {
 		context.vibrar(VIBRAR_BOTON);
-		context.escenaJuego.cargaMapa();
+//		context.escenaJuego.cargaMapaBORRARESTEMETPODO();
 		System.out.println("APRETADOOOOOOO");
 	}
 
 	public void apretarBotonExplosion() {
-		context.vibrar(VIBRAR_BOTON);
+		context.vibrar(VIBRAR_BOTON);		
+		context.escenaJuego.bomberman.getSprite().setZIndex(1000);
 		System.out.println("APRETADOOOOOOO");
 	}
 	

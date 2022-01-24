@@ -31,7 +31,7 @@ public class BomberGame extends SimpleBaseGameActivity {
 
 	public static int CAMERA_WIDTH = 1280;
 	public static int CAMERA_HEIGHT = 720;
-	public float factorForma = 1.15625f;
+
 
 	// ===========================================================
 	// Fields
