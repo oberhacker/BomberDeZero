@@ -6,8 +6,8 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.physics.PhysicsHandler;
 import org.andengine.entity.IEntity;
-import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
+import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
@@ -96,10 +96,7 @@ public class BomberMan {
 
 			@Override
 			protected void onManagedDraw(GLState GLState, Camera pCamera) {
-				// TODO Auto-generated method stub
-				// bomberArriba.setPosition(cuadrado.getX()-28,cuadrado.getY()-55);
 				super.onManagedDraw(GLState, pCamera);
-				// bomberB.dibuja(pGL, pCamera);
 			}
 		};
 		bomberAbajo.setOffsetCenter(0, 0);
@@ -179,14 +176,16 @@ public class BomberMan {
 				innerColumna = tmxTile.getTileColumn();
 				setColumna(tmxTile.getTileColumn());
 				currentTileRectangle.setPosition(tmxLayer.getTileX(tmxTile.getTileColumn()) * Constantes.FARTOR_FORMA, tmxLayer.getTileY(tmxTile.getTileRow()));
-				setColumna(tmxTile.getTileColumn());
+				
 			}
 			if (innerFila != tmxTile.getTileRow()) {
 				innerFila = tmxTile.getTileRow();
 				setFila(tmxTile.getTileRow());
 				currentTileRectangle.setPosition(tmxLayer.getTileX(tmxTile.getTileColumn()) * Constantes.FARTOR_FORMA, tmxLayer.getTileY(tmxTile.getTileRow()));
-				setFila(tmxTile.getTileRow());
+
 			}
+			Log.d("POSICION", "FILA: "+tmxTile.getTileRow() +" Columna: "+tmxTile.getTileColumn() +" VALOR: "+context.escenaJuego.matriz.getValor(tmxTile.getTileRow(), tmxTile.getTileColumn()));
+			
 		}
 	}
 
@@ -281,7 +280,7 @@ public class BomberMan {
 //	}
 	
 	
-	public boolean isLimiteArriba(){
+	public boolean isLimiteArriba(){context.escenaJuego.matriz.getValor(2, 2);
 		int sitio =context.escenaJuego.matriz.getValor(getFila()-1, getColumna());
 		if (!fantasma){	
 			if (sitio==Matriz.PARED || sitio==Matriz.MURO ||sitio==Matriz.BOMBA){				
@@ -368,58 +367,120 @@ public class BomberMan {
 			animarAbajo();
 		}		
 		
-//		//System.out.println("centramos desde x="+x +" xto="+xto+" y="+y +" yto="+yto +" mover"+mover +" en "+tiempoPorPixel * mover);
-//		if (mover!=0){
-//			baseTileRectangle.registerEntityModifier(new MoveModifier(Math.abs(tiempoPorPixel * mover), x, xto, y, yto, new IEntityModifierListener() {
-//				@Override
-//				public void onModifierStarted(IModifier<IEntity> arg0, IEntity arg1) {
-//					// TODO Auto-generated method stub
-//				}
-//				@Override
-//				public void onModifierFinished(IModifier<IEntity> arg0, IEntity arg1) {
-//					// TODO Auto-generated method stub
-//					terminadoCentrar();			
-//				}
-//			}));	
-//		}
+
+		if (mover!=0){
+			baseTileRectangle.registerEntityModifier(new MoveModifier(Math.abs(Constantes.TIEMPO_POR_PIXEL * mover), x,y,xto,yto, new IEntityModifierListener() {
+				@Override
+				public void onModifierStarted(IModifier<IEntity> arg0, IEntity arg1) {
+					// TODO Auto-generated method stub
+				}
+				@Override
+				public void onModifierFinished(IModifier<IEntity> arg0, IEntity arg1) {
+					// TODO Auto-generated method stub
+					terminadoCentrar();			
+				}
+			}));	
+		}else{
+			terminadoCentrar();	
+		}
 
 
 	}
 	
 	
-	
-	
+	public void terminadoCentrar(){
+		switch (playerDirection) {
+		case UP:			
+			moverArribaSinFin();
+			break;
+			
+		case DOWN:			
+			moverAbajoSinFin();
+			break;
+			
+		case LEFT:			
+			moverIzquierdaSinFin();
+			break;
+			
+		case RIGHT:			
+			moverDerechaSinFin();
+			break;
+			
+		case NONE:			
+			break;
+		}
+		
+		
+	}
 
 	public void moverArriba() {
-		if (isLimiteArriba()){
-//			centrar
+		detener();
+		playerDirection=PlayerDirection.UP;
+		if (!isLimiteArriba()){
+			centrar();
+		}else{
+			animarArriba();
 		}
+	}
+	
+	public void moverArribaSinFin() {
 		animarArriba();
 		physicsHandler.setVelocity(0, VELOCIDAD_RECTO_Y);
 	}
-
+	
+	
 	public void moverAbajo() {
+		detener();
+		playerDirection=PlayerDirection.DOWN;
+		if (!isLimiteAbajo()){
+			centrar();
+		}else{
+			animarAbajo();
+		}
+
+	}
+	public void moverAbajoSinFin() {
 		animarAbajo();
 		physicsHandler.setVelocity(0, -VELOCIDAD_RECTO_Y);
 	}
 
 	public void moverDerecha() {
+		detener();
+		playerDirection=PlayerDirection.RIGHT;
+		if (!isLimiteDerecha()){
+			centrar();
+		}else{
+			animarDerecha();
+		}
+	}
+	public void moverDerechaSinFin() {
 		animarDerecha();
 		physicsHandler.setVelocity(VELOCIDAD_RECTO_X, 0);
 	}
 
 	public void moverIzquierda() {
+		detener();
+		playerDirection=PlayerDirection.LEFT;
+		if (!isLimiteIzquierda()){
+			centrar();
+		}else{
+			animarIzquierda();
+		}
+	}
+	
+	public void moverIzquierdaSinFin() {
 		animarIzquierda();
 		physicsHandler.setVelocity(-VELOCIDAD_RECTO_X, 0);
 	}
 
 	public void detener() {
 		physicsHandler.setVelocity(0, 0);
+		baseTileRectangle.clearEntityModifiers();
 	}
 
 	public void detenerPararAnimacion() {
-		stopAnimation();
-		physicsHandler.setVelocity(0, 0);
+		stopAnimation();			
+		detener();
 	}
 
 	public void moverRecto() {

@@ -111,9 +111,13 @@ public class BomberGame extends SimpleBaseGameActivity {
 		return vibrar;
 	}
 
-	public void vibrar(long milisegundos) {
+	public void vibrar(final long milisegundos) {
 		if (vibrar) {
-			vibrator.vibrate(milisegundos);
+			this.runOnUiThread(new Runnable() {
+				public void run() {
+					vibrator.vibrate(milisegundos);
+				}
+			});			
 		}
 	}
 

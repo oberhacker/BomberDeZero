@@ -6,9 +6,7 @@ import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl.IOnScreenControlListener;
 import org.andengine.engine.camera.hud.controls.DigitalOnScreenControl;
-import org.andengine.engine.handler.physics.PhysicsHandler;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.TextureOptions;
@@ -82,7 +80,7 @@ public class HudBomber {
 		this.mOnScreenControlKnobTextureRegion = TextureRegionFactory.extractFromTexture(this.mOnScreenControlKnobTexture);
 		this.mOnScreenControlKnobTexture.load();
 
-		this.mDigitalOnScreenControl = new DigitalOnScreenControl(0, 0, context.camaraJuego, this.mOnScreenControlBaseTextureRegion, this.mOnScreenControlKnobTextureRegion, 0.1f,
+		this.mDigitalOnScreenControl = new DigitalOnScreenControl(15, 15, context.camaraJuego, this.mOnScreenControlBaseTextureRegion, this.mOnScreenControlKnobTextureRegion, 0.1f,
 				context.getVertexBufferObjectManager(), new IOnScreenControlListener() {
 
 					float pValueXAnterior;
@@ -97,7 +95,37 @@ public class HudBomber {
 						}
 
 					}
-				});
+				}){
+			// ajustamos la sensibilidad
+			@Override
+			protected void onUpdateControlKnob(final float pRelativeX, final float pRelativeY) {				
+				float sensibilidad=0.2f;
+				// cuanto pRelativeX > 0.2 mayor sea el numero menos sensible sera
+				if (pRelativeX == 0 && pRelativeY == 0) {
+					super.onUpdateControlKnob(0, 0);
+				}
+				//System.out.println("pRelativeX"+pRelativeX);
+
+				if (Math.abs(pRelativeX) > Math.abs(pRelativeY)) {
+					
+					if (pRelativeX > sensibilidad) {
+						super.onUpdateControlKnob(0.5f, 0);
+					} else if (pRelativeX < -sensibilidad) {
+						super.onUpdateControlKnob(-0.5f, 0);
+					} else {
+						super.onUpdateControlKnob(0, 0);
+					}
+				} else {
+					if (pRelativeY > sensibilidad) {
+						super.onUpdateControlKnob(0, 0.5f);
+					} else if (pRelativeY < -sensibilidad) {
+						super.onUpdateControlKnob(0, -0.5f);
+					} else {
+						super.onUpdateControlKnob(0, 0);
+					}
+				}
+			}
+		};
 		final Sprite controlBase = this.mDigitalOnScreenControl.getControlBase();
 
 		btn_1 = new Sprite(0, 0, btn_1_TR, context.getVertexBufferObjectManager()) {
