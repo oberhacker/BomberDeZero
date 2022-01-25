@@ -26,6 +26,7 @@ public class HudBomber {
 
 	public HudBomber(BomberGame context) {
 		this.context = context;
+		hud = new HUD();
 	}
 
 	public AssetBitmapTexture mOnScreenControlBaseTexture;
@@ -99,7 +100,7 @@ public class HudBomber {
 			// ajustamos la sensibilidad
 			@Override
 			protected void onUpdateControlKnob(final float pRelativeX, final float pRelativeY) {				
-				float sensibilidad=0.2f;
+				float sensibilidad=0.1f;
 				// cuanto pRelativeX > 0.2 mayor sea el numero menos sensible sera
 				if (pRelativeX == 0 && pRelativeY == 0) {
 					super.onUpdateControlKnob(0, 0);
@@ -182,7 +183,7 @@ public class HudBomber {
 	public void attachScena(Scene scene) {
 		scene.setChildScene(this.mDigitalOnScreenControl);
 
-		hud = new HUD();
+		
 		
 		hud.attachChild(btn_1);
 		hud.attachChild(btn_2);

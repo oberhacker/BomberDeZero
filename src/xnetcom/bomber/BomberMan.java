@@ -11,8 +11,11 @@ import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
+import org.andengine.entity.text.Text;
 import org.andengine.extension.tmx.TMXLayer;
 import org.andengine.extension.tmx.TMXTile;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -21,6 +24,7 @@ import org.andengine.opengl.util.GLState;
 import org.andengine.util.Constants;
 import org.andengine.util.modifier.IModifier;
 
+import android.graphics.Typeface;
 import android.util.Log;
 
 public class BomberMan {
@@ -30,14 +34,14 @@ public class BomberMan {
 	public enum PlayerPosicion {
 		ARRIBA, ABAJO, DERECHA, IZQUIERDA, CENTRO, MUY_ARRIBA, MUY_ABAJO, MUY_DERECHA, MUY_IZQUIERDA,
 	}
-	
+
 	public enum PlayerDirection {
 		NONE, UP, DOWN, LEFT, RIGHT
 	}
-	
+
 	public BomberGame context;
-	
-	boolean fantasma=false;
+
+	boolean fantasma = false;
 
 	public Rectangle currentTileRectangle;
 	// public AnimatedSprite player;
@@ -65,7 +69,6 @@ public class BomberMan {
 
 	public PlayerDirection playerDirection = PlayerDirection.NONE;
 
-
 	public BomberMan(BomberGame context) {
 		this.context = context;
 	}
@@ -74,7 +77,15 @@ public class BomberMan {
 		return baseTileRectangle;
 	}
 
+	Text debugText;
+
 	public void carga() throws IOException {
+
+		Font mFont = FontFactory.create(context.getFontManager(), context.getTextureManager(), 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 48);
+		mFont.load();
+
+		debugText = new Text(300, 600, mFont, "Seconds elapsed:", "Seconds elapsed: XXXXXX".length(), context.getVertexBufferObjectManager());
+
 		BitmapTextureAtlas tiledmaster90A = new BitmapTextureAtlas(context.getTextureManager(), 2048, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		this.mBombermanTextureRegionAniA = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(tiledmaster90A, context, "gfx/tiledmaster(125x104)ArribaB.png", 0, 0, 12, 5);
 		tiledmaster90A.load();
@@ -115,12 +126,13 @@ public class BomberMan {
 
 	public void onCreateScene(Scene scene) {
 
-		currentTileRectangle = new Rectangle(0, 0, context.escenaJuego.mTMXTiledMap.getTileWidth()*Constantes.FARTOR_FORMA, context.escenaJuego.mTMXTiledMap.getTileHeight(), context.getVertexBufferObjectManager());
+		currentTileRectangle = new Rectangle(0, 0, context.escenaJuego.mTMXTiledMap.getTileWidth() * Constantes.FARTOR_FORMA, context.escenaJuego.mTMXTiledMap.getTileHeight(),
+				context.getVertexBufferObjectManager());
 		/* Set the OffsetCenter to 0/0, so that it aligns with the TMXTiles. */
 		currentTileRectangle.setOffsetCenter(0, 0);
 		currentTileRectangle.setColor(50, 0, 0);
 		currentTileRectangle.setScaleCenter(0, 0);
-//		currentTileRectangle.setScaleX(Constantes.FARTOR_FORMA);
+		// currentTileRectangle.setScaleX(Constantes.FARTOR_FORMA);
 		currentTileRectangle.setPosition(context.escenaJuego.mTMXTiledMap.getTMXLayers().get(0).getTileX(2), context.escenaJuego.mTMXTiledMap.getTMXLayers().get(0).getTileY(2));
 		currentTileRectangle.setPosition(2 * context.escenaJuego.mTMXTiledMap.getTileWidth() * Constantes.FARTOR_FORMA, currentTileRectangle.getY());
 
@@ -129,12 +141,13 @@ public class BomberMan {
 			currentTileRectangle.setAlpha(0f);
 		}
 
-		baseTileRectangle = new Rectangle(0, 0, context.escenaJuego.mTMXTiledMap.getTileWidth()*Constantes.FARTOR_FORMA, context.escenaJuego.mTMXTiledMap.getTileHeight(), context.getVertexBufferObjectManager());
+		baseTileRectangle = new Rectangle(0, 0, context.escenaJuego.mTMXTiledMap.getTileWidth() * Constantes.FARTOR_FORMA, context.escenaJuego.mTMXTiledMap.getTileHeight(),
+				context.getVertexBufferObjectManager());
 		/* Set the OffsetCenter to 0/0, so that it aligns with the TMXTiles. */
 		baseTileRectangle.setOffsetCenter(0, 0);
 		baseTileRectangle.setColor(50, 50, 50);
 		baseTileRectangle.setScaleCenter(0, 0);
-//		baseTileRectangle.setScaleX(Constantes.FARTOR_FORMA);
+		// baseTileRectangle.setScaleX(Constantes.FARTOR_FORMA);
 		if (!Constantes.DEBUG_BASE_RECTANGLE_VISIBLE) {
 			baseTileRectangle.setAlpha(0f);
 		}
@@ -149,6 +162,7 @@ public class BomberMan {
 
 		scene.attachChild(currentTileRectangle);
 		scene.attachChild(baseTileRectangle);
+		context.escenaJuego.hud.hud.attachChild(debugText);
 
 		scene.registerUpdateHandler(new IUpdateHandler() {
 			@Override
@@ -176,57 +190,75 @@ public class BomberMan {
 				innerColumna = tmxTile.getTileColumn();
 				setColumna(tmxTile.getTileColumn());
 				currentTileRectangle.setPosition(tmxLayer.getTileX(tmxTile.getTileColumn()) * Constantes.FARTOR_FORMA, tmxLayer.getTileY(tmxTile.getTileRow()));
-				
+				cambiaPosicion();
 			}
 			if (innerFila != tmxTile.getTileRow()) {
 				innerFila = tmxTile.getTileRow();
 				setFila(tmxTile.getTileRow());
 				currentTileRectangle.setPosition(tmxLayer.getTileX(tmxTile.getTileColumn()) * Constantes.FARTOR_FORMA, tmxLayer.getTileY(tmxTile.getTileRow()));
-
+				cambiaPosicion();
 			}
-			Log.d("POSICION", "FILA: "+tmxTile.getTileRow() +" Columna: "+tmxTile.getTileColumn() +" VALOR: "+context.escenaJuego.matriz.getValor(tmxTile.getTileRow(), tmxTile.getTileColumn()));
-			
+			Log.d("POSICION",
+					"FILA: " + tmxTile.getTileRow() + " Columna: " + tmxTile.getTileColumn() + " VALOR: " + context.escenaJuego.matriz.getValor(tmxTile.getTileRow(), tmxTile.getTileColumn()));
+			debugText.setText(getEskinado().toString());
 		}
 	}
 
-
-
 	public PlayerPosicion getEskinado() {
-		// //System.out.println("getEskinado()");
 		PlayerPosicion posicionRelativa = PlayerPosicion.CENTRO;
 
 		float difY = (currentTileRectangle.getY()) - baseTileRectangle.getY();
-		// float signoY
-		// =(context.getGameManager().getCurrentTileRectangle().getY())-cuadrado.getY();
 
 		float difX = (currentTileRectangle.getX()) - baseTileRectangle.getX();
-		// float signoX
-		// =(context.getGameManager().getCurrentTileRectangle().getX())-cuadrado.getX();
 
 		// habria que sustituir los 26 po un mayor que cero
 
-		Log.d("camino", "getEskinado() difY " + difY + "difX " + difX);
 		if (difX == 0 && difY == 0) {
-			// centro
 			posicionRelativa = PlayerPosicion.CENTRO;
-		} else if (difX <= -17) {
-			// izquierda
-			posicionRelativa = PlayerPosicion.MUY_DERECHA;
-		} else if (difX >= 17) {
-			// derecha
-			posicionRelativa = PlayerPosicion.MUY_IZQUIERDA;
-		} else if (difY <= -17) {
-			// arriba
-			posicionRelativa = PlayerPosicion.MUY_ABAJO;
-		} else if (difY >= 17) {
-			// abajo
-			posicionRelativa = PlayerPosicion.MUY_ARRIBA;
+		} else if (difY == 0) {
+			if (difX <= -17) {
+				// izquierda
+				posicionRelativa = PlayerPosicion.MUY_DERECHA;
+			} else if (difX >= 17) {
+				// derecha
+				posicionRelativa = PlayerPosicion.MUY_IZQUIERDA;
+			}
+		} else if (difX == 0) {
+
+			if (difY <= -17) {
+				// arriba
+				posicionRelativa = PlayerPosicion.MUY_ARRIBA;
+			} else if (difY >= 17) {
+				// abajo
+				posicionRelativa = PlayerPosicion.MUY_ABAJO;
+			}
+
 		}
+
 		return posicionRelativa;
 	}
 
-	public void cambiaPosicion(int fila, int columna) {
-
+	public void cambiaPosicion() {
+		// switch (playerDirection) {
+		// case DOWN:
+		//
+		// break;
+		// case UP:
+		//
+		// break;
+		// case RIGHT:
+		//
+		// break;
+		// case LEFT:
+		//
+		// break;
+		// case DOWN:
+		//
+		// break;
+		//
+		// default:
+		// break;
+		// }
 	}
 
 	public void setFila(int fila) {
@@ -253,224 +285,325 @@ public class BomberMan {
 		}
 	}
 
-//	public void mover(PlayerDirection direccion){
-//		baseTileRectangle.clearEntityModifiers();
-//		int fila=getFila();
-//		int columna=getColumna();
-//		switch (direccion) {
-//		case DOWN:
-//			compro
-//			
-//			break;
-//		case UP:
-//			
-//			break;
-//
-//		case RIGHT:
-//			
-//			break;
-//		case LEFT:
-//			
-//			break;
-//		case NONE:
-//			
-//			break;
-//		}
-//		
-//	}
-	
-	
-	public boolean isLimiteArriba(){context.escenaJuego.matriz.getValor(2, 2);
-		int sitio =context.escenaJuego.matriz.getValor(getFila()-1, getColumna());
-		if (!fantasma){	
-			if (sitio==Matriz.PARED || sitio==Matriz.MURO ||sitio==Matriz.BOMBA){				
+	public boolean isLimiteArriba() {
+		context.escenaJuego.matriz.getValor(2, 2);
+		int sitio = context.escenaJuego.matriz.getValor(getFila() - 1, getColumna());
+		if (!fantasma) {
+			if (sitio == Matriz.PARED || sitio == Matriz.MURO || sitio == Matriz.BOMBA) {
 				return true;
 			}
-		}else{
-			if (sitio==Matriz.MURO){				
+		} else {
+			if (sitio == Matriz.MURO) {
 				return true;
 			}
-		}		
+		}
 		return false;
 	}
-	
-	public boolean isLimiteAbajo(){
-		int sitio =context.escenaJuego.matriz.getValor(getFila()+1,getColumna());
-		
-		if (!fantasma){			
-			if (sitio==Matriz.PARED || sitio==Matriz.MURO ||sitio==Matriz.BOMBA){			
+
+	public boolean isLimiteAbajo() {
+		int sitio = context.escenaJuego.matriz.getValor(getFila() + 1, getColumna());
+
+		if (!fantasma) {
+			if (sitio == Matriz.PARED || sitio == Matriz.MURO || sitio == Matriz.BOMBA) {
 				return true;
 			}
-		}else{
-			if (sitio==Matriz.MURO){				
+		} else {
+			if (sitio == Matriz.MURO) {
 				return true;
 			}
-		}		
+		}
 		return false;
 	}
-	
-	
-	public boolean isLimiteDerecha(){
-		int sitio =context.escenaJuego.matriz.getValor(getFila(),getColumna()+1);
-		if (!fantasma){			
-			if (sitio==Matriz.PARED || sitio==Matriz.MURO ||sitio==Matriz.BOMBA){				
+
+	public boolean isLimiteDerecha() {
+		int sitio = context.escenaJuego.matriz.getValor(getFila(), getColumna() + 1);
+		if (!fantasma) {
+			if (sitio == Matriz.PARED || sitio == Matriz.MURO || sitio == Matriz.BOMBA) {
 				return true;
 			}
-		}else{
-			if (sitio==Matriz.MURO){				
+		} else {
+			if (sitio == Matriz.MURO) {
 				return true;
 			}
-		}	
+		}
 		return false;
 	}
-	
-	public boolean isLimiteIzquierda(){
-		int sitio =context.escenaJuego.matriz.getValor(getFila(),getColumna()-1);	
-		if (!fantasma){			
-			if (sitio==Matriz.PARED || sitio==Matriz.MURO ||sitio==Matriz.BOMBA){				
+
+	public boolean isLimiteIzquierda() {
+		int sitio = context.escenaJuego.matriz.getValor(getFila(), getColumna() - 1);
+		if (!fantasma) {
+			if (sitio == Matriz.PARED || sitio == Matriz.MURO || sitio == Matriz.BOMBA) {
 				return true;
 			}
-		}else{
-			if (sitio==Matriz.MURO){
+		} else {
+			if (sitio == Matriz.MURO) {
 				return true;
 			}
 		}
 		return false;
 
 	}
-	
-	
-	
-	public void centrar() {
-		final float xto = currentTileRectangle.getX();
-		final float yto = currentTileRectangle.getY();
+
+	public void centrar(PlayerDirection direccion) {
+		float xto = currentTileRectangle.getX();
+		float yto = currentTileRectangle.getY();
 
 		float x = baseTileRectangle.getX();
 		float y = baseTileRectangle.getY();
 
 		float mover = 0;
-		if (xto == x) {
-			mover = yto - y;
-		} else {
-			mover = xto - x;
-		}
-		
-		baseTileRectangle.clearEntityModifiers();
-		
-		if(xto<x){
-			animarIzquierda();
-		}else if (xto>x){
-			animarDerecha();
-		}else if (yto<y){
-			animarArriba();
-		}else if (yto>y){
-			animarAbajo();
-		}		
-		
 
-		if (mover!=0){
-			baseTileRectangle.registerEntityModifier(new MoveModifier(Math.abs(Constantes.TIEMPO_POR_PIXEL * mover), x,y,xto,yto, new IEntityModifierListener() {
+		switch (direccion) {
+		case NONE:
+			if (xto == x) {
+				mover = yto - y;
+			} else {
+				mover = xto - x;
+			}
+
+			if (xto < x) {
+				animarIzquierda();
+			} else if (xto > x) {
+				animarDerecha();
+			} else if (yto < y) {
+				animarArriba();
+			} else if (yto > y) {
+				animarAbajo();
+			}
+
+			break;
+		case RIGHT:
+			x = baseTileRectangle.getX();
+			xto = currentTileRectangle.getX() + currentTileRectangle.getWidth();
+			mover = xto - x;
+			animarDerecha();
+			break;
+		case LEFT:
+			x = baseTileRectangle.getX();
+			xto = currentTileRectangle.getX() - currentTileRectangle.getWidth();
+			mover = xto - x;
+			animarIzquierda();
+			break;
+		case UP:
+			y = baseTileRectangle.getY();
+			yto = currentTileRectangle.getY() + currentTileRectangle.getHeight();
+			mover = yto - y;
+			animarArriba();
+			break;
+		case DOWN:
+			y = baseTileRectangle.getY();
+			yto = currentTileRectangle.getY() - currentTileRectangle.getHeight();
+			mover = yto - y;
+			animarAbajo();
+			break;
+
+		default:
+			break;
+		}
+
+		baseTileRectangle.clearEntityModifiers();
+
+		if (mover != 0) {
+			baseTileRectangle.registerEntityModifier(new MoveModifier(Math.abs(Constantes.TIEMPO_POR_PIXEL * mover), x, y, xto, yto, new IEntityModifierListener() {
 				@Override
 				public void onModifierStarted(IModifier<IEntity> arg0, IEntity arg1) {
 					// TODO Auto-generated method stub
 				}
+
 				@Override
 				public void onModifierFinished(IModifier<IEntity> arg0, IEntity arg1) {
 					// TODO Auto-generated method stub
-					terminadoCentrar();			
+					terminadoCentrar();
 				}
-			}));	
-		}else{
-			terminadoCentrar();	
+			}));
+		} else {
+			terminadoCentrar();
 		}
-
 
 	}
-	
-	
-	public void terminadoCentrar(){
+
+	public void terminadoCentrar() {
 		switch (playerDirection) {
-		case UP:			
+		case UP:
 			moverArribaSinFin();
 			break;
-			
-		case DOWN:			
+
+		case DOWN:
 			moverAbajoSinFin();
 			break;
-			
-		case LEFT:			
+
+		case LEFT:
 			moverIzquierdaSinFin();
 			break;
-			
-		case RIGHT:			
+
+		case RIGHT:
 			moverDerechaSinFin();
 			break;
-			
-		case NONE:			
+
+		case NONE:
 			break;
 		}
-		
-		
+
 	}
 
 	public void moverArriba() {
 		detener();
-		playerDirection=PlayerDirection.UP;
-		if (!isLimiteArriba()){
-			centrar();
-		}else{
-			animarArriba();
+		playerDirection = PlayerDirection.UP;
+		if (!isLimiteArriba()) {
+			if (!compruebaCentradoHorizontal()) {
+				centrar(PlayerDirection.NONE);
+			} else {
+				moverArribaSinFin();
+			}
+		} else {
+			// comprobamos si estamos muy esquinados y podemos hacer una L
+			PlayerPosicion esquinado = getEskinado();
+			switch (esquinado) {
+			case CENTRO:// no movemos solo animamos
+				centrar(PlayerDirection.NONE);
+				// animarArriba();
+				break;
+			case MUY_DERECHA:// no movemos solo animamos
+				// centramos a la derecha
+				centrar(PlayerDirection.RIGHT);
+				break;
+			case MUY_IZQUIERDA:// no movemos solo animamos
+				// centramos a la iquierda
+				centrar(PlayerDirection.LEFT);
+				break;
+			default:
+				break;
+			}
 		}
 	}
-	
+
 	public void moverArribaSinFin() {
 		animarArriba();
-		physicsHandler.setVelocity(0, VELOCIDAD_RECTO_Y);
-	}
-	
-	
-	public void moverAbajo() {
-		detener();
-		playerDirection=PlayerDirection.DOWN;
-		if (!isLimiteAbajo()){
-			centrar();
-		}else{
-			animarAbajo();
+		if (!isLimiteArriba()) {
+			physicsHandler.setVelocity(0, VELOCIDAD_RECTO_Y);
 		}
 
 	}
+
+	public void moverAbajo() {
+		detener();
+		playerDirection = PlayerDirection.DOWN;
+		if (!isLimiteAbajo()) {
+			if (!compruebaCentradoHorizontal()) {
+				centrar(PlayerDirection.NONE);
+			} else {
+				moverAbajoSinFin();
+			}
+		} else {
+			// comprobamos si estamos muy esquinados y podemos hacer una L
+			PlayerPosicion esquinado = getEskinado();
+			switch (esquinado) {
+			case CENTRO:// no movemos solo animamos
+				centrar(PlayerDirection.NONE);
+				// animarAbajo();
+				break;
+			case MUY_DERECHA:// no movemos solo animamos
+				// centramos a la derecha
+				centrar(PlayerDirection.RIGHT);
+				break;
+			case MUY_IZQUIERDA:// no movemos solo animamos
+				// centramos a la iquierda
+				centrar(PlayerDirection.LEFT);
+				break;
+			default:
+				break;
+			}
+
+		}
+
+	}
+
 	public void moverAbajoSinFin() {
 		animarAbajo();
-		physicsHandler.setVelocity(0, -VELOCIDAD_RECTO_Y);
+		if (!isLimiteAbajo()) {
+			physicsHandler.setVelocity(0, -VELOCIDAD_RECTO_Y);
+		}
+
 	}
 
 	public void moverDerecha() {
 		detener();
-		playerDirection=PlayerDirection.RIGHT;
-		if (!isLimiteDerecha()){
-			centrar();
-		}else{
-			animarDerecha();
+		playerDirection = PlayerDirection.RIGHT;
+		if (!isLimiteDerecha()) {
+			if (!compruebaCentradoVertical()) {
+				centrar(PlayerDirection.NONE);
+			} else {
+				moverDerechaSinFin();
+			}
+		} else {
+			// comprobamos si estamos muy esquinados y podemos hacer una L
+			PlayerPosicion esquinado = getEskinado();
+			switch (esquinado) {
+			case MUY_IZQUIERDA:
+			case CENTRO:// no movemos solo animamos
+				centrar(PlayerDirection.NONE);
+				// animarDerecha();
+				break;
+			case MUY_ARRIBA:// no movemos solo animamos
+				// centramos a la derecha
+				centrar(PlayerDirection.UP);
+				break;
+			case MUY_ABAJO:// no movemos solo animamos
+				// centramos a la iquierda
+				centrar(PlayerDirection.DOWN);
+				break;
+			default:
+				break;
+			}
 		}
 	}
+
 	public void moverDerechaSinFin() {
 		animarDerecha();
-		physicsHandler.setVelocity(VELOCIDAD_RECTO_X, 0);
+		if (!isLimiteDerecha()) {
+			physicsHandler.setVelocity(VELOCIDAD_RECTO_X, 0);
+		}
+
 	}
 
 	public void moverIzquierda() {
 		detener();
-		playerDirection=PlayerDirection.LEFT;
-		if (!isLimiteIzquierda()){
-			centrar();
-		}else{
-			animarIzquierda();
+		playerDirection = PlayerDirection.LEFT;
+		if (!isLimiteIzquierda()) {
+			if (!compruebaCentradoVertical()) {
+				centrar(PlayerDirection.NONE);
+			} else {
+				moverIzquierdaSinFin();
+			}
+
+		} else {
+			// comprobamos si estamos muy esquinados y podemos hacer una L
+			PlayerPosicion esquinado = getEskinado();
+			switch (esquinado) {
+			case CENTRO:// no movemos solo animamos
+				centrar(PlayerDirection.NONE);
+				// animarIzquierda();
+				break;
+			case MUY_ARRIBA:// no movemos solo animamos
+				// centramos a la derecha
+				centrar(PlayerDirection.UP);
+				break;
+			case MUY_ABAJO:// no movemos solo animamos
+				// centramos a la iquierda
+				centrar(PlayerDirection.DOWN);
+				break;
+			default:
+				break;
+			}
 		}
 	}
-	
+
 	public void moverIzquierdaSinFin() {
 		animarIzquierda();
-		physicsHandler.setVelocity(-VELOCIDAD_RECTO_X, 0);
+		if (!isLimiteIzquierda()) {
+			physicsHandler.setVelocity(-VELOCIDAD_RECTO_X, 0);
+		}
+
 	}
 
 	public void detener() {
@@ -479,7 +612,7 @@ public class BomberMan {
 	}
 
 	public void detenerPararAnimacion() {
-		stopAnimation();			
+		stopAnimation();
 		detener();
 	}
 
@@ -488,6 +621,22 @@ public class BomberMan {
 			physicsHandler = new PhysicsHandler(bomberAbajo);
 			bomberAbajo.registerUpdateHandler(physicsHandler);
 		}
+	}
+
+	// centra vertical cuando queremos movernos en horizontal dentro de mismo
+	// cuadro
+	private boolean compruebaCentradoVertical() {
+		final float yto = currentTileRectangle.getY();
+		float y = baseTileRectangle.getY();
+		return (yto == y);
+
+	}
+
+	private boolean compruebaCentradoHorizontal() {
+		final float xto = currentTileRectangle.getX();
+		float x = baseTileRectangle.getX();
+		return (xto == x);
+
 	}
 
 	public void animarIzquierda() {
