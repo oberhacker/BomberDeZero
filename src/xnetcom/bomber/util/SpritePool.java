@@ -1,10 +1,12 @@
-package xnetcom.bomber;
+package xnetcom.bomber.util;
 
 import org.andengine.entity.sprite.TiledSprite;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.util.adt.pool.GenericPool;
 
-class SpritePool extends GenericPool<TiledSprite> {
+import xnetcom.bomber.BomberGame;
+
+public class SpritePool extends GenericPool<TiledSprite> {
     // ===========================================================
     // Constants
     // ===========================================================

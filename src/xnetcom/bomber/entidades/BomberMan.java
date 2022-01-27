@@ -1,4 +1,4 @@
-package xnetcom.bomber;
+package xnetcom.bomber.entidades;
 
 import java.io.IOException;
 
@@ -24,6 +24,9 @@ import org.andengine.opengl.util.GLState;
 import org.andengine.util.Constants;
 import org.andengine.util.modifier.IModifier;
 
+import xnetcom.bomber.BomberGame;
+import xnetcom.bomber.util.Constantes;
+import xnetcom.bomber.util.Matriz;
 import android.graphics.Typeface;
 import android.util.Log;
 
@@ -239,26 +242,38 @@ public class BomberMan {
 	}
 
 	public void cambiaPosicion() {
-		// switch (playerDirection) {
-		// case DOWN:
-		//
-		// break;
-		// case UP:
-		//
-		// break;
-		// case RIGHT:
-		//
-		// break;
-		// case LEFT:
-		//
-		// break;
-		// case DOWN:
-		//
-		// break;
-		//
-		// default:
-		// break;
-		// }
+		if (estaMovientoSinLimite()) {
+			switch (playerDirection) {
+
+			case DOWN:
+				if (isLimiteAbajo()){
+					detener();
+					centrar(PlayerDirection.NONE);
+				}
+				break;
+			case UP:
+				if (isLimiteArriba()){
+					detener();
+					centrar(PlayerDirection.NONE);
+				}
+				break;
+			case RIGHT:
+				if (isLimiteDerecha()){
+					detener();
+					centrar(PlayerDirection.NONE);
+				}
+				break;
+
+			case LEFT:
+				if (isLimiteIzquierda()){
+					detener();
+					centrar(PlayerDirection.NONE);
+				}
+				break;
+
+			}
+		}
+
 	}
 
 	public void setFila(int fila) {
@@ -365,10 +380,10 @@ public class BomberMan {
 				animarIzquierda();
 			} else if (xto > x) {
 				animarDerecha();
-			} else if (yto < y) {
-				animarArriba();
-			} else if (yto > y) {
+			} else if (yto < y) {				
 				animarAbajo();
+			} else if (yto > y) {
+				animarArriba();
 			}
 
 			break;
@@ -459,9 +474,13 @@ public class BomberMan {
 			// comprobamos si estamos muy esquinados y podemos hacer una L
 			PlayerPosicion esquinado = getEskinado();
 			switch (esquinado) {
+			case MUY_ABAJO:
 			case CENTRO:// no movemos solo animamos
-				centrar(PlayerDirection.NONE);
-				// animarArriba();
+				if (currentTileRectangle.getY()!=baseTileRectangle.getY()){
+					centrar(PlayerDirection.NONE);
+				}else{
+					animarArriba();
+				}	
 				break;
 			case MUY_DERECHA:// no movemos solo animamos
 				// centramos a la derecha
@@ -498,9 +517,13 @@ public class BomberMan {
 			// comprobamos si estamos muy esquinados y podemos hacer una L
 			PlayerPosicion esquinado = getEskinado();
 			switch (esquinado) {
+			case MUY_ARRIBA:
 			case CENTRO:// no movemos solo animamos
-				centrar(PlayerDirection.NONE);
-				// animarAbajo();
+				if (currentTileRectangle.getY()!=baseTileRectangle.getY()){
+					centrar(PlayerDirection.NONE);
+				}else{
+					animarAbajo();
+				}				
 				break;
 			case MUY_DERECHA:// no movemos solo animamos
 				// centramos a la derecha
@@ -541,8 +564,11 @@ public class BomberMan {
 			switch (esquinado) {
 			case MUY_IZQUIERDA:
 			case CENTRO:// no movemos solo animamos
-				centrar(PlayerDirection.NONE);
-				// animarDerecha();
+				if (currentTileRectangle.getX()!=baseTileRectangle.getX()){
+					centrar(PlayerDirection.NONE);
+				}else{
+					animarDerecha();
+				}				
 				break;
 			case MUY_ARRIBA:// no movemos solo animamos
 				// centramos a la derecha
@@ -580,9 +606,13 @@ public class BomberMan {
 			// comprobamos si estamos muy esquinados y podemos hacer una L
 			PlayerPosicion esquinado = getEskinado();
 			switch (esquinado) {
+			case MUY_DERECHA:
 			case CENTRO:// no movemos solo animamos
-				centrar(PlayerDirection.NONE);
-				// animarIzquierda();
+				if (currentTileRectangle.getX()!=baseTileRectangle.getX()){
+					centrar(PlayerDirection.NONE);
+				}else{
+					animarIzquierda();
+				}
 				break;
 			case MUY_ARRIBA:// no movemos solo animamos
 				// centramos a la derecha
@@ -604,6 +634,10 @@ public class BomberMan {
 			physicsHandler.setVelocity(-VELOCIDAD_RECTO_X, 0);
 		}
 
+	}
+
+	public boolean estaMovientoSinLimite() {
+		return (physicsHandler.getVelocityY() != 0 || physicsHandler.getVelocityX() != 0);
 	}
 
 	public void detener() {

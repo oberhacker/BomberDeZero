@@ -2,6 +2,8 @@ package xnetcom.bomber;
 
 import java.util.ArrayList;
 
+import xnetcom.bomber.entidades.EnemigoBase;
+
 public class AlmacenEnemigos {
 	
 	

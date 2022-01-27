@@ -12,6 +12,11 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
+import xnetcom.bomber.entidades.BomberMan;
+import xnetcom.bomber.scenas.Carga;
+import xnetcom.bomber.scenas.EscenaJuego;
+import xnetcom.bomber.scenas.Inicio;
+import xnetcom.bomber.util.MiEngine;
 import android.content.Context;
 import android.os.Vibrator;
 import android.util.DisplayMetrics;
@@ -47,7 +52,9 @@ public class BomberGame extends SimpleBaseGameActivity {
 	public MiEngine miengine;
 
 	public Inicio escenaInicio;
-
+	public SoundManager soundManager;
+	public BomberMan bomberman;
+	
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 		Toast.makeText(this, "The tile the player is walking on will be highlighted.", Toast.LENGTH_LONG).show();
@@ -77,6 +84,8 @@ public class BomberGame extends SimpleBaseGameActivity {
 		escenaInicio = new Inicio(this);
 		escenaCarga = new Carga(this);
 		escenaJuego = new EscenaJuego(this);
+		soundManager= new SoundManager(this);
+		bomberman=new BomberMan(this);
 	}
 
 	@Override

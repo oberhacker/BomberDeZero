@@ -1,4 +1,4 @@
-package xnetcom.bomber;
+package xnetcom.bomber.scenas;
 
 import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
@@ -11,6 +11,8 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TextureRegion;
+
+import xnetcom.bomber.BomberGame;
 
 public class Inicio {
 

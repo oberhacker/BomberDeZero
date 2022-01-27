@@ -1,4 +1,4 @@
-package xnetcom.bomber;
+package xnetcom.bomber.graficos;
 
 import java.io.IOException;
 
@@ -15,6 +15,8 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.bitmap.AssetBitmapTexture;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
+
+import xnetcom.bomber.BomberGame;
 
 public class HudBomber {
 
@@ -43,22 +45,27 @@ public class HudBomber {
 	public DigitalOnScreenControl mDigitalOnScreenControl;
 
 	private void screenControl(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
-		if (context.escenaJuego.bomberman != null) {
+		if (context.bomberman != null) {
+			
 			if (pValueX > 0) {
 				// derecha
-				context.escenaJuego.bomberman.moverDerecha();
+				context.vibrar(20);
+				context.bomberman.moverDerecha();
 			} else if (pValueX < 0) {
 				// izquierda
-				context.escenaJuego.bomberman.moverIzquierda();
+				context.vibrar(20);
+				context.bomberman.moverIzquierda();
 			} else if (pValueY > 0) {
 				// arriba
-				context.escenaJuego.bomberman.moverArriba();
+				context.vibrar(20);
+				context.bomberman.moverArriba();
 			} else if (pValueY < 0) {
 				// abajo
-				context.escenaJuego.bomberman.moverAbajo();
+				context.vibrar(20);
+				context.bomberman.moverAbajo();
 			} else {
 				// parado
-				context.escenaJuego.bomberman.detenerPararAnimacion();
+				context.bomberman.detenerPararAnimacion();
 			}
 		}
 	}
@@ -171,7 +178,7 @@ public class HudBomber {
 
 	public void apretarBotonExplosion() {
 		context.vibrar(VIBRAR_BOTON);		
-		context.escenaJuego.bomberman.getSprite().setZIndex(1000);
+		context.bomberman.getSprite().setZIndex(1000);
 		System.out.println("APRETADOOOOOOO");
 	}
 	

@@ -1,10 +1,13 @@
-package xnetcom.bomber;
+package xnetcom.bomber.graficos;
 
 import org.andengine.entity.sprite.batch.SpriteGroup;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
+
+import xnetcom.bomber.BomberGame;
+import xnetcom.bomber.util.SpritePool;
 
 public class CapaParedes {
 	

@@ -1,4 +1,4 @@
-package xnetcom.bomber;
+package xnetcom.bomber.scenas;
 
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
@@ -10,6 +10,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TextureRegion;
 
+import xnetcom.bomber.BomberGame;
 import android.os.AsyncTask;
 
 public class Carga {

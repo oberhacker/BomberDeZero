@@ -1,4 +1,4 @@
-package xnetcom.bomber;
+package xnetcom.bomber.scenas;
 
 import java.io.IOException;
 
@@ -14,13 +14,21 @@ import org.andengine.extension.tmx.util.exception.TMXLoadException;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.util.debug.Debug;
 
+import android.content.Entity;
+import xnetcom.bomber.AlmacenEnemigos;
 import xnetcom.bomber.AlmacenEnemigos.TipoEnemigo;
+import xnetcom.bomber.BomberGame;
+import xnetcom.bomber.entidades.Bomba;
+import xnetcom.bomber.entidades.BomberMan;
+import xnetcom.bomber.graficos.HudBomber;
+import xnetcom.bomber.util.Constantes;
+import xnetcom.bomber.util.Matriz;
 
 public class EscenaJuego {
 
 	public BomberGame context;
 	public HudBomber hud;
-	public BomberMan bomberman;
+	
 	public Scene scene;
 	public TMXTiledMap mTMXTiledMap;
 	
@@ -35,24 +43,29 @@ public class EscenaJuego {
 	public TMXLayer capaBordeAbajo;
 	public TMXLayer capaTechoPiedras;
 
+	public Bomba bomba;
+	
 	public EscenaJuego(BomberGame context) {			
 		this.context = context;
 		this.matriz= new Matriz();	
 		this.almacenEnemigos= new AlmacenEnemigos(context);
 		this.hud = new HudBomber(context);
-		this.bomberman = new BomberMan(context);
+		this.bomba= new Bomba(context);
 	}
 
 	public void cargar() {
 		try {
 			hud.carga();
-			bomberman.carga();
+			context.bomberman.carga();
+			bomba.cargaTexturas();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
+	public TMXTile pTMXTilePared;
 	public Scene onCreateScene() {
 		scene = new Scene();
 		try {
@@ -66,6 +79,7 @@ public class EscenaJuego {
 								matriz.setValor(Matriz.MURO, pTMXTile.getTileRow(), pTMXTile.getTileColumn());
 							} else if (pTMXTileProperties.containsTMXProperty("pared", "true")) {
 								matriz.setValor(Matriz.PARED, pTMXTile.getTileRow(), pTMXTile.getTileColumn());
+								pTMXTilePared=pTMXTile;
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "moco")) {
 								almacenEnemigos.creaEnemigo(TipoEnemigo.MOCO,pTMXTile.getTileRow(),pTMXTile.getTileColumn());
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "moneda")) {
@@ -100,30 +114,70 @@ public class EscenaJuego {
 			capaBordeAbajo = mTMXTiledMap.getTMXLayers().get(3);
 			capaTechoPiedras = mTMXTiledMap.getTMXLayers().get(4);
 			
-			
-			capaSuelo.setZIndex(Constantes.ZINDEX_CAPA_SUELO);
-			capaPiedrasSombra.setZIndex(Constantes.ZINDEX_CAPA_PIEDRAS_SOMBRA);
-			capaParedes.setZIndex(Constantes.ZINDEX_CAPA_PAREDES);
-			capaBordeAbajo.setZIndex(Constantes.ZINDEX_CAPA_BORDE_ABAJO);
-			capaTechoPiedras.setZIndex(Constantes.ZINDEX_CAPA_TECHO_PIEDRAS);
-			
+		
 
 		} catch (final TMXLoadException e) {
 			Debug.e(e);
 		}
+		
+		
+		capaSuelo.setParent(null);
+		capaPiedrasSombra.setParent(null);
+		capaParedes.setParent(null);
+		capaBordeAbajo.setParent(null);
+		capaTechoPiedras.setParent(null);
+		
+		
+		capaSuelo.setOffsetCenter(0, 0);
+		capaPiedrasSombra.setOffsetCenter(0, 0);
+		capaParedes.setOffsetCenter(0, 0);
+		capaBordeAbajo.setOffsetCenter(0, 0);
+		capaTechoPiedras.setOffsetCenter(0, 0);
+		
+		capaSuelo.setPosition(0, 0);
+		capaPiedrasSombra.setPosition(0, 0);
+		capaParedes.setPosition(0, 0);
+		capaBordeAbajo.setPosition(0, 0);
+		capaTechoPiedras.setPosition(0, 0);
+		
+		
+		capaSuelo.setScaleCenter(0, 0);
+		capaPiedrasSombra.setScaleCenter(0, 0);
+		capaParedes.setScaleCenter(0, 0);
+		capaBordeAbajo.setScaleCenter(0, 0);
+		capaTechoPiedras.setScaleCenter(0, 0);
+		
+		
+		capaSuelo.setZIndex(Constantes.ZINDEX_CAPA_SUELO);
+		capaPiedrasSombra.setZIndex(Constantes.ZINDEX_CAPA_PIEDRAS_SOMBRA);
+		capaParedes.setZIndex(Constantes.ZINDEX_CAPA_PAREDES);
+		capaBordeAbajo.setZIndex(Constantes.ZINDEX_CAPA_BORDE_ABAJO);
+		capaTechoPiedras.setZIndex(Constantes.ZINDEX_CAPA_TECHO_PIEDRAS);
+		
+		scene.attachChild(capaSuelo);
+		scene.attachChild(capaPiedrasSombra);
+		scene.attachChild(capaParedes);
+		scene.attachChild(capaBordeAbajo);
+		scene.attachChild(capaTechoPiedras);
+		
+		capaSuelo.setScaleX(Constantes.FARTOR_FORMA);
+		capaPiedrasSombra.setScaleX(Constantes.FARTOR_FORMA);
+		capaParedes.setScaleX(Constantes.FARTOR_FORMA);
+		capaBordeAbajo.setScaleX(Constantes.FARTOR_FORMA);
+		capaTechoPiedras.setScaleX(Constantes.FARTOR_FORMA);		
 
-		scene.attachChild(this.mTMXTiledMap);
-
+		mTMXTiledMap.sortChildren();
 		context.camaraJuego.setBoundsEnabled(false);
 		context.camaraJuego.setBounds(0, 0, this.mTMXTiledMap.getWidth()*Constantes.FARTOR_FORMA, this.mTMXTiledMap.getHeight());
 		context.camaraJuego.setBoundsEnabled(true);
 
 		hud.attachScena(scene);		
-		bomberman.onCreateScene(scene);
-		context.camaraJuego.setChaseEntity(bomberman.getSprite());
+		context.bomberman.onCreateScene(scene);
+		context.camaraJuego.setChaseEntity(context.bomberman.getSprite());
 		context.miengine.setCaramaJuego();
-		scene.sortChildren();
 		
+		bomba.creaBatch();
+		scene.sortChildren();
 		return scene;
 	}
 

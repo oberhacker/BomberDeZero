@@ -1,4 +1,4 @@
-package xnetcom.bomber;
+package xnetcom.bomber.util;
 
 import android.util.Log;
 
