@@ -28,11 +28,15 @@ public class Constantes {
 	public static int ZINDEX_PUERTA=401;
 	
 	public static int ZINDEX_FUEGO=550;
-	public static int ZINDEX_BOMBA=441;
+	public static int ZINDEX_BOMBA=551;
 	
 	
 	public static float TIEMPO_POR_CUADRADO=0.40f;
 	public static float TIEMPO_POR_PIXEL=TIEMPO_POR_CUADRADO/TILE_TAM;
+	
+	
+	
+	public int TIEMPO_TEMPORIZADOR_BOMBA;
 	
 	
 
