@@ -1,4 +1,6 @@
-package xnetcom.bomber;
+package xnetcom.bomber.graficos;
+
+import xnetcom.bomber.BomberGame;
 
 public class SoundManager {
 	
@@ -16,5 +18,19 @@ public class SoundManager {
 	public void plantaBomba(){
 		
 	}
+	
+	public void sonarMecha(){
+		
+	}
+	
+	public void pararMecha(){
+		
+	}
+	
+	public void sonidoExplosion(){
+		
+	}
+	
+	
 
 }

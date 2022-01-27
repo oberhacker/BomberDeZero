@@ -167,7 +167,7 @@ public class BomberMan {
 		scene.attachChild(baseTileRectangle);
 		context.escenaJuego.hud.hud.attachChild(debugText);
 
-		scene.registerUpdateHandler(new IUpdateHandler() {
+		baseTileRectangle.registerUpdateHandler(new IUpdateHandler() {
 			@Override
 			public void onUpdate(float pSecondsElapsed) {
 				updater();
@@ -188,7 +188,7 @@ public class BomberMan {
 		TMXLayer tmxLayer = context.escenaJuego.mTMXTiledMap.getTMXLayers().get(1);
 		TMXTile tmxTile = tmxLayer.getTMXTileAt(playerFootCordinates[Constants.VERTEX_INDEX_X], playerFootCordinates[Constants.VERTEX_INDEX_Y]);
 
-		if (tmxTile != null) {
+		if (tmxTile != null) {context.escenaJuego.bomba.batch.setPosition(300, 400);
 			if (innerColumna != tmxTile.getTileColumn()) {
 				innerColumna = tmxTile.getTileColumn();
 				setColumna(tmxTile.getTileColumn());
@@ -199,6 +199,8 @@ public class BomberMan {
 				innerFila = tmxTile.getTileRow();
 				setFila(tmxTile.getTileRow());
 				currentTileRectangle.setPosition(tmxLayer.getTileX(tmxTile.getTileColumn()) * Constantes.FARTOR_FORMA, tmxLayer.getTileY(tmxTile.getTileRow()));
+//				context.escenaJuego.bomba.batch.setPosition(currentTileRectangle.getX(), currentTileRectangle.getY());
+				
 				cambiaPosicion();
 			}
 			Log.d("POSICION",
@@ -206,6 +208,7 @@ public class BomberMan {
 			debugText.setText(getEskinado().toString());
 		}
 	}
+	
 
 	public PlayerPosicion getEskinado() {
 		PlayerPosicion posicionRelativa = PlayerPosicion.CENTRO;

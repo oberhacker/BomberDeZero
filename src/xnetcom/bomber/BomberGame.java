@@ -13,6 +13,7 @@ import org.andengine.entity.util.FPSLogger;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
 import xnetcom.bomber.entidades.BomberMan;
+import xnetcom.bomber.graficos.SoundManager;
 import xnetcom.bomber.scenas.Carga;
 import xnetcom.bomber.scenas.EscenaJuego;
 import xnetcom.bomber.scenas.Inicio;
