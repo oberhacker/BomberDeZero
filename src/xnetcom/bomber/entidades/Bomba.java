@@ -2,6 +2,7 @@ package xnetcom.bomber.entidades;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.DelayModifier;
+import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.andengine.entity.sprite.batch.SpriteGroup;
@@ -118,7 +119,7 @@ public class Bomba {
 	public void creaBatch() {
 		// Srpite maestro
 
-		sprCentro = new AnimatedSprite(296, 256, mFuegoCentroTR, context.getVertexBufferObjectManager()) {
+		sprCentro = new AnimatedSprite(0,0, mFuegoCentroTR, context.getVertexBufferObjectManager()) {
 			public void setAlpha(float pAlpha) {
 				sprAbajo_1.setAlpha(pAlpha);
 				sprAbajo_2.setAlpha(pAlpha);
@@ -205,6 +206,9 @@ public class Bomba {
 		sprBomba.setOffsetCenter(0, 0);
 
 		batch = new SpriteGroup(fuegoBBTA, 21, context.getVertexBufferObjectManager());
+		batch.setOffsetCenter(0, 0);
+		batch.setScaleCenter(0, 0);
+		
 //		batch.attachChild(sprBomba);
 		batch.attachChild(sprAbajo_1);
 		batch.attachChild(sprAbajo_2);
@@ -235,9 +239,20 @@ public class Bomba {
 		batch.setZIndex(Constantes.ZINDEX_FUEGO);
 		// batch.setIgnoreUpdate(true);
 
+		
+		Rectangle currentTileRectangle = new Rectangle(0, 0, Constantes.TILE_WIDTH, Constantes.TILE_HEIGHT,	context.getVertexBufferObjectManager());
+		currentTileRectangle.setColor(50, 0, 0);
+		currentTileRectangle.setOffsetCenter(0, 0);
+		currentTileRectangle.setScaleCenter(0, 0);
+		
+		currentTileRectangle.attachChild(batch);
+		currentTileRectangle.attachChild(sprBomba);
+		
+		currentTileRectangle.setPosition(296, 256);
+//		currentTileRectangle.setZIndex(900);
 		sprCentro.animate(200, false);
-		context.escenaJuego.scene.attachChild(batch);
-		context.escenaJuego.scene.attachChild(sprBomba);
+		context.escenaJuego.scene.attachChild(currentTileRectangle);
+//		context.escenaJuego.scene.attachChild(sprBomba);
 		context.escenaJuego.scene.sortChildren();
 
 	}
@@ -298,8 +313,7 @@ public class Bomba {
 	public synchronized void detonar(){	
 		
 		
-	}
-	
+	}	
 	
 	public void detonarContiempo(float secs){
 		
