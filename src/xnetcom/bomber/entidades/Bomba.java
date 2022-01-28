@@ -72,6 +72,9 @@ public class Bomba {
 	private boolean detonada;
 	private boolean detonadorRemoto;
 
+	
+	public Rectangle currentTileRectangle;
+	
 	public enum Posicion {
 		CENTRO, CENTRO_ARRIBA, ARRIBA_1, ARRIBA_2, ARRIBA_3, CENTRO_ABAJO, ABAJO_1, ABAJO_2, ABAJO_3, CENTRO_DERECHA, DERECHA_1, DERECHA_2, DERECHA_3, CENTRO_IZQUIERDA, IZQUIERDA_1, IZQUIERDA_2, IZQUIERDA_3, FIN_ARRIBA, FIN_ABAJO, FIN_DERECHA, FIN_IZQUIERDA;
 
@@ -81,7 +84,13 @@ public class Bomba {
 		this.context = context;
 	}
 
-	public void cargaTexturas() {
+	public void cargaTexturas(Bomba clone) {
+		
+		if (clone!=null){
+			clonarTexturas(clone);
+			return;
+		}
+		
 		this.bombaBTA = new BitmapTextureAtlas(context.getTextureManager(), 512, 256, TextureOptions.REPEATING_BILINEAR_PREMULTIPLYALPHA);
 		BitmapTextureAtlasTextureRegionFactory.createFromSource(bombaBTA, new TransparentBitmapTextureAtlasSource(512, 256), 0, 0);
 		this.fuegoBBTA = new BuildableBitmapTextureAtlas(context.getTextureManager(), 2048, 256, TextureOptions.REPEATING_NEAREST_PREMULTIPLYALPHA);
@@ -99,17 +108,33 @@ public class Bomba {
 		this.bombaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.bombaBTA, context, "gfx/bomba_ani90.png", 0, 0, 4, 2);
 
 		try {
-			fuegoBBTA.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 2));// posible
-																														// error
-																														// gles2
+			fuegoBBTA.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 2));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		context.getEngine().getTextureManager().loadTexture(fuegoBBTA);
 		context.getEngine().getTextureManager().loadTexture(bombaBTA);
+		creaBatch();
 	}
 
+	
+	public void clonarTexturas(Bomba clone){
+		this.mFuegoCentroAbajoTR=clone.mFuegoCentroAbajoTR;
+		this.mFuegoCentroArribaTR=clone.mFuegoCentroArribaTR;
+		this.mFuegoCentroDerechaTR=clone.mFuegoCentroDerechaTR;
+		this.mFuegoCentroIzquierdaTR=clone.mFuegoCentroIzquierdaTR;
+		this.mFuegoCentroTR=clone.mFuegoCentroTR;
+		this.mFuegoFinAbajoTR=clone.mFuegoFinAbajoTR;
+		this.mFuegoFinArribaTR=clone.mFuegoFinArribaTR;
+		this.mFuegoFinDerechaTR=clone.mFuegoFinDerechaTR;
+		this.mFuegoFinIzquierdaTR=clone.mFuegoFinIzquierdaTR;
+		this.mFuegoHorizontalTR=clone.mFuegoHorizontalTR;
+		this.mFuegoVerticalTR=clone.mFuegoVerticalTR;	
+		this.bombaTR=clone.bombaTR;
+	}
+	
+	
 	public void normaliza(AnimatedSprite sprite) {
 		sprite.setWidth(Constantes.TILE_WIDTH);
 		sprite.setHeight(Constantes.TILE_HEIGHT);
@@ -240,10 +265,13 @@ public class Bomba {
 		// batch.setIgnoreUpdate(true);
 
 		
-		Rectangle currentTileRectangle = new Rectangle(0, 0, Constantes.TILE_WIDTH, Constantes.TILE_HEIGHT,	context.getVertexBufferObjectManager());
+		currentTileRectangle = new Rectangle(0, 0, Constantes.TILE_WIDTH, Constantes.TILE_HEIGHT,	context.getVertexBufferObjectManager());
 		currentTileRectangle.setColor(50, 0, 0);
 		currentTileRectangle.setOffsetCenter(0, 0);
 		currentTileRectangle.setScaleCenter(0, 0);
+		
+		
+		reiniciaBatch();
 		
 		currentTileRectangle.attachChild(batch);
 		currentTileRectangle.attachChild(sprBomba);
@@ -251,6 +279,9 @@ public class Bomba {
 		currentTileRectangle.setPosition(296, 256);
 //		currentTileRectangle.setZIndex(900);
 		sprCentro.animate(200, false);
+		
+		
+		
 		context.escenaJuego.scene.attachChild(currentTileRectangle);
 //		context.escenaJuego.scene.attachChild(sprBomba);
 		context.escenaJuego.scene.sortChildren();
@@ -275,6 +306,7 @@ public class Bomba {
 		sprFinIzquierda.setVisible(false);
 		sprIzquierda_1.setVisible(false);
 		sprIzquierda_2.setVisible(false);
+		sprBomba.setVisible(false);
 	}
 
 	public boolean plantarBomba(int tamExplosion, int secuencia, boolean detonadorRemoto) {
@@ -295,10 +327,11 @@ public class Bomba {
 		this.detonadorRemoto = detonadorRemoto;
 
 		batch.setPosition(context.bomberman.currentTileRectangle.getX(), context.bomberman.currentTileRectangle.getY());
-
+		currentTileRectangle.setPosition(context.bomberman.currentTileRectangle.getX(), context.bomberman.currentTileRectangle.getY());
 		context.soundManager.plantaBomba();
 		context.soundManager.sonarMecha();
 		
+		sprBomba.setVisible(true);
 		if (!detonadorRemoto){
 			sprBomba.animate(TIEMPO, 2,new ListenerDetonador());
 		}else{

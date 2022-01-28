@@ -28,7 +28,7 @@ public class Constantes {
 	public static int ZINDEX_PUERTA=401;
 	
 	public static int ZINDEX_FUEGO=550;
-	public static int ZINDEX_BOMBA=551;
+	public static int ZINDEX_BOMBA=449;
 	
 	
 	public static float TIEMPO_POR_CUADRADO=0.40f;
@@ -36,7 +36,12 @@ public class Constantes {
 	
 	
 	
-	public int TIEMPO_TEMPORIZADOR_BOMBA;
+	public static int TIEMPO_TEMPORIZADOR_BOMBA;
+	
+	
+	public static int MAXIMOBOMBAS=9;
+	public static int MAXIMOEXPLOSION=4;
+	
 	
 	
 

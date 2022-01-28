@@ -57,7 +57,9 @@ public class EscenaJuego {
 		try {
 			hud.carga();
 			context.bomberman.carga();
-			bomba.cargaTexturas();
+			onCreateScene();
+			bomba.cargaTexturas(null);
+			context.almacenBombas.carga();
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -67,6 +69,9 @@ public class EscenaJuego {
 	}
 	public TMXTile pTMXTilePared;
 	public Scene onCreateScene() {
+		if (scene!=null){
+			return scene;
+		}
 		scene = new Scene();
 		try {
 
@@ -176,7 +181,6 @@ public class EscenaJuego {
 		context.camaraJuego.setChaseEntity(context.bomberman.getSprite());
 		context.miengine.setCaramaJuego();
 		
-		bomba.creaBatch();
 		scene.sortChildren();
 		return scene;
 	}

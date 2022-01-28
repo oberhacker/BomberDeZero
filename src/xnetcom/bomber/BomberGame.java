@@ -12,6 +12,7 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
+import xnetcom.bomber.entidades.AlmacenBombas;
 import xnetcom.bomber.entidades.BomberMan;
 import xnetcom.bomber.graficos.SoundManager;
 import xnetcom.bomber.scenas.Carga;
@@ -55,6 +56,7 @@ public class BomberGame extends SimpleBaseGameActivity {
 	public Inicio escenaInicio;
 	public SoundManager soundManager;
 	public BomberMan bomberman;
+	public AlmacenBombas almacenBombas;
 	
 	@Override
 	public EngineOptions onCreateEngineOptions() {
@@ -87,6 +89,7 @@ public class BomberGame extends SimpleBaseGameActivity {
 		escenaJuego = new EscenaJuego(this);
 		soundManager= new SoundManager(this);
 		bomberman=new BomberMan(this);
+		almacenBombas= new AlmacenBombas(this);
 	}
 
 	@Override
