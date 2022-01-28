@@ -22,8 +22,8 @@ import xnetcom.bomber.util.TransparentBitmapTextureAtlasSource;
 public class Bomba {
 
 	public BomberGame context;
-	private BitmapTextureAtlas bombaBTA;
-	private BuildableBitmapTextureAtlas fuegoBBTA;
+	public BitmapTextureAtlas bombaBTA;
+	public BuildableBitmapTextureAtlas fuegoBBTA;
 
 	private TiledTextureRegion mFuegoCentroTR;
 	private TiledTextureRegion mFuegoCentroDerechaTR;
@@ -58,7 +58,7 @@ public class Bomba {
 	private AnimatedSprite sprFinDerecha;
 	private AnimatedSprite sprFinIzquierda;
 
-	private AnimatedSprite sprBomba;
+	public AnimatedSprite sprBomba;
 
 	public SpriteGroup batch;
 
@@ -87,34 +87,34 @@ public class Bomba {
 	public void cargaTexturas(Bomba clone) {
 		
 		if (clone!=null){
-			clonarTexturas(clone);
-			return;
-		}
-		
-		this.bombaBTA = new BitmapTextureAtlas(context.getTextureManager(), 512, 256, TextureOptions.REPEATING_BILINEAR_PREMULTIPLYALPHA);
-		BitmapTextureAtlasTextureRegionFactory.createFromSource(bombaBTA, new TransparentBitmapTextureAtlasSource(512, 256), 0, 0);
-		this.fuegoBBTA = new BuildableBitmapTextureAtlas(context.getTextureManager(), 2048, 256, TextureOptions.REPEATING_NEAREST_PREMULTIPLYALPHA);
-		this.mFuegoCentroTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_r_ani_90.png", 5, 1);
-		this.mFuegoCentroAbajoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_abajo_r_ani_90.png", 5, 1);
-		this.mFuegoCentroArribaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_arriba_r_ani_90.png", 5, 1);
-		this.mFuegoCentroDerechaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_derecha_r_ani_90.png", 5, 1);
-		this.mFuegoCentroIzquierdaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_izquierda_r_ani_90.png", 5, 1);
-		this.mFuegoFinAbajoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_fin_abajo_r_ani_90.png", 5, 1);
-		this.mFuegoFinArribaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_fin_arriba_r_ani_90.png", 5, 1);
-		this.mFuegoFinDerechaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_fin_derecha_r_ani_90.png", 5, 1);
-		this.mFuegoFinIzquierdaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_fin_izquierda_r_ani_90.png", 5, 1);
-		this.mFuegoHorizontalTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_horizontal_r_ani_90.png", 5, 1);
-		this.mFuegoVerticalTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_vertical_r_ani_90.png", 5, 1);
-		this.bombaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.bombaBTA, context, "gfx/bomba_ani90.png", 0, 0, 4, 2);
+			clonarTexturas(clone);			
+		}else{
+			this.bombaBTA = new BitmapTextureAtlas(context.getTextureManager(), 512, 256, TextureOptions.REPEATING_BILINEAR_PREMULTIPLYALPHA);
+			BitmapTextureAtlasTextureRegionFactory.createFromSource(bombaBTA, new TransparentBitmapTextureAtlasSource(512, 256), 0, 0);
+			this.fuegoBBTA = new BuildableBitmapTextureAtlas(context.getTextureManager(), 2048, 256, TextureOptions.REPEATING_NEAREST_PREMULTIPLYALPHA);
+			this.mFuegoCentroTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_r_ani_90.png", 5, 1);
+			this.mFuegoCentroAbajoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_abajo_r_ani_90.png", 5, 1);
+			this.mFuegoCentroArribaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_arriba_r_ani_90.png", 5, 1);
+			this.mFuegoCentroDerechaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_derecha_r_ani_90.png", 5, 1);
+			this.mFuegoCentroIzquierdaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_izquierda_r_ani_90.png", 5, 1);
+			this.mFuegoFinAbajoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_fin_abajo_r_ani_90.png", 5, 1);
+			this.mFuegoFinArribaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_fin_arriba_r_ani_90.png", 5, 1);
+			this.mFuegoFinDerechaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_fin_derecha_r_ani_90.png", 5, 1);
+			this.mFuegoFinIzquierdaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_fin_izquierda_r_ani_90.png", 5, 1);
+			this.mFuegoHorizontalTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_horizontal_r_ani_90.png", 5, 1);
+			this.mFuegoVerticalTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_vertical_r_ani_90.png", 5, 1);
+			this.bombaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.bombaBTA, context, "gfx/bomba_ani90.png", 0, 0, 4, 2);
 
-		try {
-			fuegoBBTA.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 2));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		context.getEngine().getTextureManager().loadTexture(fuegoBBTA);
-		context.getEngine().getTextureManager().loadTexture(bombaBTA);
+			try {
+				fuegoBBTA.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 2));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			context.getEngine().getTextureManager().loadTexture(fuegoBBTA);
+			context.getEngine().getTextureManager().loadTexture(bombaBTA);
+		}	
+
 		creaBatch();
 	}
 
@@ -132,6 +132,8 @@ public class Bomba {
 		this.mFuegoHorizontalTR=clone.mFuegoHorizontalTR;
 		this.mFuegoVerticalTR=clone.mFuegoVerticalTR;	
 		this.bombaTR=clone.bombaTR;
+		this.bombaBTA=clone.bombaBTA;
+		this.fuegoBBTA=clone.fuegoBBTA;
 	}
 	
 	
@@ -227,7 +229,6 @@ public class Bomba {
 		normaliza(sprFinIzquierda);
 
 		sprBomba = new AnimatedSprite(sprCentro.getX() - 5, sprCentro.getY() - 10, bombaTR, context.getVertexBufferObjectManager());
-		sprBomba.setZIndex(Constantes.ZINDEX_BOMBA);
 		sprBomba.setOffsetCenter(0, 0);
 
 		batch = new SpriteGroup(fuegoBBTA, 21, context.getVertexBufferObjectManager());
@@ -273,54 +274,56 @@ public class Bomba {
 		
 		reiniciaBatch();
 		
-		currentTileRectangle.attachChild(batch);
 		currentTileRectangle.attachChild(sprBomba);
-		
+		currentTileRectangle.setZIndex(Constantes.ZINDEX_BOMBA);
+		currentTileRectangle.setAlpha(0);
 		currentTileRectangle.setPosition(296, 256);
 //		currentTileRectangle.setZIndex(900);
-		sprCentro.animate(200, false);
-		
-		
-		
+//		sprCentro.animate(200, false);
+		}
+	
+	public void onSceneCreated(){
 		context.escenaJuego.scene.attachChild(currentTileRectangle);
-//		context.escenaJuego.scene.attachChild(sprBomba);
+		context.escenaJuego.scene.attachChild(batch);
 		context.escenaJuego.scene.sortChildren();
-
 	}
+	
+	
 
 	public void reiniciaBatch() {
-		sprCentro.setVisible(false);
-		sprAbajo_1.setVisible(false);
-		sprAbajo_2.setVisible(false);
-		sprArriba_1.setVisible(false);
-		sprArriba_2.setVisible(false);
-		sprCentroAbajo.setVisible(false);
-		sprCentroArriba.setVisible(false);
-		sprCentroDerecha.setVisible(false);
-		sprCentroIzquierda.setVisible(false);
-		sprDerecha_1.setVisible(false);
-		sprDerecha_2.setVisible(false);
-		sprFinAbajo.setVisible(false);
-		sprFinArriba.setVisible(false);
-		sprFinDerecha.setVisible(false);
-		sprFinIzquierda.setVisible(false);
-		sprIzquierda_1.setVisible(false);
-		sprIzquierda_2.setVisible(false);
+		batch.setVisible(false);
+//		sprCentro.setVisible(false);
+//		sprAbajo_1.setVisible(false);
+//		sprAbajo_2.setVisible(false);
+//		sprArriba_1.setVisible(false);
+//		sprArriba_2.setVisible(false);
+//		sprCentroAbajo.setVisible(false);
+//		sprCentroArriba.setVisible(false);
+//		sprCentroDerecha.setVisible(false);
+//		sprCentroIzquierda.setVisible(false);
+//		sprDerecha_1.setVisible(false);
+//		sprDerecha_2.setVisible(false);
+//		sprFinAbajo.setVisible(false);
+//		sprFinArriba.setVisible(false);
+//		sprFinDerecha.setVisible(false);
+//		sprFinIzquierda.setVisible(false);
+//		sprIzquierda_1.setVisible(false);
+//		sprIzquierda_2.setVisible(false);
 		sprBomba.setVisible(false);
 	}
 
 	public boolean plantarBomba(int tamExplosion, int secuencia, boolean detonadorRemoto) {
-		int posX = context.bomberman.getColumna();
-		int posY = context.bomberman.getFila();
+		int columna = context.bomberman.getColumna();
+		int fila = context.bomberman.getFila();
 
 		// si no se puede plantar no hacemos nada
-		if (!sePuedePlantarBomba(posX, posY)) {
+		if (!sePuedePlantarBomba(fila, columna)) {
 			return false;
 		}
-		context.escenaJuego.matriz.setValor(posX, posY, Matriz.BOMBA);
+		context.escenaJuego.matriz.setValor(Matriz.BOMBA, fila, columna);
 
-		this.fila = posX;
-		this.columna = posY;
+		this.fila = fila;
+		this.columna = columna;
 		this.secuencia = secuencia;
 		this.tamExplosion = tamExplosion;
 		this.detonada = false;
@@ -344,8 +347,14 @@ public class Bomba {
 
 	
 	public synchronized void detonar(){	
-		
-		
+		batch.setIgnoreUpdate(false);		
+		batch.setVisible(true);
+		context.soundManager.sonidoExplosion();
+		sprBomba.setVisible(false);
+		context.escenaJuego.matriz.setValor(Matriz.NADA, fila, columna);
+		context.vibrar(300);
+		detonada=true;
+		sprCentro.animate(ANIMATE_DURATION, false, new ListenerExplotar());
 	}	
 	
 	public void detonarContiempo(float secs){
@@ -368,39 +377,92 @@ public class Bomba {
 	
 	
 	
-	public class ListenerDetonador implements IAnimationListener{
-
-//		@Override//gles1
-//		public void onAnimationEnd(AnimatedSprite arg0) {			
-//			detonar(true);		
-//		}
+	
+	public class ListenerExplotar implements IAnimationListener{
 
 		@Override
-		public void onAnimationStarted(AnimatedSprite pAnimatedSprite,
-				int pInitialLoopCount) {
+		public void onAnimationStarted(AnimatedSprite pAnimatedSprite, int pInitialLoopCount) {
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void onAnimationFrameChanged(AnimatedSprite pAnimatedSprite,
-				int pOldFrameIndex, int pNewFrameIndex) {
+		public void onAnimationFrameChanged(AnimatedSprite pAnimatedSprite, int pOldFrameIndex, int pNewFrameIndex) {
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void onAnimationLoopFinished(AnimatedSprite pAnimatedSprite,
-				int pRemainingLoopCount, int pInitialLoopCount) {
-			detonar();//gles2
+		public void onAnimationLoopFinished(AnimatedSprite pAnimatedSprite, int pRemainingLoopCount, int pInitialLoopCount) {
+			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
+			sprCentro.animate(ANIMATE_DURATION,new int[]{4, 3, 2, 1, 0}, 0,new ListenerDesvanecer());
+			
+		}
+
+
+		
+	}
+	public class ListenerDesvanecer implements IAnimationListener{
+
+		@Override
+		public void onAnimationStarted(AnimatedSprite pAnimatedSprite, int pInitialLoopCount) {
 			// TODO Auto-generated method stub
 			
 		}
+
+		@Override
+		public void onAnimationFrameChanged(AnimatedSprite pAnimatedSprite, int pOldFrameIndex, int pNewFrameIndex) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onAnimationLoopFinished(AnimatedSprite pAnimatedSprite, int pRemainingLoopCount, int pInitialLoopCount) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
+			batch.setVisible(false);
+			batch.setIgnoreUpdate(true);			
+		}
+
+
+		
+	}
+	
+	public class ListenerDetonador implements IAnimationListener{
+
+		@Override
+		public void onAnimationStarted(AnimatedSprite pAnimatedSprite, int pInitialLoopCount) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onAnimationFrameChanged(AnimatedSprite pAnimatedSprite, int pOldFrameIndex, int pNewFrameIndex) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onAnimationLoopFinished(AnimatedSprite pAnimatedSprite, int pRemainingLoopCount, int pInitialLoopCount) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
+			detonar();
+			
+		}
+
 		
 	}
 

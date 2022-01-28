@@ -43,24 +43,21 @@ public class EscenaJuego {
 	public TMXLayer capaBordeAbajo;
 	public TMXLayer capaTechoPiedras;
 
-	public Bomba bomba;
+
 	
 	public EscenaJuego(BomberGame context) {			
 		this.context = context;
 		this.matriz= new Matriz();	
 		this.almacenEnemigos= new AlmacenEnemigos(context);
 		this.hud = new HudBomber(context);
-		this.bomba= new Bomba(context);
+		
 	}
 
 	public void cargar() {
 		try {
 			hud.carga();
 			context.bomberman.carga();
-			onCreateScene();
-			bomba.cargaTexturas(null);
-			context.almacenBombas.carga();
-			
+			context.almacenBombas.carga();					
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -69,10 +66,7 @@ public class EscenaJuego {
 	}
 	public TMXTile pTMXTilePared;
 	public Scene onCreateScene() {
-		if (scene!=null){
-			return scene;
-		}
-		scene = new Scene();
+		scene= new Scene();
 		try {
 
 			final TMXLoader tmxLoader = new TMXLoader(context.getAssets(), context.getTextureManager(), TextureOptions.BILINEAR_PREMULTIPLYALPHA, context.getVertexBufferObjectManager(),
@@ -177,9 +171,13 @@ public class EscenaJuego {
 		context.camaraJuego.setBoundsEnabled(true);
 
 		hud.attachScena(scene);		
+
+		context.almacenBombas.onSceneCreated();
 		context.bomberman.onCreateScene(scene);
 		context.camaraJuego.setChaseEntity(context.bomberman.getSprite());
 		context.miengine.setCaramaJuego();
+		
+		
 		
 		scene.sortChildren();
 		return scene;

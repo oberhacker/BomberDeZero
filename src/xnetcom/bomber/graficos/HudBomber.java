@@ -172,7 +172,9 @@ public class HudBomber {
 
 	public void apretarBotonPlantabomba() {
 		context.vibrar(VIBRAR_BOTON);
-		context.escenaJuego.bomba.plantarBomba(5, 1, false);
+		context.almacenBombas.circulaBomba().plantarBomba(5, 1, false);;
+//		boolean plantada =context.escenaJuego.bomba.plantarBomba(5, 1, false);
+		
 		System.out.println("APRETADOOOOOOO");
 	}
 
