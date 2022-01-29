@@ -162,6 +162,7 @@ public class EscenaJuego {
 		capaSuelo.setScaleX(Constantes.FARTOR_FORMA);
 		capaPiedrasSombra.setScaleX(Constantes.FARTOR_FORMA);
 		capaParedes.setScaleX(Constantes.FARTOR_FORMA);
+		capaParedes.setVisible(false);
 		capaBordeAbajo.setScaleX(Constantes.FARTOR_FORMA);
 		capaTechoPiedras.setScaleX(Constantes.FARTOR_FORMA);		
 

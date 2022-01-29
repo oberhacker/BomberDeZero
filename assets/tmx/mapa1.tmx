@@ -179,7 +179,7 @@
   </tile>
   <tile id="142">
    <properties>
-    <property name="muro" value="muro"/>
+    <property name="muro" value="true"/>
    </properties>
   </tile>
   <tile id="143">
@@ -215,7 +215,7 @@
  </layer>
  <layer name="capaParedes" width="25" height="15">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NgoC0Qo7H5o2DogckU6k+kiitGwSgY3gAAqoaBiNwFAAA=
+   H4sIAAAAAAAAC2NgoC0Qo7H5o2DogclEiuECidRyyCgYBcMYAAC5Teel3AUAAA==
   </data>
  </layer>
  <layer name="bordeAbajo" width="25" height="15">

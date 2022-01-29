@@ -201,8 +201,7 @@ public class BomberMan {
 				currentTileRectangle.setPosition(tmxLayer.getTileX(tmxTile.getTileColumn()) * Constantes.FARTOR_FORMA, tmxLayer.getTileY(tmxTile.getTileRow()));
 				cambiaPosicion();
 			}
-			Log.d("POSICION",
-					"FILA: " + tmxTile.getTileRow() + " Columna: " + tmxTile.getTileColumn() + " VALOR: " + context.escenaJuego.matriz.getValor(tmxTile.getTileRow(), tmxTile.getTileColumn()));
+//			Log.d("POSICION","FILA: " + tmxTile.getTileRow() + " Columna: " + tmxTile.getTileColumn() + " VALOR: " + context.escenaJuego.matriz.getValor(tmxTile.getTileRow(), tmxTile.getTileColumn()));
 			debugText.setText(getEskinado().toString());
 		}
 	}

@@ -22,6 +22,18 @@ public class Coordenadas {
 		this.columna = columna;
 	}
 	
+	
+	public float getX(){
+		return columna*Constantes.TILE_WIDTH;
+	}
+	public float getY(){
+		return (12*Constantes.TILE_HEIGHT) - fila*Constantes.TILE_HEIGHT;
+	}
+	
+
+	
+	
+	
 	@Override
 	public boolean equals(Object o) {
 		// TODO Auto-generated method stub
