@@ -80,6 +80,7 @@ public class Carga {
 							context.escenaJuego.cargar();
 							setPorcentaje(80);
 							context.soundManager.carga();
+							context.capaParedes.carga();
 							Thread.sleep(500);
 							setPorcentaje(100);
 							Thread.sleep(500);

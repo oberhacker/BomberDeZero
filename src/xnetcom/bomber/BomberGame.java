@@ -14,6 +14,7 @@ import org.andengine.ui.activity.SimpleBaseGameActivity;
 
 import xnetcom.bomber.entidades.AlmacenBombas;
 import xnetcom.bomber.entidades.BomberMan;
+import xnetcom.bomber.graficos.CapaParedes;
 import xnetcom.bomber.graficos.SoundManager;
 import xnetcom.bomber.scenas.Carga;
 import xnetcom.bomber.scenas.EscenaJuego;
@@ -57,6 +58,7 @@ public class BomberGame extends SimpleBaseGameActivity {
 	public SoundManager soundManager;
 	public BomberMan bomberman;
 	public AlmacenBombas almacenBombas;
+	public CapaParedes capaParedes;
 	
 	@Override
 	public EngineOptions onCreateEngineOptions() {
@@ -90,6 +92,7 @@ public class BomberGame extends SimpleBaseGameActivity {
 		soundManager= new SoundManager(this);
 		bomberman=new BomberMan(this);
 		almacenBombas= new AlmacenBombas(this);
+		capaParedes= new CapaParedes(this);
 	}
 
 	@Override

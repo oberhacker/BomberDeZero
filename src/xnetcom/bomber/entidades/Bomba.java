@@ -281,7 +281,7 @@ public class Bomba {
 		currentTileRectangle.attachChild(sprBomba);
 		currentTileRectangle.setZIndex(Constantes.ZINDEX_BOMBA);
 		currentTileRectangle.setAlpha(0);
-		currentTileRectangle.setPosition(296, 256);
+		currentTileRectangle.setPosition(0, 0);
 //		currentTileRectangle.setZIndex(900);
 //		sprCentro.animate(200, false);
 		}

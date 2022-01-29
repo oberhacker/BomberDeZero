@@ -6,9 +6,13 @@ import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl.IOnScreenControlListener;
 import org.andengine.engine.camera.hud.controls.DigitalOnScreenControl;
+import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -16,7 +20,9 @@ import org.andengine.opengl.texture.bitmap.AssetBitmapTexture;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
 
+import android.graphics.Typeface;
 import xnetcom.bomber.BomberGame;
+import xnetcom.bomber.util.Constantes;
 
 public class HudBomber {
 
@@ -42,6 +48,8 @@ public class HudBomber {
 	Sprite btn_1;
 	Sprite btn_2;
 
+	Text debugText;
+	
 	public DigitalOnScreenControl mDigitalOnScreenControl;
 
 	private void screenControl(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
@@ -71,6 +79,9 @@ public class HudBomber {
 	}
 
 	public void carga() throws IOException {
+		Font mFont = FontFactory.create(context.getFontManager(), context.getTextureManager(), 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 48);
+		mFont.load();
+		debugText = new Text(300, 600, mFont, "Seconds elapsed:", "Seconds elapsed: XXXXXX".length(), context.getVertexBufferObjectManager());
 
 		BitmapTextureAtlas btn_1_BTA = new BitmapTextureAtlas(context.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		btn_1_TR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(btn_1_BTA, context, "gfx/btn_1.png", 0, 0);
@@ -200,8 +211,30 @@ public class HudBomber {
 		hud.registerTouchArea(btn_1);
 		hud.registerTouchArea(btn_2);
 		
+		debugText.setVisible(Constantes.DEBUG_TEXT);
+		
+		hud.attachChild(debugText);
+		
 		context.getEngine().getCamera().setHUD(hud);
 		recolocaElementos();
+		
+		
+		scene.registerUpdateHandler(new IUpdateHandler() {
+			@Override
+			public void onUpdate(float pSecondsElapsed) {
+				
+				
+			}
+
+			@Override
+			public void reset() {
+
+			}
+		});
+		
+		
+		
+		
 	}
 
 }

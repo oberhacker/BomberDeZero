@@ -1,5 +1,7 @@
 package xnetcom.bomber.util;
 
+import xnetcom.bomber.entidades.Bomba;
+import xnetcom.bomber.graficos.CapaParedes.TrozoPared;
 import android.util.Log;
 
 public class Matriz{
@@ -15,8 +17,40 @@ public class Matriz{
 	public static int BOMBA=5;
 	
 	
+	public class Casilla{
+		public int tipoCasilla=0;
+		public Bomba bomba;
+		public TrozoPared trozoPared;		
+	}
 	
-	public int matrizmuros[][]={			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+	public Casilla matriz2[][]={			    {new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
+												{new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()}	};
+	
+	public int matriz[][]={			        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 											{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 											{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 											{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -45,7 +79,7 @@ public class Matriz{
 	
 	
 	public synchronized int[][] getMatrizmuros() {			
-		return this.matrizmuros;
+		return this.matriz;
 	}
 	
 	
@@ -55,51 +89,51 @@ public class Matriz{
 		
 		for (int i = 0; i < matriz.length; i++) {
 			for (int j = 0; j < matriz.length; j++) {
-				this.matrizmuros[i][j]=matriz[i][j];
+				this.matriz[i][j]=matriz[i][j];
 			}		
 		}
 		
 	}
 	
 	public void reiniciaMatriz(){
-		for (int i = 0; i < matrizmuros.length; i++) {
-			for (int j = 0; j < matrizmuros.length; j++) {
-				matrizmuros[i][j]=NADA;
+		for (int i = 0; i < matriz.length; i++) {
+			for (int j = 0; j < matriz.length; j++) {
+				matriz[i][j]=NADA;
 			}				
 		}
 		
 	}
 	public int getNumFilas(){
-		return this.matrizmuros.length;
+		return this.matriz.length;
 	}
 	public int getNumColumnas(){
-		return this.matrizmuros[0].length;
+		return this.matriz[0].length;
 	}
 	public void pintaMatriz(){
 		
 		for (int i = 0; i < 13; i++) {
 			String cadena="";
-			for (int j = 0; j < matrizmuros.length; j++) {
-				cadena+="["+matrizmuros[i][j]+"]";
+			for (int j = 0; j < matriz.length; j++) {
+				cadena+="["+matriz[i][j]+"]";
 			}	
 			Log.d("puerta",cadena);
 		}
 		
 	}
 	public  void setValor(int valor, int fila, int columna){
-		synchronized (matrizmuros) {
-			this.matrizmuros[fila][columna]=valor;
+		synchronized (matriz) {
+			this.matriz[fila][columna]=valor;
 		}
 		
 	}
 	public  int getValor( int fila, int columna){			
-		synchronized (matrizmuros) {
+		synchronized (matriz) {
 			int valor=MURO;
 			try{
 				if (fila==-1 || columna==-1){
 					valor=MURO;
 				}else{
-					valor =this.matrizmuros[fila][columna];
+					valor =this.matriz[fila][columna];
 				}
 				
 			}catch (Exception e) {

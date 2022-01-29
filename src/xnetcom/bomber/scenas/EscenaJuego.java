@@ -79,6 +79,7 @@ public class EscenaJuego {
 							} else if (pTMXTileProperties.containsTMXProperty("pared", "true")) {
 								matriz.setValor(Matriz.PARED, pTMXTile.getTileRow(), pTMXTile.getTileColumn());
 								pTMXTilePared=pTMXTile;
+								context.capaParedes.ponPared(pTMXTile.getTileColumn(), pTMXTile.getTileRow());
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "moco")) {
 								almacenEnemigos.creaEnemigo(TipoEnemigo.MOCO,pTMXTile.getTileRow(),pTMXTile.getTileColumn());
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "moneda")) {
@@ -149,7 +150,7 @@ public class EscenaJuego {
 		
 		capaSuelo.setZIndex(Constantes.ZINDEX_CAPA_SUELO);
 		capaPiedrasSombra.setZIndex(Constantes.ZINDEX_CAPA_PIEDRAS_SOMBRA);
-		capaParedes.setZIndex(Constantes.ZINDEX_CAPA_PAREDES);
+		capaParedes.setZIndex(Constantes.ZINDEX_CAPA_PAREDES_ARRIBA);
 		capaBordeAbajo.setZIndex(Constantes.ZINDEX_CAPA_BORDE_ABAJO);
 		capaTechoPiedras.setZIndex(Constantes.ZINDEX_CAPA_TECHO_PIEDRAS);
 		
@@ -177,6 +178,8 @@ public class EscenaJuego {
 		context.bomberman.onCreateScene(scene);
 		context.camaraJuego.setChaseEntity(context.bomberman.getSprite());
 		context.miengine.setCaramaJuego();
+		
+		context.capaParedes.onSceneCreated();
 		
 		
 		
@@ -236,7 +239,7 @@ public class EscenaJuego {
 		mTMXTiledMap.setZIndex(Constantes.ZINDEX_CAPA_SUELO);
 		capaSuelo.setZIndex(Constantes.ZINDEX_CAPA_SUELO);
 		capaPiedrasSombra.setZIndex(Constantes.ZINDEX_CAPA_PIEDRAS_SOMBRA);
-		capaParedes.setZIndex(Constantes.ZINDEX_CAPA_PAREDES);
+		capaParedes.setZIndex(Constantes.ZINDEX_CAPA_PAREDES_ARRIBA);
 		capaBordeAbajo.setZIndex(Constantes.ZINDEX_CAPA_BORDE_ABAJO);
 		capaTechoPiedras.setZIndex(Constantes.ZINDEX_CAPA_TECHO_PIEDRAS);
 		scene.sortChildren();

@@ -80,14 +80,13 @@ public class BomberMan {
 		return baseTileRectangle;
 	}
 
-	Text debugText;
+	
 
 	public void carga() throws IOException {
 
-		Font mFont = FontFactory.create(context.getFontManager(), context.getTextureManager(), 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 48);
-		mFont.load();
 
-		debugText = new Text(300, 600, mFont, "Seconds elapsed:", "Seconds elapsed: XXXXXX".length(), context.getVertexBufferObjectManager());
+
+		
 
 		BitmapTextureAtlas tiledmaster90A = new BitmapTextureAtlas(context.getTextureManager(), 2048, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		this.mBombermanTextureRegionAniA = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(tiledmaster90A, context, "gfx/tiledmaster(125x104)ArribaB.png", 0, 0, 12, 5);
@@ -120,7 +119,7 @@ public class BomberMan {
 		bomberAbajo.attachChild(bomberArriba);
 
 		// ajustamos el personaje dento de su cuadro
-		bomberAbajo.setX(bomberAbajo.getX() - 20);
+		bomberAbajo.setX(bomberAbajo.getX() - 15);
 
 		bomberAbajo.setZIndex(Constantes.ZINDEX_BOMBERMAN_ABAJO);
 		bomberArriba.setZIndex(Constantes.ZINDEX_BOMBERMAN_ARRIBA);
@@ -165,7 +164,7 @@ public class BomberMan {
 
 		scene.attachChild(currentTileRectangle);
 		scene.attachChild(baseTileRectangle);
-		context.escenaJuego.hud.hud.attachChild(debugText);
+
 
 		scene.registerUpdateHandler(new IUpdateHandler() {
 			@Override
@@ -202,7 +201,7 @@ public class BomberMan {
 				cambiaPosicion();
 			}
 //			Log.d("POSICION","FILA: " + tmxTile.getTileRow() + " Columna: " + tmxTile.getTileColumn() + " VALOR: " + context.escenaJuego.matriz.getValor(tmxTile.getTileRow(), tmxTile.getTileColumn()));
-			debugText.setText(getEskinado().toString());
+			
 		}
 	}
 

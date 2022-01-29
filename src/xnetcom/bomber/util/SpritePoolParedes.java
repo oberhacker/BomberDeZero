@@ -6,7 +6,7 @@ import org.andengine.util.adt.pool.GenericPool;
 
 import xnetcom.bomber.BomberGame;
 
-public class SpritePool extends GenericPool<TiledSprite> {
+public class SpritePoolParedes extends GenericPool<TiledSprite> {
     // ===========================================================
     // Constants
     // ===========================================================
@@ -21,7 +21,7 @@ public class SpritePool extends GenericPool<TiledSprite> {
     // ===========================================================
     // Constructors
     // ===========================================================
-    public SpritePool(final TiledTextureRegion pFaceTextureRegion,BomberGame context) {
+    public SpritePoolParedes(final TiledTextureRegion pFaceTextureRegion,BomberGame context) {
         mFaceTextureRegion = pFaceTextureRegion;  
         this.context=context;
     }
@@ -32,8 +32,13 @@ public class SpritePool extends GenericPool<TiledSprite> {
     @Override
     protected TiledSprite onAllocatePoolItem() {
         final TiledSprite lSprite = new TiledSprite(0, 0, mFaceTextureRegion.deepCopy(),context.getVertexBufferObjectManager());
-        lSprite.setIgnoreUpdate(true);
+//        lSprite.setIgnoreUpdate(false);
         lSprite.setScaleCenter(0, 0);
+//        lSprite.setScaleX(Constantes.FARTOR_FORMA);
+//        lSprite.setOffsetCenter(0, 0);
+//        lSprite.setOffsetCenter(1*Constantes.TILE_HEIGHT, 1*Constantes.TILE_HEIGHT);
+        
+//        lSprite.setPosition(0, 0);        
         return lSprite;
     }
 
@@ -46,5 +51,6 @@ public class SpritePool extends GenericPool<TiledSprite> {
 
     @Override
     protected void onHandleObtainItem(final TiledSprite pSprite) {
+    	System.out.println();
     }
 }
