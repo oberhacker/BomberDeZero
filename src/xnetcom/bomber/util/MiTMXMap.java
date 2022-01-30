@@ -40,8 +40,8 @@ public class MiTMXMap {
 
 	public void cargaMapa(String rutamapa) {
 		
-		BitmapTextureAtlas bta = new BitmapTextureAtlas(context.getTextureManager(),1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);	
-		TiledTextureRegion pTexture=BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(bta, context, "gfx/tileset64.png",0,0,13, 12);
+		BitmapTextureAtlas bta = new BitmapTextureAtlas(context.getTextureManager(),1024, 1024, TextureOptions.DEFAULT);	
+		TiledTextureRegion pTexture=BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(bta, context, "tmx/gfx/tileset642.png",0,0,13, 12);
 		bta.load();
 		
 		spriteGroupSuelo = new SpriteGroup(bta,400,context.getVertexBufferObjectManager());	
@@ -84,13 +84,21 @@ public class MiTMXMap {
 //			
 //		}
 		
+		
+		int gidd=55;
+		
 		for (int columna = 0; columna < 25; columna++) {
 			for (int fila = 0; fila < 15; fila++) {				
 				
 				TileCoordenada mcoordenadas= new TileCoordenada(columna, fila);
 				final TiledSprite lSprite = new TiledSprite(0, 0, pTexture.deepCopy(),context.getVertexBufferObjectManager());
-				lSprite.setOffsetCenter(0, 0);
-				lSprite.setCurrentTileIndex(56);
+				lSprite.setOffsetCenter(0, 0);				
+				lSprite.setCurrentTileIndex(gidd);
+				if (gidd==55){
+					gidd=56;
+				}else if (gidd==56){
+					gidd=55;
+				}
 				lSprite.setPosition(mcoordenadas.getX(), mcoordenadas.getY());
 //				lSprite.setZIndex(Constantes.ZINDEX_BOMBERMAN_ABAJO-1);
 				spriteGroupSuelo.attachChild(lSprite);		

@@ -190,6 +190,13 @@ public class EscenaJuego {
 		
 		
 		capaSuelo.setVisible(false);
+		capaPiedrasSombra.setVisible(false);
+		capaParedes.setVisible(false);
+		capaBordeAbajo.setVisible(false);
+		capaTechoPiedras.setVisible(false);
+
+		
+
 		scene.attachChild(miMapa.spriteGroupSuelo);
 		
 //		context.escenaJuego.scene.sortChildren();
