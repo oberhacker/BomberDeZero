@@ -187,6 +187,13 @@ public class BomberMan {
 		TMXLayer tmxLayer = context.escenaJuego.mTMXTiledMap.getTMXLayers().get(1);
 		TMXTile tmxTile = tmxLayer.getTMXTileAt(playerFootCordinates[Constants.VERTEX_INDEX_X], playerFootCordinates[Constants.VERTEX_INDEX_Y]);
 
+		
+		System.out.println();
+		
+		
+		
+		
+		
 		if (tmxTile != null) {
 			if (innerColumna != tmxTile.getTileColumn()) {
 				innerColumna = tmxTile.getTileColumn();
@@ -302,7 +309,7 @@ public class BomberMan {
 
 	public boolean isLimiteArriba() {
 		context.escenaJuego.matriz.getValor(2, 2);
-		int sitio = context.escenaJuego.matriz.getValor(getFila() - 1, getColumna());
+		int sitio = context.escenaJuego.matriz.getValor(getFila() - 1, getColumna()).tipoCasilla;
 		if (!fantasma) {
 			if (sitio == Matriz.PARED || sitio == Matriz.MURO || sitio == Matriz.BOMBA) {
 				return true;
@@ -316,7 +323,7 @@ public class BomberMan {
 	}
 
 	public boolean isLimiteAbajo() {
-		int sitio = context.escenaJuego.matriz.getValor(getFila() + 1, getColumna());
+		int sitio = context.escenaJuego.matriz.getValor(getFila() + 1, getColumna()).tipoCasilla;
 
 		if (!fantasma) {
 			if (sitio == Matriz.PARED || sitio == Matriz.MURO || sitio == Matriz.BOMBA) {
@@ -331,7 +338,7 @@ public class BomberMan {
 	}
 
 	public boolean isLimiteDerecha() {
-		int sitio = context.escenaJuego.matriz.getValor(getFila(), getColumna() + 1);
+		int sitio = context.escenaJuego.matriz.getValor(getFila(), getColumna() + 1).tipoCasilla;
 		if (!fantasma) {
 			if (sitio == Matriz.PARED || sitio == Matriz.MURO || sitio == Matriz.BOMBA) {
 				return true;
@@ -345,7 +352,7 @@ public class BomberMan {
 	}
 
 	public boolean isLimiteIzquierda() {
-		int sitio = context.escenaJuego.matriz.getValor(getFila(), getColumna() - 1);
+		int sitio = context.escenaJuego.matriz.getValor(getFila(), getColumna() - 1).tipoCasilla;
 		if (!fantasma) {
 			if (sitio == Matriz.PARED || sitio == Matriz.MURO || sitio == Matriz.BOMBA) {
 				return true;

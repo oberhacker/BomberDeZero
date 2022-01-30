@@ -325,7 +325,7 @@ public class Bomba {
 		if (!sePuedePlantarBomba(fila, columna)) {
 			return false;
 		}
-		context.escenaJuego.matriz.setValor(Matriz.BOMBA, fila, columna);
+		context.escenaJuego.matriz.setValor(Matriz.BOMBA, fila, columna,this,null);
 
 		this.fila = fila;
 		this.columna = columna;
@@ -357,7 +357,7 @@ public class Bomba {
 		creaFragmentoExplosiones();
 		context.soundManager.sonidoExplosion();
 		sprBomba.setVisible(false);
-		context.escenaJuego.matriz.setValor(Matriz.NADA, fila, columna);
+		context.escenaJuego.matriz.setValor(Matriz.NADA, fila, columna,null,null);
 		context.vibrar(300);
 		detonada=true;
 		sprCentro.animate(ANIMATE_DURATION, false, new ListenerExplotar());
@@ -378,7 +378,7 @@ public class Bomba {
 	
 	
 	public boolean sePuedePlantarBomba(int fila, int columna) {
-		return (context.escenaJuego.matriz.getValor(fila, columna) == Matriz.NADA);
+		return (context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla == Matriz.NADA);
 	}
 	
 	
@@ -386,13 +386,12 @@ public class Bomba {
 	public void creaFragmentoExplosiones(){
 		Coordenadas coordenadasCentro = new Coordenadas(columna, fila);
 		coordenadas.add(coordenadasCentro);
-		int [][] matriz = context.escenaJuego.matriz.getMatrizmuros();	
 		
 		centro();
-		cruzArriba(matriz);
-		cruzAbajo(matriz);
-		cruzIzquierda(matriz);
-		cruzDerecha(matriz);
+		cruzArriba();
+		cruzAbajo();
+		cruzIzquierda();
+		cruzDerecha();
 	}
 	
 	public float getXFragmento(int posX){
@@ -413,7 +412,7 @@ public class Bomba {
 		
 	}
 	
-	public void cruzArriba(int [][]matriz){
+	public void cruzArriba(){
 		Sprite [] array = new Sprite[] {sprCentro, sprArriba_0, sprArriba_1,sprArriba_2, sprArribaFin};
 		//centro+1	
 		
@@ -422,7 +421,7 @@ public class Bomba {
 			int mColumna=columna;
 			int mFila = fila-i;			
 			Coordenadas coodenadas= new Coordenadas(mColumna, mFila);
-			int valor=context.escenaJuego.matriz.getValor(coodenadas.getFila(), coodenadas.getColumna());
+			int valor=context.escenaJuego.matriz.getValor(coodenadas.getFila(), coodenadas.getColumna()).tipoCasilla;
 			
 			if (valor==Matriz.NADA){
 				// poner fagmento			
@@ -445,7 +444,7 @@ public class Bomba {
 			}
 		}		
 	}
-	public void cruzIzquierda(int [][]matriz){
+	public void cruzIzquierda(){
 		Sprite [] array = new Sprite[] {sprCentro, sprIzquierda_0, sprIzquierda_1,sprIzquierda_2, sprIzquierdaFin};
 		//centro+1	
 		
@@ -454,7 +453,7 @@ public class Bomba {
 			int mColumna=columna-i;
 			int mFila = fila;			
 			Coordenadas coodenadas= new Coordenadas(mColumna, mFila);
-			int valor=context.escenaJuego.matriz.getValor(coodenadas.getFila(), coodenadas.getColumna());
+			int valor=context.escenaJuego.matriz.getValor(coodenadas.getFila(), coodenadas.getColumna()).tipoCasilla;
 			
 			if (valor==Matriz.NADA){
 				// poner fagmento			
@@ -478,7 +477,7 @@ public class Bomba {
 		}		
 	}
 	
-	public void cruzDerecha(int [][]matriz){
+	public void cruzDerecha(){
 		Sprite [] array = new Sprite[] {sprCentro, sprDerecha_0, sprDerecha_1,sprDerecha_2, sprDerechaFin};
 		//centro+1	
 		
@@ -487,7 +486,7 @@ public class Bomba {
 			int mColumna=columna+i;
 			int mFila = fila;			
 			Coordenadas coodenadas= new Coordenadas(mColumna, mFila);
-			int valor=context.escenaJuego.matriz.getValor(coodenadas.getFila(), coodenadas.getColumna());
+			int valor=context.escenaJuego.matriz.getValor(coodenadas.getFila(), coodenadas.getColumna()).tipoCasilla;
 			
 			if (valor==Matriz.NADA){
 				// poner fagmento			
@@ -511,7 +510,7 @@ public class Bomba {
 		}		
 	}
 	
-	public void cruzAbajo(int [][]matriz){
+	public void cruzAbajo(){
 		Sprite [] array = new Sprite[] {sprCentro, sprAbajo_0, sprAbajo_1,sprAbajo_2, sprAbajoFin};
 		//centro+1	
 		
@@ -520,7 +519,7 @@ public class Bomba {
 			int mColumna=columna;
 			int mFila = fila+i;			
 			Coordenadas coodenadas= new Coordenadas(mColumna, mFila);
-			int valor=context.escenaJuego.matriz.getValor(coodenadas.getFila(), coodenadas.getColumna());
+			int valor=context.escenaJuego.matriz.getValor(coodenadas.getFila(), coodenadas.getColumna()).tipoCasilla;
 			
 			if (valor==Matriz.NADA){
 				// poner fagmento			

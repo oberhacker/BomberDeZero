@@ -62,7 +62,7 @@ public class BomberGame extends SimpleBaseGameActivity {
 	
 	@Override
 	public EngineOptions onCreateEngineOptions() {
-		Toast.makeText(this, "The tile the player is walking on will be highlighted.", Toast.LENGTH_LONG).show();
+//		Toast.makeText(this, "The tile the player is walking on will be highlighted.", Toast.LENGTH_LONG).show();
 		DetectorRatio();
 		this.camaraJuego = new SmoothCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT, 1000f, 1000f, 1);
 		this.camaraJuego.setBoundsEnabled(false);

@@ -12,6 +12,8 @@ import org.andengine.opengl.texture.region.TiledTextureRegion;
 import xnetcom.bomber.BomberGame;
 import xnetcom.bomber.util.Constantes;
 import xnetcom.bomber.util.Coordenadas;
+import xnetcom.bomber.util.Matriz;
+import xnetcom.bomber.util.Matriz.Casilla;
 import xnetcom.bomber.util.SpritePoolParedes;
 
 public class CapaParedes {
@@ -75,6 +77,7 @@ public class CapaParedes {
 		spriteGroupAbajo.attachChild(spriteAbajo);		
 		TrozoPared trozo= new TrozoPared(spriteArriba, spriteAbajo, coodenadas);
 		listaMuros.add(trozo);
+		context.escenaJuego.matriz.setValor(Matriz.PARED, fila, columna, null, trozo);		
 		
 	}
 	
@@ -87,8 +90,39 @@ public class CapaParedes {
 	}
 	
 	
+	public static int SOLO=0;
+	public static int IZQUIERDA=1;
+	public static int CENTRO=2;
+	public static int DERECHA=3;
 	
 	public void recalculaPared(){
+		Casilla[][] matriz = context.escenaJuego.matriz.getMatrizmuros();		
+		
+		
+		for (int y = 2; y < matriz.length; y++) {
+			for (int x = 2; x < matriz.length; x++) {
+				Casilla casilla = matriz[y][x];
+				int trozo = matriz[y][x].tipoCasilla;
+				if (trozo==Matriz.PARED){
+					// miramos si hay toro a la derecha
+					 if (matriz[y][x+1].tipoCasilla==Matriz.PARED && matriz[y][x-1].tipoCasilla==Matriz.PARED){
+						casilla.trozoPared.trozoAbajo.setCurrentTileIndex(CENTRO);
+						casilla.trozoPared.trozoArriba.setCurrentTileIndex(CENTRO);
+					}else if (matriz[y][x+1].tipoCasilla==Matriz.PARED ){
+						casilla.trozoPared.trozoAbajo.setCurrentTileIndex(IZQUIERDA);
+						casilla.trozoPared.trozoArriba.setCurrentTileIndex(IZQUIERDA);
+					}else if (matriz[y][x-1].tipoCasilla==Matriz.PARED ){
+						casilla.trozoPared.trozoAbajo.setCurrentTileIndex(DERECHA);
+						casilla.trozoPared.trozoArriba.setCurrentTileIndex(DERECHA);
+					}else if (matriz[y][x+1].tipoCasilla!=Matriz.PARED){
+						casilla.trozoPared.trozoAbajo.setCurrentTileIndex(SOLO);
+						casilla.trozoPared.trozoArriba.setCurrentTileIndex(SOLO);
+					}
+				}
+
+			}				
+		}
+		
 		
 		
 	}

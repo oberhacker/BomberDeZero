@@ -23,6 +23,7 @@ import xnetcom.bomber.entidades.BomberMan;
 import xnetcom.bomber.graficos.HudBomber;
 import xnetcom.bomber.util.Constantes;
 import xnetcom.bomber.util.Matriz;
+import xnetcom.bomber.util.MiTMXMap;
 
 public class EscenaJuego {
 
@@ -64,8 +65,13 @@ public class EscenaJuego {
 		}
 
 	}
-	public TMXTile pTMXTilePared;
+	public MiTMXMap miMapa;
 	public Scene onCreateScene() {
+		
+		
+		miMapa= new MiTMXMap(context);
+		miMapa.cargaMapa("tmx/mapa_xml.tmx");
+		
 		scene= new Scene();
 		try {
 
@@ -74,11 +80,11 @@ public class EscenaJuego {
 						@Override
 						public void onTMXTileWithPropertiesCreated(final TMXTiledMap pTMXTiledMap, final TMXLayer pTMXLayer, TMXTile pTMXTile, final TMXProperties<TMXTileProperty> pTMXTileProperties) {
 
+							
 							if (pTMXTileProperties.containsTMXProperty("muro", "true")) {
-								matriz.setValor(Matriz.MURO, pTMXTile.getTileRow(), pTMXTile.getTileColumn());
+								matriz.setValor(Matriz.MURO, pTMXTile.getTileRow(), pTMXTile.getTileColumn(),null,null);
 							} else if (pTMXTileProperties.containsTMXProperty("pared", "true")) {
-								matriz.setValor(Matriz.PARED, pTMXTile.getTileRow(), pTMXTile.getTileColumn());
-								pTMXTilePared=pTMXTile;
+//								matriz.setValor(Matriz.PARED, pTMXTile.getTileRow(), pTMXTile.getTileColumn(),null,null);
 								context.capaParedes.ponPared(pTMXTile.getTileColumn(), pTMXTile.getTileRow());
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "moco")) {
 								almacenEnemigos.creaEnemigo(TipoEnemigo.MOCO,pTMXTile.getTileRow(),pTMXTile.getTileColumn());
@@ -179,9 +185,17 @@ public class EscenaJuego {
 		context.camaraJuego.setChaseEntity(context.bomberman.getSprite());
 		context.miengine.setCaramaJuego();
 		
+		context.capaParedes.recalculaPared();
 		context.capaParedes.onSceneCreated();
 		
 		
+		capaSuelo.setVisible(false);
+		scene.attachChild(miMapa.spriteGroupSuelo);
+		
+//		context.escenaJuego.scene.sortChildren();
+//		context.escenaJuego.miMapa.spriteGroupSuelo.setZIndex(1000);
+		
+//		context.escenaJuego.scene.sortChildren();
 		
 		scene.sortChildren();
 		return scene;
