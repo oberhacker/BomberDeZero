@@ -2,6 +2,7 @@ package xnetcom.bomber.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.Iterator;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -22,6 +23,7 @@ import org.xml.sax.SAXException;
 
 import xnetcom.bomber.BomberGame;
 import android.content.res.AssetManager;
+import android.util.Log;
 
 public class MiTMXMap {
 
@@ -32,6 +34,7 @@ public class MiTMXMap {
 	private final AssetManager mAssetManager;
 	
 	public SpriteGroup spriteGroupSuelo;
+	public SpriteGroup piedrasSombra;
 
 	public MiTMXMap(BomberGame context) {
 		this.context = context;
@@ -40,14 +43,20 @@ public class MiTMXMap {
 
 	public void cargaMapa(String rutamapa) {
 		
-		BitmapTextureAtlas bta = new BitmapTextureAtlas(context.getTextureManager(),1024, 1024, TextureOptions.DEFAULT);	
+		BitmapTextureAtlas bta = new BitmapTextureAtlas(context.getTextureManager(),1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);	
 		TiledTextureRegion pTexture=BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(bta, context, "tmx/gfx/tileset642.png",0,0,13, 12);
 		bta.load();
 		
 		spriteGroupSuelo = new SpriteGroup(bta,400,context.getVertexBufferObjectManager());	
 		spriteGroupSuelo.setOffsetCenter(0, 0);
 		spriteGroupSuelo.setScaleCenter(0, 0);
-		spriteGroupSuelo.setZIndex(-1);
+		spriteGroupSuelo.setZIndex(Constantes.ZINDEX_CAPA_SUELO);
+		
+		
+		piedrasSombra = new SpriteGroup(bta,400,context.getVertexBufferObjectManager());	
+		piedrasSombra.setOffsetCenter(0, 0);
+		piedrasSombra.setScaleCenter(0, 0);
+		piedrasSombra.setZIndex(Constantes.ZINDEX_CAPA_PIEDRAS_SOMBRA);
 		
 		try {
 			InputStream inputStream = this.mAssetManager.open(rutamapa);
@@ -69,59 +78,66 @@ public class MiTMXMap {
 		Element nodoMapa = (Element) dom.getElementsByTagName("map").item(0);
 		NodeList capas =  dom.getElementsByTagName("layer");
 		Element layerSuelo = (Element)capas.item(0);
-		NodeList tiles = layerSuelo.getElementsByTagName("tile");
-//		for (int i = 0; i < tiles.getLength(); i++) {
-//			Element elementTile = (Element)tiles.item(i);
-//			
-//			TileCoordenada coordenadas = getCoordenadas(i);
-//			int gid =Integer.parseInt(elementTile.getAttribute("gid"));
-//			final TiledSprite lSprite = new TiledSprite(0, 0, pTexture.deepCopy(),context.getVertexBufferObjectManager());
-//			lSprite.setOffsetCenter(0, 0);
-//			lSprite.setCurrentTileIndex(56);
-//			lSprite.setPosition(coordenadas.getX(), coordenadas.getY());
-//			lSprite.setZIndex(Constantes.ZINDEX_BOMBERMAN_ABAJO-1);
-//			spriteGroupSuelo.attachChild(lSprite);			
-//			
-//		}
+		NodeList tilesSuelo = layerSuelo.getElementsByTagName("tile");
 		
-		
-		int gidd=55;
-		
-		for (int columna = 0; columna < 25; columna++) {
-			for (int fila = 0; fila < 15; fila++) {				
-				
-				TileCoordenada mcoordenadas= new TileCoordenada(columna, fila);
+		for (int i = 0; i < tilesSuelo.getLength(); i++) {
+			Element elementTile = (Element)tilesSuelo.item(i);
+			TileCoordenada coordenadas = getCoordenadas(i);			
+			int gid =Integer.parseInt(elementTile.getAttribute("gid"));
+			if (gid!=0){
 				final TiledSprite lSprite = new TiledSprite(0, 0, pTexture.deepCopy(),context.getVertexBufferObjectManager());
-				lSprite.setOffsetCenter(0, 0);				
-				lSprite.setCurrentTileIndex(gidd);
-				if (gidd==55){
-					gidd=56;
-				}else if (gidd==56){
-					gidd=55;
-				}
-				lSprite.setPosition(mcoordenadas.getX(), mcoordenadas.getY());
-//				lSprite.setZIndex(Constantes.ZINDEX_BOMBERMAN_ABAJO-1);
-				spriteGroupSuelo.attachChild(lSprite);		
-			}		
-		}
+				lSprite.setOffsetCenter(0, 0);
+				lSprite.setCurrentTileIndex(gid-1);
+				lSprite.setPosition(coordenadas.getX(), coordenadas.getY());
+				spriteGroupSuelo.attachChild(lSprite);	
+			}
 		
+		}		
 		spriteGroupSuelo.setScaleX(Constantes.FARTOR_FORMA);
 		
+		Element layerPiedrasSombra = (Element)capas.item(1);
+		NodeList tilesPiedrasSombra= layerPiedrasSombra.getElementsByTagName("tile");
+		
+		for (int i = 0; i < tilesPiedrasSombra.getLength(); i++) {
+			
+			if (i==77){//77 es la sombra de la derecha fila 3 columna 2
+				System.out.println();
+			}
+			
+			Element elementTile = (Element)tilesPiedrasSombra.item(i);
+			TileCoordenada coordenadas = getCoordenadas(i);			
+			int gid =Integer.parseInt(elementTile.getAttribute("gid"));
+			if (gid!=0){
+				final TiledSprite lSprite = new TiledSprite(0, 0, pTexture.deepCopy(),context.getVertexBufferObjectManager());
+				lSprite.setOffsetCenter(0, 0);
+				lSprite.setCurrentTileIndex(gid-1);
+				lSprite.setPosition(coordenadas.getX(), coordenadas.getY());
+				piedrasSombra.attachChild(lSprite);	
+			}
+		
+		}		
+		piedrasSombra.setScaleX(Constantes.FARTOR_FORMA);
 		
 		
-		
-		System.out.println();
+
 	}
 
 	
+	public void onSceneCreated(){
+		context.escenaJuego.scene.attachChild(spriteGroupSuelo);
+		context.escenaJuego.scene.attachChild(piedrasSombra);
+		
+	}
+
 	
 	public TileCoordenada getCoordenadas(int tileNum){
-		Double nTileNum= Double.valueOf(tileNum);
-		Double division = nTileNum/25;
-		Double parteDecimal = division % 1;
-		Double parteEntera = division - parteDecimal;
-		int fila =parteEntera.intValue();
-		int columna = Double.valueOf((parteDecimal*25)).intValue();		
+		BigDecimal bgTileNum= BigDecimal.valueOf(tileNum);
+		BigDecimal division = bgTileNum.divide(BigDecimal.valueOf(25));
+		BigDecimal parteEntera=BigDecimal.valueOf(division.intValue());
+		BigDecimal parteDecimal=division.subtract(parteEntera);
+		
+		int fila=parteEntera.intValue();
+		int columna = parteDecimal.multiply(BigDecimal.valueOf(25)).intValue();
 		return new TileCoordenada(columna,fila);
 	}
 	
