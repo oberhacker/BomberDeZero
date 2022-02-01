@@ -34,6 +34,7 @@ public class SpritePoolParedes extends GenericPool<TiledSprite> {
         final TiledSprite lSprite = new TiledSprite(0, 0, mFaceTextureRegion.deepCopy(),context.getVertexBufferObjectManager());
 //        lSprite.setIgnoreUpdate(false);
         lSprite.setScaleCenter(0, 0);
+        lSprite.setOffsetCenter(0, 0);
 //        lSprite.setScaleX(Constantes.FARTOR_FORMA);
 //        lSprite.setOffsetCenter(0, 0);
 //        lSprite.setOffsetCenter(1*Constantes.TILE_HEIGHT, 1*Constantes.TILE_HEIGHT);

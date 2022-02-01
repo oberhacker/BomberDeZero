@@ -35,12 +35,15 @@ public class CapaParedes {
 	
 	
 	public void carga(){
-			BitmapTextureAtlas btaParedAbajo = new BitmapTextureAtlas(context.getTextureManager(),1024, 265, TextureOptions.BILINEAR_PREMULTIPLYALPHA);	
-			BitmapTextureAtlas btaParedArriba = new BitmapTextureAtlas(context.getTextureManager(),1024, 265, TextureOptions.BILINEAR_PREMULTIPLYALPHA);	
-			TiledTextureRegion textureArriba=BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(btaParedArriba, context, "gfx/muros74_v2_arriba.png",0,0,4, 1);
-			TiledTextureRegion textureAbajo=BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(btaParedAbajo, context, "gfx/muros74_v2_abajo.png",0,0,4, 1);
+			BitmapTextureAtlas btaParedAbajo = new BitmapTextureAtlas(context.getTextureManager(),1024, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);	
+			BitmapTextureAtlas btaParedArriba = new BitmapTextureAtlas(context.getTextureManager(),1024, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);	
+			TiledTextureRegion textureArriba=BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(btaParedArriba, context, "gfx/muroswais74_bigV8_arriba.png",0,0,4, 1);
+			TiledTextureRegion textureAbajo=BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(btaParedAbajo, context, "gfx/muroswais74_bigV8_abajo.png",0,0,4, 1);
 			btaParedAbajo.load();		
 			btaParedArriba.load();			
+			
+			
+			
 			
 			
 			spritePoolArriba = new SpritePoolParedes(textureArriba, context);		
@@ -65,15 +68,20 @@ public class CapaParedes {
 	
 	
 	
+	
 	public void ponPared(int columna,int fila){
 		TiledSprite spriteArriba = spritePoolArriba.obtainPoolItem();		
 		TiledSprite spriteAbajo = spritePoolAbajo.obtainPoolItem();		
+//		spriteArriba.setVisible(false);
+		
+//		spriteArriba.setScaleX(1.05625f);
+//		spriteAbajo.setScaleX(1.05625f);
 		Coordenadas coodenadas= new Coordenadas(columna, fila);
 		
-		spriteArriba.setPosition(coodenadas.getX(), coodenadas.getY());		
+		spriteArriba.setPosition(coodenadas.getX(), coodenadas.getY()+3);		
 		spriteGroupArriba.attachChild(spriteArriba);
 		
-		spriteAbajo.setPosition(coodenadas.getX(), coodenadas.getY());		
+		spriteAbajo.setPosition(coodenadas.getX(), coodenadas.getY()+3);		
 		spriteGroupAbajo.attachChild(spriteAbajo);		
 		TrozoPared trozo= new TrozoPared(spriteArriba, spriteAbajo, coodenadas);
 		listaMuros.add(trozo);
@@ -81,10 +89,11 @@ public class CapaParedes {
 		
 	}
 	
-
 	
 	
 	public void onSceneCreated(){
+//		spriteGroupArriba.setScaleX(Constantes.FARTOR_FORMA);
+//		spriteGroupAbajo.setScaleX(Constantes.FARTOR_FORMA);
 		context.escenaJuego.scene.attachChild(spriteGroupAbajo);
 		context.escenaJuego.scene.attachChild(spriteGroupArriba);
 	}
@@ -99,6 +108,8 @@ public class CapaParedes {
 		Casilla[][] matriz = context.escenaJuego.matriz.getMatrizmuros();		
 		
 		
+		
+		
 		for (int y = 2; y < matriz.length; y++) {
 			for (int x = 2; x < matriz.length; x++) {
 				Casilla casilla = matriz[y][x];
@@ -108,6 +119,8 @@ public class CapaParedes {
 					 if (matriz[y][x+1].tipoCasilla==Matriz.PARED && matriz[y][x-1].tipoCasilla==Matriz.PARED){
 						casilla.trozoPared.trozoAbajo.setCurrentTileIndex(CENTRO);
 						casilla.trozoPared.trozoArriba.setCurrentTileIndex(CENTRO);
+//						casilla.trozoPared.trozoAbajo.setVisible(false);
+//						casilla.trozoPared.trozoArriba.setVisible(false);
 					}else if (matriz[y][x+1].tipoCasilla==Matriz.PARED ){
 						casilla.trozoPared.trozoAbajo.setCurrentTileIndex(IZQUIERDA);
 						casilla.trozoPared.trozoArriba.setCurrentTileIndex(IZQUIERDA);

@@ -108,6 +108,7 @@ public class EscenaJuego {
 						}
 					});
 
+			
 			this.mTMXTiledMap = tmxLoader.loadFromAsset("tmx/mapa1.tmx");
 			this.mTMXTiledMap.setOffsetCenter(0, 0);
 			mTMXTiledMap.setScaleCenter(0, 0);
@@ -188,12 +189,12 @@ public class EscenaJuego {
 		context.capaParedes.recalculaPared();
 		context.capaParedes.onSceneCreated();
 		
-		
-		capaSuelo.setVisible(false);
-		capaPiedrasSombra.setVisible(false);
-		capaParedes.setVisible(false);
-		capaBordeAbajo.setVisible(false);
-		capaTechoPiedras.setVisible(false);	
+//		
+//		capaSuelo.setVisible(false);
+//		capaPiedrasSombra.setVisible(false);
+//		capaParedes.setVisible(false);
+//		capaBordeAbajo.setVisible(false);
+//		capaTechoPiedras.setVisible(false);	
 
 		miMapa.onSceneCreated();
 		

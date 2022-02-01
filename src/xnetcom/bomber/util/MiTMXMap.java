@@ -124,8 +124,8 @@ public class MiTMXMap {
 
 	
 	public void onSceneCreated(){
-		context.escenaJuego.scene.attachChild(spriteGroupSuelo);
-		context.escenaJuego.scene.attachChild(piedrasSombra);
+//		context.escenaJuego.scene.attachChild(spriteGroupSuelo);
+//		context.escenaJuego.scene.attachChild(piedrasSombra);
 		
 	}
 

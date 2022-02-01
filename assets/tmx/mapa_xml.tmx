@@ -38,7 +38,7 @@
    </properties>
   </tile>
  </tileset>
- <layer name="suelo" width="25" height="15" visible="0">
+ <layer name="suelo" width="25" height="15">
   <data>
    <tile gid="55"/>
    <tile gid="56"/>
@@ -796,7 +796,7 @@
    <tile gid="0"/>
   </data>
  </layer>
- <layer name="capaParedes" width="25" height="15" visible="0">
+ <layer name="capaParedes" width="25" height="15">
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -910,8 +910,6 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="147"/>
-   <tile gid="147"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -957,13 +955,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="147"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="147"/>
-   <tile gid="147"/>
-   <tile gid="147"/>
    <tile gid="0"/>
+   <tile gid="144"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1005,18 +1000,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="147"/>
-   <tile gid="147"/>
-   <tile gid="147"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="147"/>
-   <tile gid="147"/>
-   <tile gid="147"/>
-   <tile gid="147"/>
-   <tile gid="147"/>
-   <tile gid="147"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1056,7 +1042,21 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="147"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1175,7 +1175,7 @@
    <tile gid="0"/>
   </data>
  </layer>
- <layer name="bordeAbajo" width="25" height="15" visible="0">
+ <layer name="bordeAbajo" width="25" height="15">
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1554,7 +1554,7 @@
    <tile gid="152"/>
   </data>
  </layer>
- <layer name="techoPiedras" width="25" height="15" visible="0">
+ <layer name="techoPiedras" width="25" height="15">
   <data>
    <tile gid="8"/>
    <tile gid="9"/>
