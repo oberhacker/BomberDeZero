@@ -1,7 +1,9 @@
 package xnetcom.bomber.graficos;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
+import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.TiledSprite;
 import org.andengine.entity.sprite.batch.SpriteGroup;
 import org.andengine.opengl.texture.TextureOptions;
@@ -27,45 +29,55 @@ public class CapaParedes {
 	
 	public ArrayList<TrozoPared> listaMuros;
 	
+	
+	private Iterator<AnimatedSprite> itr;
+	private ArrayList<AnimatedSprite> almacenExplosiones;
+	
 	public CapaParedes(final BomberGame context){
 		this.context=context;
 		this.listaMuros=new ArrayList<TrozoPared>();
 		
 	}
+
+	public void carga() {
+
+		BitmapTextureAtlas explosionBTA = new BitmapTextureAtlas(context.getTextureManager(), 512, 512, TextureOptions.NEAREST_PREMULTIPLYALPHA);
+		explosionBTA.load();
 		
-	
-	public void carga(){
-			BitmapTextureAtlas btaParedAbajo = new BitmapTextureAtlas(context.getTextureManager(),1024, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);	
-			BitmapTextureAtlas btaParedArriba = new BitmapTextureAtlas(context.getTextureManager(),1024, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);	
-			TiledTextureRegion textureArriba=BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(btaParedArriba, context, "gfx/muroswais74_bigV8_arriba.png",0,0,4, 1);
-			TiledTextureRegion textureAbajo=BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(btaParedAbajo, context, "gfx/muroswais74_bigV8_abajo.png",0,0,4, 1);
-			btaParedAbajo.load();		
-			btaParedArriba.load();			
-			
-			
-						
-			spritePoolArriba = new SpritePoolParedes(textureArriba, context);		
-			spriteGroupArriba = new SpriteGroup(btaParedArriba,220,context.getVertexBufferObjectManager());		
-			spriteGroupArriba.setZIndex(Constantes.ZINDEX_CAPA_PAREDES_ARRIBA);
-			spriteGroupArriba.setScaleCenter(0, 0);
-			// no funciona el offset center asi se centra
-			spriteGroupArriba.setPosition(-1*Constantes.TILE_WIDTH, 1*Constantes.TILE_HEIGHT);		
-			
-			
-			
-			
-			spritePoolAbajo = new SpritePoolParedes(textureAbajo, context);		
-			spriteGroupAbajo = new SpriteGroup(btaParedAbajo,220,context.getVertexBufferObjectManager());		
-			spriteGroupAbajo.setZIndex(Constantes.ZINDEX_CAPA_PAREDES_ABAJO);
-			spriteGroupAbajo.setScaleCenter(0, 0);
-			// no funciona el offset center asi se centra
-			spriteGroupAbajo.setPosition(-1*Constantes.TILE_WIDTH, 1*Constantes.TILE_HEIGHT);	
-			
+		
+		almacenExplosiones = new ArrayList<AnimatedSprite>();
+		for (int i = 0; i < 10; i++) {
+			AnimatedSprite ans =new AnimatedSprite(0, 0, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(explosionBTA, context, "gfx/pared_explo.png", 0, 0, 2, 2),context.getVertexBufferObjectManager());
+			ans.setScale(0.5f);
+			ans.setScaleCenter(0, 0);
+			almacenExplosiones.add(ans);
+		}	
+		itr= almacenExplosiones.iterator();
+
+		BitmapTextureAtlas btaParedAbajo = new BitmapTextureAtlas(context.getTextureManager(), 1024, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		BitmapTextureAtlas btaParedArriba = new BitmapTextureAtlas(context.getTextureManager(), 1024, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		TiledTextureRegion textureArriba = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(btaParedArriba, context, "gfx/muroswais74_bigV8_arriba.png", 0, 0, 4, 1);
+		TiledTextureRegion textureAbajo = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(btaParedAbajo, context, "gfx/muroswais74_bigV8_abajo.png", 0, 0, 4, 1);
+		btaParedAbajo.load();
+		btaParedArriba.load();
+
+		spritePoolArriba = new SpritePoolParedes(textureArriba, context);
+		spriteGroupArriba = new SpriteGroup(btaParedArriba, 220, context.getVertexBufferObjectManager());
+		spriteGroupArriba.setZIndex(Constantes.ZINDEX_CAPA_PAREDES_ARRIBA);
+		spriteGroupArriba.setScaleCenter(0, 0);
+		// no funciona el offset center asi se centra
+		spriteGroupArriba.setPosition(-1 * Constantes.TILE_WIDTH, 1 * Constantes.TILE_HEIGHT);
+
+		spritePoolAbajo = new SpritePoolParedes(textureAbajo, context);
+		spriteGroupAbajo = new SpriteGroup(btaParedAbajo, 220, context.getVertexBufferObjectManager());
+		spriteGroupAbajo.setZIndex(Constantes.ZINDEX_CAPA_PAREDES_ABAJO);
+		spriteGroupAbajo.setScaleCenter(0, 0);
+		// no funciona el offset center asi se centra
+		spriteGroupAbajo.setPosition(-1 * Constantes.TILE_WIDTH, 1 * Constantes.TILE_HEIGHT);
 
 	}
 	
-	
-	
+
 	
 	public void ponPared(int columna,int fila){
 		TiledSprite spriteArriba = spritePoolArriba.obtainPoolItem();		
@@ -81,7 +93,7 @@ public class CapaParedes {
 		
 		spriteAbajo.setPosition(coodenadas.getX(), coodenadas.getY()+3);		
 		spriteGroupAbajo.attachChild(spriteAbajo);		
-		TrozoPared trozo= new TrozoPared(spriteArriba, spriteAbajo, coodenadas);
+		TrozoPared trozo= new TrozoPared(context,spriteArriba, spriteAbajo, coodenadas);
 		listaMuros.add(trozo);
 		context.escenaJuego.matriz.setValor(Matriz.PARED, fila, columna, null, trozo);		
 		
@@ -104,10 +116,6 @@ public class CapaParedes {
 	
 	public void recalculaPared(){
 		Casilla[][] matriz = context.escenaJuego.matriz.getMatrizmuros();		
-		
-		
-		
-		
 		for (int y = 2; y < matriz.length; y++) {
 			for (int x = 2; x < matriz.length; x++) {
 				Casilla casilla = matriz[y][x];
@@ -117,8 +125,6 @@ public class CapaParedes {
 					 if (matriz[y][x+1].tipoCasilla==Matriz.PARED && matriz[y][x-1].tipoCasilla==Matriz.PARED){
 						casilla.trozoPared.trozoAbajo.setCurrentTileIndex(CENTRO);
 						casilla.trozoPared.trozoArriba.setCurrentTileIndex(CENTRO);
-//						casilla.trozoPared.trozoAbajo.setVisible(false);
-//						casilla.trozoPared.trozoArriba.setVisible(false);
 					}else if (matriz[y][x+1].tipoCasilla==Matriz.PARED ){
 						casilla.trozoPared.trozoAbajo.setCurrentTileIndex(IZQUIERDA);
 						casilla.trozoPared.trozoArriba.setCurrentTileIndex(IZQUIERDA);
@@ -132,33 +138,72 @@ public class CapaParedes {
 				}
 
 			}				
+		}		
+	}
+	
+	
+	public void recalculaTrozosLaterales(Coordenadas coordenada){
+		Coordenadas coordenadaDerecha= new Coordenadas(coordenada.getColumna()+1, coordenada.getFila());
+		Coordenadas coordenadaIzquierda= new Coordenadas(coordenada.getColumna()-1, coordenada.getFila());		
+		recalculaTrozo(coordenadaDerecha);
+		recalculaTrozo(coordenadaIzquierda);
+	}
+	
+	public void recalculaTrozo(Coordenadas coordenada){
+		Casilla[][] matriz = context.escenaJuego.matriz.getMatrizmuros();
+		Casilla casilla = context.escenaJuego.matriz.getValor(coordenada.getFila(), coordenada.getColumna());	
+		if (casilla.tipoCasilla==Matriz.PARED){
+			// miramos si hay toro a la derecha
+			 if (matriz[coordenada.getFila()][coordenada.getColumna()+1].tipoCasilla==Matriz.PARED && matriz[coordenada.getFila()][coordenada.getColumna()-1].tipoCasilla==Matriz.PARED){
+				casilla.trozoPared.trozoAbajo.setCurrentTileIndex(CENTRO);
+				casilla.trozoPared.trozoArriba.setCurrentTileIndex(CENTRO);
+			}else if (matriz[coordenada.getFila()][coordenada.getColumna()+1].tipoCasilla==Matriz.PARED ){
+				casilla.trozoPared.trozoAbajo.setCurrentTileIndex(IZQUIERDA);
+				casilla.trozoPared.trozoArriba.setCurrentTileIndex(IZQUIERDA);
+			}else if (matriz[coordenada.getFila()][coordenada.getColumna()-1].tipoCasilla==Matriz.PARED ){
+				casilla.trozoPared.trozoAbajo.setCurrentTileIndex(DERECHA);
+				casilla.trozoPared.trozoArriba.setCurrentTileIndex(DERECHA);
+			}else if (matriz[coordenada.getFila()][coordenada.getColumna()+1].tipoCasilla!=Matriz.PARED){
+				casilla.trozoPared.trozoAbajo.setCurrentTileIndex(SOLO);
+				casilla.trozoPared.trozoArriba.setCurrentTileIndex(SOLO);
+			}
 		}
-		
-		
+
 		
 	}
 	
 	
-	
-	
-	public class TrozoPared{
-		
-		public void explota(){
-			
-		}
-		
+	public class TrozoPared{		
 		
 		public TiledSprite trozoArriba;
 		public TiledSprite trozoAbajo;
 		public Coordenadas coodenadas;
+		public BomberGame context;
 		
-		public TrozoPared(TiledSprite trozoArriba, TiledSprite trozoAbajo, Coordenadas coodenadas){
+		
+		public TrozoPared(BomberGame context, TiledSprite trozoArriba, TiledSprite trozoAbajo, Coordenadas coodenadas){
 			this.trozoArriba=trozoArriba;
 			this.trozoAbajo=trozoAbajo;
 			this.coodenadas=coodenadas;
+			this.context=context;
 			
 		}
 		
+		public void explota(){
+			context.escenaJuego.matriz.setValor(Matriz.NADA, coodenadas.getFila(), coodenadas.getColumna(), null, null);
+			
+			trozoArriba.detachSelf();
+			trozoAbajo.detachSelf();
+			
+			spritePoolAbajo.recyclePoolItem(trozoAbajo);
+			spritePoolArriba.recyclePoolItem(trozoArriba);
+			
+			trozoAbajo.setVisible(false);
+			trozoArriba.setVisible(false);
+			
+			
+			context.capaParedes.recalculaTrozosLaterales(coodenadas);
+		}
 	}
 
 	
