@@ -1,6 +1,7 @@
 package xnetcom.bomber.graficos;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
@@ -22,6 +23,7 @@ import org.andengine.opengl.texture.region.TextureRegionFactory;
 
 import android.graphics.Typeface;
 import xnetcom.bomber.BomberGame;
+import xnetcom.bomber.entidades.Bomba;
 import xnetcom.bomber.util.Constantes;
 
 public class HudBomber {
@@ -161,12 +163,14 @@ public class HudBomber {
 		btn_1.setScaleCenter(0, 0);
 		btn_1.setAlpha(0.5f);
 		
+		
 		btn_2 = new Sprite(0, 0, btn_2_TR, context.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
 				if (pSceneTouchEvent.getAction() == pSceneTouchEvent.ACTION_DOWN) {
 					apretarBotonExplosion();
 				}
+
 				return false;
 			}
 		};
@@ -181,17 +185,17 @@ public class HudBomber {
 		this.mDigitalOnScreenControl.setScale(2f);
 	}
 
+
 	public void apretarBotonPlantabomba() {
 		context.vibrar(VIBRAR_BOTON);
-		context.almacenBombas.circulaBomba().plantarBomba(5, 1, false);;
-//		boolean plantada =context.escenaJuego.bomba.plantarBomba(5, 1, false);
+		context.almacenBombas.plantaBomba();
 		
 		System.out.println("APRETADOOOOOOO");
 	}
 
 	public void apretarBotonExplosion() {
-		context.vibrar(VIBRAR_BOTON);		
-		context.bomberman.getSprite().setZIndex(1000);
+		context.vibrar(VIBRAR_BOTON);
+		context.almacenBombas.detonarBomba();;
 		System.out.println("APRETADOOOOOOO");
 	}
 	

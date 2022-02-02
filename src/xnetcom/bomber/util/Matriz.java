@@ -1,5 +1,7 @@
 package xnetcom.bomber.util;
 
+import java.util.ArrayList;
+
 import xnetcom.bomber.entidades.Bomba;
 import xnetcom.bomber.graficos.CapaParedes.TrozoPared;
 import android.util.Log;
@@ -20,7 +22,18 @@ public class Matriz{
 	public class Casilla{
 		public int tipoCasilla=0;
 		public Bomba bomba;
-		public TrozoPared trozoPared;		
+		public TrozoPared trozoPared;	
+		
+		public void explota(){
+//			tipoCasilla=0;
+			if (bomba!=null){
+				bomba.detonarConDelay();
+			}
+			if (trozoPared!=null){
+				trozoPared.explota();
+			}
+			
+		}
 	}
 	
 	public Casilla matriz[][]={			    {new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla(),new Casilla()},
@@ -52,6 +65,15 @@ public class Matriz{
 	
 
 	
+	
+	public synchronized void explota(ArrayList<Coordenadas> coordenadas) {
+		synchronized (matriz) {
+			for ( Coordenadas coordenada : coordenadas) {
+				matriz[coordenada.getFila()][coordenada.getColumna()].explota();	
+			}
+		}
+		
+	}
 	
 	public synchronized Casilla[][] getMatrizmuros() {			
 		return this.matriz;

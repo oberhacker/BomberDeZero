@@ -1,6 +1,7 @@
 package xnetcom.bomber.entidades;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import xnetcom.bomber.BomberGame;
 import xnetcom.bomber.util.Constantes;
@@ -8,11 +9,13 @@ import xnetcom.bomber.util.Constantes;
 public class AlmacenBombas {
 
 	BomberGame context;
-	private ArrayList<Bomba> almacen;
-	private int secuencia = 0;
+	public ArrayList<Bomba> almacen;
+	public int secuencia = 0;
 	private int nextBomba=0;
+	public AtomicInteger bombasPlantadas;
 	public AlmacenBombas(BomberGame context) {
 		this.context = context;
+		bombasPlantadas= new AtomicInteger(0);
 	}
 
 	public void carga() {
@@ -32,7 +35,7 @@ public class AlmacenBombas {
 		}
 	}
 	
-	public Bomba circulaBomba(){
+	private Bomba circulaBomba(){
 		if (nextBomba>=almacen.size()){
 			nextBomba=0;
 		}
@@ -42,6 +45,32 @@ public class AlmacenBombas {
 		
 	}
 	
+	public void detonarBomba(){
+		if (context.gameManager.detonador){
+			Bomba mBomba=null;
+			for (Bomba bomba : almacen) {
+				if (!bomba.isDetonada()){
+					if (mBomba==null){
+						mBomba=bomba;
+					}
+					if (bomba.secuencia<mBomba.secuencia){
+						mBomba=bomba;
+					}
+				}
+			}
+			if (mBomba!=null)mBomba.detonar();
+		}
+	}
+	
+	public void plantaBomba(){
+		if (bombasPlantadas.get()<context.gameManager.bombaNum){
+			Bomba bomba = circulaBomba();
+			secuencia++;
+			bomba.plantarBomba(context.gameManager.bombaTam, secuencia, context.gameManager.detonador);
+					
+		}
+		
+	}
 	
 
 }

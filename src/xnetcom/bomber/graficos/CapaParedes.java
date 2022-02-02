@@ -30,9 +30,9 @@ public class CapaParedes {
 	public CapaParedes(final BomberGame context){
 		this.context=context;
 		this.listaMuros=new ArrayList<TrozoPared>();
+		
 	}
-	
-	
+		
 	
 	public void carga(){
 			BitmapTextureAtlas btaParedAbajo = new BitmapTextureAtlas(context.getTextureManager(),1024, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);	
@@ -43,9 +43,7 @@ public class CapaParedes {
 			btaParedArriba.load();			
 			
 			
-			
-			
-			
+						
 			spritePoolArriba = new SpritePoolParedes(textureArriba, context);		
 			spriteGroupArriba = new SpriteGroup(btaParedArriba,220,context.getVertexBufferObjectManager());		
 			spriteGroupArriba.setZIndex(Constantes.ZINDEX_CAPA_PAREDES_ARRIBA);
@@ -140,7 +138,15 @@ public class CapaParedes {
 		
 	}
 	
+	
+	
+	
 	public class TrozoPared{
+		
+		public void explota(){
+			
+		}
+		
 		
 		public TiledSprite trozoArriba;
 		public TiledSprite trozoAbajo;

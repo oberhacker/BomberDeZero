@@ -59,6 +59,7 @@ public class BomberGame extends SimpleBaseGameActivity {
 	public BomberMan bomberman;
 	public AlmacenBombas almacenBombas;
 	public CapaParedes capaParedes;
+	public GameManager gameManager;
 	
 	@Override
 	public EngineOptions onCreateEngineOptions() {
@@ -86,6 +87,7 @@ public class BomberGame extends SimpleBaseGameActivity {
 
 	@Override
 	public void onCreateResources() throws IOException {
+		gameManager=new GameManager(this);
 		escenaInicio = new Inicio(this);
 		escenaCarga = new Carga(this);
 		escenaJuego = new EscenaJuego(this);

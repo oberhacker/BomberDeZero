@@ -27,6 +27,7 @@ import org.andengine.util.modifier.IModifier;
 import xnetcom.bomber.BomberGame;
 import xnetcom.bomber.util.Constantes;
 import xnetcom.bomber.util.Matriz;
+import xnetcom.bomber.util.Matriz.Casilla;
 import android.graphics.Typeface;
 import android.util.Log;
 
@@ -106,7 +107,7 @@ public class BomberMan {
 				bomberArriba.setCurrentTileIndex(pTileIndex);
 				super.setCurrentTileIndex(pTileIndex);
 			}
-
+			
 			@Override
 			protected void onManagedDraw(GLState GLState, Camera pCamera) {
 				super.onManagedDraw(GLState, pCamera);
@@ -116,7 +117,7 @@ public class BomberMan {
 		bomberAbajo.setScaleCenter(0, 0);
 		bomberAbajo.setScaleY(FACTOR_ACHATADO);
 
-		bomberAbajo.attachChild(bomberArriba);
+//		bomberAbajo.attachChild(bomberAbajo);
 
 		// ajustamos el personaje dento de su cuadro
 		bomberAbajo.setX(bomberAbajo.getX() - 15);
@@ -163,6 +164,7 @@ public class BomberMan {
 		baseTileRectangle.setPosition(2 * Constantes.TILE_TAM * Constantes.FARTOR_FORMA, context.escenaJuego.mTMXTiledMap.getHeight() - 3 * Constantes.TILE_TAM);
 
 		scene.attachChild(currentTileRectangle);
+		scene.attachChild(bomberArriba);
 		scene.attachChild(baseTileRectangle);
 
 
@@ -183,6 +185,13 @@ public class BomberMan {
 	int innerFila = 0;
 
 	public void updater() {
+		
+		
+		//////////////
+
+		
+		bomberArriba.setX(baseTileRectangle.getX()- 15);
+		bomberArriba.setY(baseTileRectangle.getY());
 		final float[] playerFootCordinates = getSprite().convertLocalCoordinatesToSceneCoordinates(BomberMan.PIES_X, BomberMan.PIES_Y);
 		TMXLayer tmxLayer = context.escenaJuego.mTMXTiledMap.getTMXLayers().get(1);
 		TMXTile tmxTile = tmxLayer.getTMXTileAt(playerFootCordinates[Constants.VERTEX_INDEX_X], playerFootCordinates[Constants.VERTEX_INDEX_Y]);

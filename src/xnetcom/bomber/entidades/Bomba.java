@@ -1,6 +1,7 @@
 package xnetcom.bomber.entidades;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.DelayModifier;
@@ -21,7 +22,11 @@ import xnetcom.bomber.BomberGame;
 import xnetcom.bomber.util.Constantes;
 import xnetcom.bomber.util.Coordenadas;
 import xnetcom.bomber.util.Matriz;
+import xnetcom.bomber.util.Matriz.Casilla;
 import xnetcom.bomber.util.TransparentBitmapTextureAtlasSource;
+import android.R.bool;
+import android.util.Log;
+import android.widget.Toast;
 
 public class Bomba {
 
@@ -74,9 +79,19 @@ public class Bomba {
 
 	int fila;
 	int columna;
-	private int secuencia;
+	public int secuencia=0;
 	private int tamExplosion;
 	private boolean detonada;
+	
+	public boolean isDetonada() {
+		return detonada;
+	}
+
+	public void setDetonada(boolean detonada) {
+		Log.d("DETONADA", "detonada" +detonada+ " fila"+fila +" columna "+columna);
+		this.detonada = detonada;
+	}
+
 	private boolean detonadorRemoto;
 
 	
@@ -84,6 +99,7 @@ public class Bomba {
 	
 
 	public Bomba(BomberGame context) {
+		detonada=true;
 		this.context = context;
 	}
 
@@ -320,18 +336,18 @@ public class Bomba {
 		coordenadas= new ArrayList<Coordenadas>();
 		int columna = context.bomberman.getColumna();
 		int fila = context.bomberman.getFila();
+		this.fila = fila;
+		this.columna = columna;
 
 		// si no se puede plantar no hacemos nada
 		if (!sePuedePlantarBomba(fila, columna)) {
 			return false;
 		}
+		context.almacenBombas.bombasPlantadas.incrementAndGet();
+		setDetonada(false);
 		context.escenaJuego.matriz.setValor(Matriz.BOMBA, fila, columna,this,null);
-
-		this.fila = fila;
-		this.columna = columna;
 		this.secuencia = secuencia;
 		this.tamExplosion = tamExplosion;
-		this.detonada = false;
 		this.detonadorRemoto = detonadorRemoto;
 
 		batch.setPosition(context.bomberman.currentTileRectangle.getX(), context.bomberman.currentTileRectangle.getY());
@@ -350,8 +366,44 @@ public class Bomba {
 
 	}
 
+	public void detonarConDelay(){
+		if (isDetonada()){
+			return;
+		}		
+		Log.d("DETONAR", "ME LLAMAN A DETONAR CON TIEMPO Fila:"+fila+" columna "+columna);
+		batch.clearEntityModifiers();
+		new Thread(){
+			public void run() {
+				try {
+					sleep(100);
+					detonar();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}				
+
+			};
+		}.start();	
+		
+//		batch.registerEntityModifier(new DelayModifier(0.1f){
+//			@Override
+//			protected void onModifierFinished(IEntity pItem) {
+//				// TODO Auto-generated method stub
+//				Log.d("DETONAR", "FIN DELAY");
+//				detonar();
+//			}
+//		});		
+	}
 	
 	public synchronized void detonar(){	
+		Log.d("DETONAR", "fila"+fila +" Columna "+columna);
+		if (isDetonada()){
+			return;
+		}
+
+//		batch.resetEntityModifiers();
+		setDetonada(true);
+		context.soundManager.pararMecha();
 		batch.setIgnoreUpdate(false);		
 //		batch.setVisible(true);
 		creaFragmentoExplosiones();
@@ -359,21 +411,16 @@ public class Bomba {
 		sprBomba.setVisible(false);
 		context.escenaJuego.matriz.setValor(Matriz.NADA, fila, columna,null,null);
 		context.vibrar(300);
-		detonada=true;
+		
 		sprCentro.animate(ANIMATE_DURATION, false, new ListenerExplotar());
+		// detonamos las demas bombas
+				
+		context.almacenBombas.bombasPlantadas.decrementAndGet();
+		context.escenaJuego.matriz.explota(coordenadas);
 	}	
 	
-	public void detonarContiempo(float secs){
-		
-		batch.registerEntityModifier(new DelayModifier(secs){
-			@Override
-			protected void onModifierFinished(IEntity pItem) {
-				// TODO Auto-generated method stub
-				detonar();
-			}
-		});		
-		
-	}
+	
+
 	
 	
 	
@@ -385,7 +432,6 @@ public class Bomba {
 	
 	public void creaFragmentoExplosiones(){
 		Coordenadas coordenadasCentro = new Coordenadas(columna, fila);
-		coordenadas.add(coordenadasCentro);
 		
 		centro();
 		cruzArriba();
@@ -417,7 +463,7 @@ public class Bomba {
 		//centro+1	
 		
 		int iAnterior=0;	
-		for (int i = 1; i < 5; i++,iAnterior++) {
+		for (int i = 1; i <=tamExplosion; i++,iAnterior++) {
 			int mColumna=columna;
 			int mFila = fila-i;			
 			Coordenadas coodenadas= new Coordenadas(mColumna, mFila);
@@ -425,8 +471,14 @@ public class Bomba {
 			
 			if (valor==Matriz.NADA){
 				// poner fagmento			
-				array[i].setVisible(true);
-				array[i].setPosition(getXFragmento(0), getYFragmento(i));
+				if (i==tamExplosion){
+					array[4].setPosition(getXFragmento(0), getYFragmento(i));
+					array[4].setVisible(true);
+				}else{
+					array[i].setVisible(true);
+					array[i].setPosition(getXFragmento(0), getYFragmento(i));
+				}
+
 				this.coordenadas.add(coodenadas);
 			}else if (valor==Matriz.PARED|| valor==Matriz.BOMBA){
 				array[4].setPosition(getXFragmento(0), getYFragmento(i));
@@ -449,16 +501,22 @@ public class Bomba {
 		//centro+1	
 		
 		int iAnterior=0;	
-		for (int i = 1; i < 5; i++,iAnterior++) {
+		for (int i = 1; i <= tamExplosion; i++,iAnterior++) {
 			int mColumna=columna-i;
 			int mFila = fila;			
 			Coordenadas coodenadas= new Coordenadas(mColumna, mFila);
 			int valor=context.escenaJuego.matriz.getValor(coodenadas.getFila(), coodenadas.getColumna()).tipoCasilla;
 			
 			if (valor==Matriz.NADA){
-				// poner fagmento			
-				array[i].setVisible(true);
-				array[i].setPosition(getXFragmento(-i), getYFragmento(0));
+				// poner fagmento		
+				if (i==tamExplosion){
+					array[4].setPosition(getXFragmento(-i), getYFragmento(0));
+					array[4].setVisible(true);
+				}else{
+					array[i].setVisible(true);
+					array[i].setPosition(getXFragmento(-i), getYFragmento(0));	
+				}
+
 				this.coordenadas.add(coodenadas);
 			}else if (valor==Matriz.PARED|| valor==Matriz.BOMBA){
 				array[4].setPosition(getXFragmento(-i), getYFragmento(0));
@@ -482,7 +540,7 @@ public class Bomba {
 		//centro+1	
 		
 		int iAnterior=0;	
-		for (int i = 1; i < 5; i++,iAnterior++) {
+		for (int i = 1; i <=tamExplosion; i++,iAnterior++) {
 			int mColumna=columna+i;
 			int mFila = fila;			
 			Coordenadas coodenadas= new Coordenadas(mColumna, mFila);
@@ -490,8 +548,14 @@ public class Bomba {
 			
 			if (valor==Matriz.NADA){
 				// poner fagmento			
-				array[i].setVisible(true);
-				array[i].setPosition(getXFragmento(i), getYFragmento(0));
+				if (i==tamExplosion){
+					array[4].setPosition(getXFragmento(i), getYFragmento(0));
+					array[4].setVisible(true);
+				}else{
+					array[i].setVisible(true);
+					array[i].setPosition(getXFragmento(i), getYFragmento(0));
+				}
+
 				this.coordenadas.add(coodenadas);
 			}else if (valor==Matriz.PARED|| valor==Matriz.BOMBA){
 				array[4].setPosition(getXFragmento(i), getYFragmento(0));
@@ -515,16 +579,22 @@ public class Bomba {
 		//centro+1	
 		
 		int iAnterior=0;	
-		for (int i = 1; i < 5; i++,iAnterior++) {
+		for (int i = 1; i <=tamExplosion; i++,iAnterior++) {
 			int mColumna=columna;
 			int mFila = fila+i;			
 			Coordenadas coodenadas= new Coordenadas(mColumna, mFila);
 			int valor=context.escenaJuego.matriz.getValor(coodenadas.getFila(), coodenadas.getColumna()).tipoCasilla;
 			
 			if (valor==Matriz.NADA){
-				// poner fagmento			
-				array[i].setVisible(true);
-				array[i].setPosition(getXFragmento(0), getYFragmento(-i));
+				// poner fagmento		
+				if (i==tamExplosion){
+					array[4].setPosition(getXFragmento(0), getYFragmento(-i));
+					array[4].setVisible(true);
+				}else{
+					array[i].setVisible(true);
+					array[i].setPosition(getXFragmento(0), getYFragmento(-i));
+				}
+
 				this.coordenadas.add(coodenadas);
 			}else if (valor==Matriz.PARED || valor==Matriz.BOMBA){
 				array[4].setPosition(getXFragmento(0), getYFragmento(-i));
@@ -630,8 +700,8 @@ public class Bomba {
 
 		@Override
 		public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
-			context.soundManager.pararMecha();
-			detonar();
+			
+//			detonar();
 			
 		}
 
