@@ -55,10 +55,11 @@ public class Inicio {
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
 				if(!isVisible())return false;
 				if (pSceneTouchEvent.getAction() == 1) {
-//					cargaMenuCampOentrenamiento();
 					
-					Scene scene = context.escenaJuego.onCreateScene();
-					context.getEngine().setScene(scene);
+//					Scene scene = context.escenaJuego.onCreateScene();
+//					context.getEngine().setScene(scene);
+					
+					context.getEngine().setScene(context.menuMapas.escena);
 					return false;
 				} 
 					return false;

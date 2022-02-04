@@ -333,28 +333,38 @@ public class Bomba {
 	}
 
 	public boolean plantarBomba(int tamExplosion, int secuencia, boolean detonadorRemoto) {
+		
+		
+		
 		coordenadas= new ArrayList<Coordenadas>();
 		int columna = context.bomberman.getColumna();
 		int fila = context.bomberman.getFila();
 		this.fila = fila;
 		this.columna = columna;
+		
+		
 
 		// si no se puede plantar no hacemos nada
 		if (!sePuedePlantarBomba(fila, columna)) {
 			return false;
 		}
+		
+		
 		context.almacenBombas.bombasPlantadas.incrementAndGet();
 		setDetonada(false);
+		
+		
 		context.escenaJuego.matriz.setValor(Matriz.BOMBA, fila, columna,this,null);
 		this.secuencia = secuencia;
 		this.tamExplosion = tamExplosion;
 		this.detonadorRemoto = detonadorRemoto;
+		
 
 		batch.setPosition(context.bomberman.currentTileRectangle.getX(), context.bomberman.currentTileRectangle.getY());
+		
 		currentTileRectangle.setPosition(context.bomberman.currentTileRectangle.getX(), context.bomberman.currentTileRectangle.getY());
 		context.soundManager.plantaBomba();
-		context.soundManager.sonarMecha();
-		
+		context.soundManager.sonarMecha();		
 		sprBomba.setVisible(true);
 		if (!detonadorRemoto){
 			sprBomba.animate(TIEMPO, 2,new ListenerDetonador());

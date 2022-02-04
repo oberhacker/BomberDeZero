@@ -19,7 +19,7 @@ public class Carga {
 
 	private BitmapTextureAtlas mBarraTexture;
 	private TextureRegion textureR;
-	private Font mFont;
+	public Font mFont;
 	private Text text;
 	private Sprite barra;
 	public Scene scenaCarga;
@@ -33,8 +33,7 @@ public class Carga {
 	private void onLoadResources() {
 		this.mBarraTexture = new BitmapTextureAtlas(context.getTextureManager(), 2, 64, TextureOptions.DEFAULT);
 		this.textureR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBarraTexture, context, "gfx/barra.png", 0, 0);
-		this.mFont = FontFactory.createFromAsset(context.getFontManager(), context.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA, context.getAssets(), "font/DD.ttf", 60, true,
-				android.graphics.Color.WHITE);
+		this.mFont = FontFactory.createFromAsset(context.getFontManager(), context.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA, context.getAssets(), "font/DD.ttf", 60, true,android.graphics.Color.WHITE);
 		mFont.load();
 		mBarraTexture.load();
 	}
@@ -73,18 +72,17 @@ public class Carga {
 					@Override
 					public Void doInBackground(final Void... params) {
 						try {
-							setPorcentaje(30);
 							context.escenaInicio.carga();
-							setPorcentaje(60);
-							Thread.sleep(500);
-							context.escenaJuego.cargar();
-							setPorcentaje(80);
+							setPorcentaje(30);
 							context.soundManager.carga();
+							setPorcentaje(35);
+							context.menuMapas.carga();
+							setPorcentaje(60);							
 							context.capaParedes.carga();
-							Thread.sleep(500);
+							setPorcentaje(80);							
+							context.escenaJuego.cargar();
 							setPorcentaje(100);
-							Thread.sleep(500);
-						} catch (InterruptedException e) {
+						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
@@ -93,12 +91,7 @@ public class Carga {
 
 					@Override
 					public void onPostExecute(final Void result) {						
-//						 context.getEngine().setScene(context.escenaInicio.escenaInicio);
-						 						 
-						Scene scene = context.escenaJuego.onCreateScene();
-						context.getEngine().setScene(scene);
-						 
-
+						 context.getEngine().setScene(context.escenaInicio.escenaInicio);
 					}
 				}.execute((Void[]) null);
 
@@ -107,11 +100,11 @@ public class Carga {
 
 	}
 
-	int width = context.CAMERA_WIDTH;
-	int parcial = 1;
+
+	
 
 	public void setPorcentaje(float porciento) {
-		barra.setWidth((porciento / 100) * width * 2);
+		barra.setWidth((porciento / 100) * context.CAMERA_WIDTH * 2);
 	}
 
 }

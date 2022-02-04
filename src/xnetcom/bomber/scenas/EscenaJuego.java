@@ -67,7 +67,9 @@ public class EscenaJuego {
 	}
 	public MiTMXMap miMapa;
 	public Scene onCreateScene() {
-		
+		if (scene!=null){
+			return scene;
+		}
 		
 		miMapa= new MiTMXMap(context);
 		miMapa.cargaMapa("tmx/mapa_xml.tmx");

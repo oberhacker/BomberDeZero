@@ -36,6 +36,7 @@ public class Constantes {
 	public static int ZINDEX_FUEGO=550;
 	
 	
+	public static final int FONT_BOMBA_MAPA = 60;
 	
 	
 	public static float TIEMPO_POR_CUADRADO=0.40f;

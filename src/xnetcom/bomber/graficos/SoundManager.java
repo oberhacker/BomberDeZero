@@ -17,12 +17,13 @@ public class SoundManager {
 
 	public BomberGame context;
 
-	private Sound bomset;
+	private ArrayList<Sound> bomset = new ArrayList<Sound>();;
 	private Sound estrellas;
 
 	private ArrayList<Sound> explosion = new ArrayList<Sound>();
 	AtomicInteger nexExplosion = new AtomicInteger(0);
-	
+	AtomicInteger nexBomset = new AtomicInteger(0);
+
 	private Sound monedasSound;
 	private Sound campanaFinal;
 	private Sound pasosB;
@@ -40,11 +41,14 @@ public class SoundManager {
 		SoundFactory.setAssetBasePath("mfx/");
 		try {
 			this.monedasSound = SoundFactory.createSoundFromAsset(context.getEngine().getSoundManager(), context, "ITEM_GET.wav");
-			this.bomset = SoundFactory.createSoundFromAsset(context.getEngine().getSoundManager(), context, "SE_08.wav");
 			this.campanaFinal = SoundFactory.createSoundFromAsset(context.getEngine().getSoundManager(), context, "arpa.mp3");
+
 			for (int i = 0; i < 15; i++) {
+				Sound plantada = SoundFactory.createSoundFromAsset(context.getEngine().getSoundManager(), context, "SE_08.wav");
 				Sound mexplosion = SoundFactory.createSoundFromAsset(context.getEngine().getSoundManager(), context, "BOM_11_M_bajos.wav");
 				explosion.add(mexplosion);
+				bomset.add(plantada);
+
 			}
 
 			this.estrellas = SoundFactory.createSoundFromAsset(context.getEngine().getSoundManager(), context, "estrellas.mp3");
@@ -52,11 +56,15 @@ public class SoundManager {
 			e.printStackTrace();
 		}
 		this.estrellas.setVolume(1);
-		bomset.setVolume(1);
+
 		// musica1.setVolume(0.1f);
 
 		for (Sound explosion : explosion) {
 			explosion.setVolume(2f);
+		}
+
+		for (Sound bom : bomset) {
+			bom.setVolume(1f);
 		}
 
 		MusicFactory.setAssetBasePath("mfx/");
@@ -103,51 +111,62 @@ public class SoundManager {
 
 	public void plantaBomba() {
 		if (sonido) {
-			try {
-				bomset.play();
-			} catch (Exception e) {
-			}
+			new Thread() {
+				public void run() {
+					try {
+						if (nexBomset.get() >= bomset.size() - 2) {
+							nexBomset.set(0);
+						}
+						bomset.get(nexBomset.getAndIncrement()).play();
+					} catch (Exception e) {
+						Log.e("Errrorrrrrrrrrrrrrrr", "", e);
+					}
+				};
+			}.start();
+
 		}
 	}
 
-	
-
 	public void sonidoExplosion() {
 		if (sonido) {
-			try {
-				if (nexExplosion.get() >= explosion.size()-2) {
-					nexExplosion.set(0);
-				}
-				explosion.get(nexExplosion.getAndIncrement()).play();
-			} catch (Exception e) {
-				Log.e("Errrorrrrrrrrrrrrrrr", "", e);
-			}
+			new Thread() {
+				public void run() {
+					try {
+						if (nexExplosion.get() >= explosion.size() - 2) {
+							nexExplosion.set(0);
+						}
+						explosion.get(nexExplosion.getAndIncrement()).play();
+					} catch (Exception e) {
+						Log.e("Errrorrrrrrrrrrrrrrr", "", e);
+					}
+				};
+			}.start();
 		}
 	}
 
 	int bombas = 0;
 
-	public int sonarMecha() {
-		// float vol= Preferencias.leerPreferenciasInt("sound_level");
-		// if (vol==-1){
-		// vol=5;
-		// }
-		// mecha.setVolume((vol/10)*2);
-		if (bombas == 0)
-			mecha.play();
-		bombas++;
-		System.out.println("bombas" + bombas);
-		return bombas;
+	public void sonarMecha() {
+		new Thread() {
+			public void run() {
+				if (bombas == 0)
+					mecha.play();
+				bombas++;
+			};
+		}.start();
 	}
 
-	public int pararMecha() {
+	public void pararMecha() {
 
-		bombas--;
-		System.out.println("bombas" + bombas);
-		if (bombas == 0) {
-			mecha.pause();
-		}
-		return bombas;
+		new Thread() {
+			public void run() {
+				bombas--;
+				if (bombas == 0) {
+					mecha.pause();
+				}
+			};
+		}.start();
+
 	}
 
 }

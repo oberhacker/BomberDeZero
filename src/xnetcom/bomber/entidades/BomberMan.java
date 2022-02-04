@@ -83,6 +83,8 @@ public class BomberMan {
 
 	
 
+	
+	float FACTORPEQUEO=0.90f;
 	public void carga() throws IOException {
 
 
@@ -100,7 +102,10 @@ public class BomberMan {
 		bomberArriba = new AnimatedSprite(0, 0, mBombermanTextureRegionAniA, context.getVertexBufferObjectManager());
 		bomberArriba.setOffsetCenter(0, 0);
 		bomberArriba.setScaleCenter(0, 0);
-		bomberArriba.setScaleY(FACTOR_ACHATADO);
+		bomberArriba.setScaleY(FACTORPEQUEO*FACTOR_ACHATADO);
+		bomberArriba.setScaleX(FACTORPEQUEO);
+		
+		
 		bomberAbajo = new AnimatedSprite(0, 0, mBombermanTextureRegionAniB, context.getVertexBufferObjectManager()) {
 			@Override
 			public void setCurrentTileIndex(int pTileIndex) {
@@ -115,7 +120,8 @@ public class BomberMan {
 		};
 		bomberAbajo.setOffsetCenter(0, 0);
 		bomberAbajo.setScaleCenter(0, 0);
-		bomberAbajo.setScaleY(FACTOR_ACHATADO);
+		bomberAbajo.setScaleY(FACTORPEQUEO*FACTOR_ACHATADO);
+		bomberAbajo.setScaleX(FACTORPEQUEO);
 
 //		bomberAbajo.attachChild(bomberAbajo);
 

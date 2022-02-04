@@ -19,11 +19,11 @@ import xnetcom.bomber.graficos.SoundManager;
 import xnetcom.bomber.scenas.Carga;
 import xnetcom.bomber.scenas.EscenaJuego;
 import xnetcom.bomber.scenas.Inicio;
+import xnetcom.bomber.scenas.MenuMapas;
 import xnetcom.bomber.util.MiEngine;
 import android.content.Context;
 import android.os.Vibrator;
 import android.util.DisplayMetrics;
-import android.widget.Toast;
 
 /**
  * (c) 2010 Nicolas Gramlich (c) 2011 Zynga
@@ -37,8 +37,8 @@ public class BomberGame extends SimpleBaseGameActivity {
 	// Constants
 	// ===========================================================
 
-	public static int CAMERA_WIDTH = 1280;
-	public static int CAMERA_HEIGHT = 720;
+	public  int CAMERA_WIDTH = 1280;
+	public  int CAMERA_HEIGHT = 720;
 
 
 	// ===========================================================
@@ -60,11 +60,12 @@ public class BomberGame extends SimpleBaseGameActivity {
 	public AlmacenBombas almacenBombas;
 	public CapaParedes capaParedes;
 	public GameManager gameManager;
+	public MenuMapas menuMapas;
 	
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 //		Toast.makeText(this, "The tile the player is walking on will be highlighted.", Toast.LENGTH_LONG).show();
-		DetectorRatio();
+//		DetectorRatio();
 		this.camaraJuego = new SmoothCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT, 1000f, 1000f, 1);
 		this.camaraJuego.setBoundsEnabled(false);
 		this.camaraJuego.setZoomFactor(1.2f);
@@ -87,6 +88,7 @@ public class BomberGame extends SimpleBaseGameActivity {
 
 	@Override
 	public void onCreateResources() throws IOException {
+		menuMapas= new MenuMapas(this);		
 		gameManager=new GameManager(this);
 		escenaInicio = new Inicio(this);
 		escenaCarga = new Carga(this);
