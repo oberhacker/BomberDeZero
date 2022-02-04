@@ -1,6 +1,7 @@
 package xnetcom.bomber;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
@@ -16,11 +17,16 @@ import xnetcom.bomber.entidades.AlmacenBombas;
 import xnetcom.bomber.entidades.BomberMan;
 import xnetcom.bomber.graficos.CapaParedes;
 import xnetcom.bomber.graficos.SoundManager;
+import xnetcom.bomber.preferencias.Preferencias;
 import xnetcom.bomber.scenas.Carga;
 import xnetcom.bomber.scenas.EscenaJuego;
 import xnetcom.bomber.scenas.Inicio;
 import xnetcom.bomber.scenas.MenuMapas;
+import xnetcom.bomber.sql.DatabaseHandler;
+import xnetcom.bomber.sql.DatosMapa;
+import xnetcom.bomber.util.Constantes;
 import xnetcom.bomber.util.MiEngine;
+import xnetcom.bomber.util.ParserTMX;
 import android.content.Context;
 import android.os.Vibrator;
 import android.util.DisplayMetrics;
@@ -61,23 +67,28 @@ public class BomberGame extends SimpleBaseGameActivity {
 	public CapaParedes capaParedes;
 	public GameManager gameManager;
 	public MenuMapas menuMapas;
+	public DatabaseHandler basedatos;
+	public ParserTMX parser;
+	public DatabaseHandler databaseHandler;
 	
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 //		Toast.makeText(this, "The tile the player is walking on will be highlighted.", Toast.LENGTH_LONG).show();
-//		DetectorRatio();
+		DetectorRatio();
 		this.camaraJuego = new SmoothCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT, 1000f, 1000f, 1);
 		this.camaraJuego.setBoundsEnabled(false);
 		this.camaraJuego.setZoomFactor(1.2f);
 		this.camaraNormal = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
 
-		EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_SENSOR, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.camaraJuego);
+		EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.camaraJuego);
 		engineOptions.getTouchOptions().setNeedsMultiTouch(true);
 		engineOptions.getAudioOptions().setNeedsSound(true);
 		engineOptions.getAudioOptions().setNeedsMusic(true);
 
 		miengine = new MiEngine(engineOptions, this.camaraNormal);
 		miengine.setCamaraNormal();
+		
+			
 		return engineOptions;
 	}
 
@@ -97,8 +108,54 @@ public class BomberGame extends SimpleBaseGameActivity {
 		bomberman=new BomberMan(this);
 		almacenBombas= new AlmacenBombas(this);
 		capaParedes= new CapaParedes(this);
+		Preferencias.inicia(this);	
+		basedatos= new DatabaseHandler(this);
+		parser = new ParserTMX(this);
+		databaseHandler = new DatabaseHandler(this);
+		// esto pal final del metodo
+		inicializaPrimeraVez();
 	}
 
+	
+	
+	public void inicializaPrimeraVez() {
+
+		if (Preferencias.leerPreferenciasString("primeravez") == null) {
+
+			Preferencias.guardarPrefenrenciasString("primeravez", "NO");
+			Preferencias.guardarPrefenrenciasString("musica", "true");
+			Preferencias.guardarPrefenrenciasString("sonido", "true");
+
+			Preferencias.guardarPrefenrenciasInt("vidas", Constantes.INICIO_VIDAS);
+			Preferencias.guardarPrefenrenciasInt("numBombas", 1);
+			Preferencias.guardarPrefenrenciasInt("tamExplosion", 1);
+
+			DatosMapa mapa = new DatosMapa();
+			mapa.setEnemigo_fantasma(0);
+			mapa.setEnemigo_globo(1);
+			mapa.setEnemigo_globoAzul(0);
+			mapa.setEnemigo_gota(0);
+			mapa.setEnemigo_gotaNaranja(0);
+			mapa.setEnemigo_gotaRoja(0);
+			mapa.setEnemigo_moco(0);
+			mapa.setEnemigo_mocoRojo(0);
+			mapa.setEnemigo_moneda(0);
+			mapa.setEnemigo_monedaMarron(0);
+			mapa.setEstrellas(0);
+			mapa.setM_bomba(0);
+			mapa.setM_corazon(1);
+			mapa.setM_correr(0);
+			mapa.setM_detonador(0);
+			mapa.setM_fantasma(0);
+			mapa.setM_fuerza(0);
+			mapa.setM_potenciador(0);
+			mapa.setNumeroMapa(1);
+			databaseHandler.addMapa(mapa);			
+	
+		}
+	}
+	
+	
 	@Override
 	public Scene onCreateScene() {
 		this.mEngine.registerUpdateHandler(new FPSLogger());
@@ -144,6 +201,11 @@ public class BomberGame extends SimpleBaseGameActivity {
 	public void setVibrar(boolean vibrar) {
 		this.vibrar = vibrar;
 	}
+	
+	public MiEngine getMiEngine() {
+		return (MiEngine) this.mEngine;
+	}
+	
 
 	// ===========================================================
 	// Inner and Anonymous Classes

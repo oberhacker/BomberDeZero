@@ -45,6 +45,15 @@ public class AlmacenBombas {
 		
 	}
 	
+	public void reinicia(){
+		for (Bomba bomba : almacen) {
+			bomba.reinicia();
+		}
+		bombasPlantadas= new AtomicInteger(0);
+		
+	}
+	
+	
 	public void detonarBomba(){
 		if (context.gameManager.detonador){
 			Bomba mBomba=null;

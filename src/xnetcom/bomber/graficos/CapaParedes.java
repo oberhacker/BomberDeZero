@@ -39,6 +39,16 @@ public class CapaParedes {
 		
 	}
 
+	
+	public void reiniciaPared(){
+		for (TrozoPared trozo : listaMuros) {
+			spritePoolArriba.recyclePoolItem(trozo.trozoArriba);
+			spritePoolAbajo.recyclePoolItem(trozo.trozoAbajo);
+		}
+		listaMuros.clear();		
+	}
+	
+	
 	public void carga() {
 
 		BitmapTextureAtlas explosionBTA = new BitmapTextureAtlas(context.getTextureManager(), 512, 512, TextureOptions.NEAREST_PREMULTIPLYALPHA);
@@ -81,11 +91,7 @@ public class CapaParedes {
 	
 	public void ponPared(int columna,int fila){
 		TiledSprite spriteArriba = spritePoolArriba.obtainPoolItem();		
-		TiledSprite spriteAbajo = spritePoolAbajo.obtainPoolItem();		
-//		spriteArriba.setVisible(false);
-		
-//		spriteArriba.setScaleX(1.05625f);
-//		spriteAbajo.setScaleX(1.05625f);
+		TiledSprite spriteAbajo = spritePoolAbajo.obtainPoolItem();
 		Coordenadas coodenadas= new Coordenadas(columna, fila);
 		
 		spriteArriba.setPosition(coodenadas.getX(), coodenadas.getY()+3);		
@@ -102,8 +108,6 @@ public class CapaParedes {
 	
 	
 	public void onSceneCreated(){
-//		spriteGroupArriba.setScaleX(Constantes.FARTOR_FORMA);
-//		spriteGroupAbajo.setScaleX(Constantes.FARTOR_FORMA);
 		context.escenaJuego.scene.attachChild(spriteGroupAbajo);
 		context.escenaJuego.scene.attachChild(spriteGroupArriba);
 	}

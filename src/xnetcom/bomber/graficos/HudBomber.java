@@ -49,7 +49,7 @@ public class HudBomber {
 
 	Sprite btn_1;
 	Sprite btn_2;
-
+	Sprite pause;
 	Text debugText;
 	
 	public DigitalOnScreenControl mDigitalOnScreenControl;
@@ -81,6 +81,14 @@ public class HudBomber {
 	}
 
 	public void carga() throws IOException {
+		
+		
+		BitmapTextureAtlas pause_BTA = new BitmapTextureAtlas(context.getTextureManager(), 128, 128, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		TextureRegion pause_BTA_TR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(pause_BTA, context, "gfx/pause.png", 0, 0);
+		pause_BTA.load();
+		
+		
+		
 		Font mFont = FontFactory.create(context.getFontManager(), context.getTextureManager(), 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 48);
 		mFont.load();
 		debugText = new Text(300, 600, mFont, "Seconds elapsed:", "Seconds elapsed: XXXXXX".length(), context.getVertexBufferObjectManager());
@@ -179,12 +187,40 @@ public class HudBomber {
 		btn_2.setScaleCenter(0, 0);
 		btn_2.setAlpha(0.5f);
 		
+		
+		
+		
+		
+		pause = new Sprite(0, 0, pause_BTA_TR, context.getVertexBufferObjectManager()) {
+			@Override
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.getAction() == pSceneTouchEvent.ACTION_DOWN) {
+					pause();
+				}
+
+				return true;
+			}
+		};		
+		pause.setOffsetCenter(0, 0);
+		pause.setPosition(context.CAMERA_WIDTH-120, context.CAMERA_HEIGHT-100);
+		pause.setAlpha(0.8f);
+		
+		
 		controlBase.setAlpha(0.5f);
 		controlBase.setOffsetCenter(0, 0);
 		this.mDigitalOnScreenControl.getControlKnob().setScale(1.25f);
 		this.mDigitalOnScreenControl.setScale(2f);
 	}
 
+	
+	public void pause(){
+		
+		context.getMiEngine().setScene(context.menuMapas.escena);
+		context.getMiEngine().setCamaraNormal();
+		
+
+	}
+	
 
 	public void apretarBotonPlantabomba() {
 		context.vibrar(VIBRAR_BOTON);
@@ -205,16 +241,15 @@ public class HudBomber {
 	}
 
 	public void attachScena(Scene scene) {
-		scene.setChildScene(this.mDigitalOnScreenControl);
-
+		scene.setChildScene(this.mDigitalOnScreenControl);	
 		
-		
+		hud.attachChild(pause);
 		hud.attachChild(btn_1);
 		hud.attachChild(btn_2);
 		
 		hud.registerTouchArea(btn_1);
 		hud.registerTouchArea(btn_2);
-		
+		hud.registerTouchArea(pause);
 		debugText.setVisible(Constantes.DEBUG_TEXT);
 		
 		hud.attachChild(debugText);

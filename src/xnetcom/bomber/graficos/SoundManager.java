@@ -161,8 +161,11 @@ public class SoundManager {
 		new Thread() {
 			public void run() {
 				bombas--;
-				if (bombas == 0) {
+				if (bombas <= 0) {
 					mecha.pause();
+				}
+				if (bombas<0){
+					bombas=0;
 				}
 			};
 		}.start();

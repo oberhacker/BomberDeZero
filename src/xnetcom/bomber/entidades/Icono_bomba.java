@@ -1,5 +1,6 @@
 package xnetcom.bomber.entidades;
 
+import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
@@ -100,6 +101,8 @@ public class Icono_bomba extends AnimatedSprite{
 	
 	public void tocado(){
 		try {
+			Scene scene4 = context.escenaJuego.onCreateScene(numMapa);
+			context.getEngine().setScene(scene4);
 			if (estado!=-1){
 				// cargar mapa
 			}

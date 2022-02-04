@@ -52,5 +52,11 @@ public class Constantes {
 	
 	
 	
+	public static int  INICIO_VIDAS=5;
+	
+	
+	public static int TOTAL_MAPAS=45;
+	
+	
 
 }

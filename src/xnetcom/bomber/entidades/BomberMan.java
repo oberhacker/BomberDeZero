@@ -82,14 +82,17 @@ public class BomberMan {
 	}
 
 	
-
+	public void reinicia(){		
+		detenerPararAnimacion();
+		baseTileRectangle.setPosition(getXinicial(), getYinicial());
+		bomberAbajo.setCurrentTileIndex(0);
+		bomberAbajo.setCurrentTileIndex(0);		
+	}
 	
-	float FACTORPEQUEO=0.90f;
+
+	float FACTORPEQUEO = 0.90f;
+
 	public void carga() throws IOException {
-
-
-
-		
 
 		BitmapTextureAtlas tiledmaster90A = new BitmapTextureAtlas(context.getTextureManager(), 2048, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		this.mBombermanTextureRegionAniA = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(tiledmaster90A, context, "gfx/tiledmaster(125x104)ArribaB.png", 0, 0, 12, 5);
@@ -122,7 +125,7 @@ public class BomberMan {
 		bomberAbajo.setScaleCenter(0, 0);
 		bomberAbajo.setScaleY(FACTORPEQUEO*FACTOR_ACHATADO);
 		bomberAbajo.setScaleX(FACTORPEQUEO);
-
+	
 //		bomberAbajo.attachChild(bomberAbajo);
 
 		// ajustamos el personaje dento de su cuadro
@@ -133,6 +136,14 @@ public class BomberMan {
 
 	}
 
+	
+	
+	public float getXinicial(){
+		return (2 * Constantes.TILE_TAM * Constantes.FARTOR_FORMA);
+	}
+	public float getYinicial(){
+		return (context.escenaJuego.mTMXTiledMap.getHeight() - 3 * Constantes.TILE_TAM);
+	}
 	public void onCreateScene(Scene scene) {
 
 		currentTileRectangle = new Rectangle(0, 0, context.escenaJuego.mTMXTiledMap.getTileWidth() * Constantes.FARTOR_FORMA, context.escenaJuego.mTMXTiledMap.getTileHeight(),
@@ -167,7 +178,7 @@ public class BomberMan {
 		baseTileRectangle.attachChild(bomberAbajo);
 		baseTileRectangle.setZIndex(Constantes.ZINDEX_BOMBERMAN_ABAJO - 1);
 
-		baseTileRectangle.setPosition(2 * Constantes.TILE_TAM * Constantes.FARTOR_FORMA, context.escenaJuego.mTMXTiledMap.getHeight() - 3 * Constantes.TILE_TAM);
+		baseTileRectangle.setPosition(getXinicial(), getYinicial());
 
 		scene.attachChild(currentTileRectangle);
 		scene.attachChild(bomberArriba);
@@ -202,12 +213,7 @@ public class BomberMan {
 		TMXLayer tmxLayer = context.escenaJuego.mTMXTiledMap.getTMXLayers().get(1);
 		TMXTile tmxTile = tmxLayer.getTMXTileAt(playerFootCordinates[Constants.VERTEX_INDEX_X], playerFootCordinates[Constants.VERTEX_INDEX_Y]);
 
-		
-		System.out.println();
-		
-		
-		
-		
+
 		
 		if (tmxTile != null) {
 			if (innerColumna != tmxTile.getTileColumn()) {
@@ -221,9 +227,7 @@ public class BomberMan {
 				setFila(tmxTile.getTileRow());
 				currentTileRectangle.setPosition(tmxLayer.getTileX(tmxTile.getTileColumn()) * Constantes.FARTOR_FORMA, tmxLayer.getTileY(tmxTile.getTileRow()));
 				cambiaPosicion();
-			}
-//			Log.d("POSICION","FILA: " + tmxTile.getTileRow() + " Columna: " + tmxTile.getTileColumn() + " VALOR: " + context.escenaJuego.matriz.getValor(tmxTile.getTileRow(), tmxTile.getTileColumn()));
-			
+			}			
 		}
 	}
 

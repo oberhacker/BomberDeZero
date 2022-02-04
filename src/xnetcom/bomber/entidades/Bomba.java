@@ -305,7 +305,7 @@ public class Bomba {
 	public void onSceneCreated(){
 		context.escenaJuego.scene.attachChild(currentTileRectangle);
 		context.escenaJuego.scene.attachChild(batch);
-		context.escenaJuego.scene.sortChildren();
+//		context.escenaJuego.scene.sortChildren();
 	}
 	
 	
@@ -376,6 +376,15 @@ public class Bomba {
 
 	}
 
+	
+	public void reinicia(){
+		context.soundManager.pararMecha();
+		sprBomba.setVisible(false);
+		batch.clearEntityModifiers();
+		sprCentro.clearEntityModifiers();
+		this.setDetonada(true);		
+		
+	}
 	public void detonarConDelay(){
 		if (isDetonada()){
 			return;
@@ -393,16 +402,7 @@ public class Bomba {
 				}				
 
 			};
-		}.start();	
-		
-//		batch.registerEntityModifier(new DelayModifier(0.1f){
-//			@Override
-//			protected void onModifierFinished(IEntity pItem) {
-//				// TODO Auto-generated method stub
-//				Log.d("DETONAR", "FIN DELAY");
-//				detonar();
-//			}
-//		});		
+		}.start();		
 	}
 	
 	public synchronized void detonar(){	
@@ -441,8 +441,6 @@ public class Bomba {
 	
 	
 	public void creaFragmentoExplosiones(){
-		Coordenadas coordenadasCentro = new Coordenadas(columna, fila);
-		
 		centro();
 		cruzArriba();
 		cruzAbajo();

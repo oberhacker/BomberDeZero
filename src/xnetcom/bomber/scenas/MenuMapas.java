@@ -19,6 +19,7 @@ import org.andengine.opengl.texture.region.TiledTextureRegion;
 
 import xnetcom.bomber.BomberGame;
 import xnetcom.bomber.entidades.Icono_bomba;
+import xnetcom.bomber.sql.DatosMapa;
 import xnetcom.bomber.util.Constantes;
 import android.graphics.Color;
 
@@ -43,10 +44,24 @@ public class MenuMapas {
 		centroY = context.CAMERA_HEIGHT / 2;
 	}
 
+	public void VueltaAMenuMapas(){
+//		context.get
+	}
+	
+	
 	public void carga() {
 
-		escena = new Scene();
+		escena = new Scene();		
 
+		BitmapTextureAtlas trainingBTA = new BitmapTextureAtlas(context.getTextureManager(),512, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		TextureRegion trainingTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(trainingBTA, context, "gfx/training.png",0,0);	
+		trainingBTA.load();
+		
+		
+		BitmapTextureAtlas infoBTA = new BitmapTextureAtlas(context.getTextureManager(),512, 128, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		TextureRegion infoTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(infoBTA, context, "gfx/info.png",0,0);	
+		infoBTA.load();
+		
 		FontFactory.setAssetBasePath("font/");
 		this.mFont = FontFactory.createFromAsset(context.getFontManager(), context.getTextureManager(), 256, 256, TextureOptions.BILINEAR, context.getAssets(), "acegaffigan.ttf",
 				Constantes.FONT_BOMBA_MAPA, true, Color.LTGRAY);
@@ -92,6 +107,7 @@ public class MenuMapas {
 				for (int elemento = 0; elemento < 5; elemento++, numberoBomba++) {
 					Icono_bomba icono_bomba = new Icono_bomba(context, mFont, numberoBomba,(pagina*context.CAMERA_WIDTH)+ centroX + (elemento * separacionBombas) - offsetX, centroY + offsetY - fila * filaEspacio, icono_bombas_TR);
 					bombas.add(icono_bomba);
+					escena.registerTouchArea(icono_bomba);
 					cuadrado.attachChild(icono_bomba);
 				}
 			}
@@ -154,15 +170,64 @@ public class MenuMapas {
 			}
 		};
 		
+		
+		
+		
+		Sprite entrenamiento = new Sprite(0,0,trainingTR,context.getVertexBufferObjectManager()){
+			@Override
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {				
 
+				return false;
+			}
+		};
+		entrenamiento.setOffsetCenter(0, 0);
+		entrenamiento.setScale(0.5f);
+		entrenamiento.setPosition(centroX+100,-20);	
+		
+		
+		Sprite info = new Sprite(0,0,infoTR,context.getVertexBufferObjectManager()){
+			@Override
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {				
+
+				return false;
+			}
+		};
+		
+		info.setOffsetCenter(0, 0);
+		info.setScale(0.5f);
+		info.setPosition(centroX-500,10);
+		
+		
 		flechaIzquierda.setOffsetCenterY(0);
 		flechaIzquierda.setY(5);
 		
 		escena.registerTouchArea(flechaDerecha);
 		escena.registerTouchArea(flechaIzquierda);	
+		escena.registerTouchArea(entrenamiento);	
 		
 		escena.attachChild(flechaDerecha);
 		escena.attachChild(flechaIzquierda);
-
+		escena.attachChild(entrenamiento);
+		escena.attachChild(info);
+		
+		
+		refrescaMapas();
+		
 	}
+	
+	
+	
+	public void refrescaMapas(){
+		for (Icono_bomba icono_bomba : bombas) {
+			int numMapa =icono_bomba.getNumMapa();
+			DatosMapa datosMapa = context.databaseHandler.getMapa(numMapa);
+			icono_bomba.setEstrellas(datosMapa.getEstrellas());
+			
+		}
+	}
+	
+	
+	
+	
+	
 }
