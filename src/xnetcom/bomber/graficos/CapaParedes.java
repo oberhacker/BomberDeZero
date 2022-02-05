@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.andengine.entity.sprite.AnimatedSprite;
+import org.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.andengine.entity.sprite.TiledSprite;
 import org.andengine.entity.sprite.batch.SpriteGroup;
 import org.andengine.opengl.texture.TextureOptions;
@@ -16,16 +17,17 @@ import xnetcom.bomber.util.Constantes;
 import xnetcom.bomber.util.Coordenadas;
 import xnetcom.bomber.util.Matriz;
 import xnetcom.bomber.util.Matriz.Casilla;
+import xnetcom.bomber.util.MiSpriteGroup;
 import xnetcom.bomber.util.SpritePoolParedes;
 
 public class CapaParedes {
 	
 	public BomberGame context;
 	public SpritePoolParedes spritePoolArriba;
-	public SpriteGroup spriteGroupArriba;
+	public MiSpriteGroup spriteGroupArriba;
 	
 	public SpritePoolParedes spritePoolAbajo;
-	public SpriteGroup spriteGroupAbajo;
+	public MiSpriteGroup spriteGroupAbajo;
 	
 	public ArrayList<TrozoPared> listaMuros;
 	
@@ -49,6 +51,24 @@ public class CapaParedes {
 	}
 	
 	
+	public void pintaExplosion(Coordenadas coodenadas){
+		if (!itr.hasNext()){
+			itr= almacenExplosiones.iterator();
+		}
+		AnimatedSprite spr = itr.next();
+		spr.setPosition(coodenadas.getX()-80,coodenadas.getY()+50);
+		spr.setVisible(true);
+		
+
+		spr.setZIndex(Constantes.ZINDEX_MUROFRAGMENTOS);
+		
+		spr.animate(30, false, new ListenerExplotar(spr));		
+		if (!spr.hasParent()) {
+			context.escenaJuego.scene.attachChild(spr);
+		}
+	}
+	
+	
 	public void carga() {
 
 		BitmapTextureAtlas explosionBTA = new BitmapTextureAtlas(context.getTextureManager(), 512, 512, TextureOptions.NEAREST_PREMULTIPLYALPHA);
@@ -56,10 +76,10 @@ public class CapaParedes {
 		
 		
 		almacenExplosiones = new ArrayList<AnimatedSprite>();
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 30; i++) {
 			AnimatedSprite ans =new AnimatedSprite(0, 0, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(explosionBTA, context, "gfx/pared_explo.png", 0, 0, 2, 2),context.getVertexBufferObjectManager());
-			ans.setScale(0.5f);
 			ans.setScaleCenter(0, 0);
+			ans.setOffsetCenter(0, 0);
 			almacenExplosiones.add(ans);
 		}	
 		itr= almacenExplosiones.iterator();
@@ -72,14 +92,14 @@ public class CapaParedes {
 		btaParedArriba.load();
 
 		spritePoolArriba = new SpritePoolParedes(textureArriba, context);
-		spriteGroupArriba = new SpriteGroup(btaParedArriba, 220, context.getVertexBufferObjectManager());
+		spriteGroupArriba = new MiSpriteGroup(btaParedArriba, 220, context.getVertexBufferObjectManager());
 		spriteGroupArriba.setZIndex(Constantes.ZINDEX_CAPA_PAREDES_ARRIBA);
 		spriteGroupArriba.setScaleCenter(0, 0);
 		// no funciona el offset center asi se centra
 		spriteGroupArriba.setPosition(-1 * Constantes.TILE_WIDTH, 1 * Constantes.TILE_HEIGHT);
 
 		spritePoolAbajo = new SpritePoolParedes(textureAbajo, context);
-		spriteGroupAbajo = new SpriteGroup(btaParedAbajo, 220, context.getVertexBufferObjectManager());
+		spriteGroupAbajo = new MiSpriteGroup(btaParedAbajo, 220, context.getVertexBufferObjectManager());
 		spriteGroupAbajo.setZIndex(Constantes.ZINDEX_CAPA_PAREDES_ABAJO);
 		spriteGroupAbajo.setScaleCenter(0, 0);
 		// no funciona el offset center asi se centra
@@ -205,11 +225,47 @@ public class CapaParedes {
 			trozoAbajo.setVisible(false);
 			trozoArriba.setVisible(false);
 			
-			
+			pintaExplosion(coodenadas);
 			context.capaParedes.recalculaTrozosLaterales(coodenadas);
 		}
 	}
 
+	public class ListenerExplotar implements IAnimationListener{
+
+		private AnimatedSprite sprt;		
+
+		public ListenerExplotar(AnimatedSprite sprt){
+			this.sprt=sprt;
+		}
+
+		@Override
+		public void onAnimationStarted(AnimatedSprite pAnimatedSprite,
+				int pInitialLoopCount) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void onAnimationFrameChanged(AnimatedSprite pAnimatedSprite,
+				int pOldFrameIndex, int pNewFrameIndex) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void onAnimationLoopFinished(AnimatedSprite pAnimatedSprite,
+				int pRemainingLoopCount, int pInitialLoopCount) {
+	
+			
+		}
+		@Override
+		public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
+			// TODO Auto-generated method stub
+			this.sprt.setVisible(false);
+		}
+		
+	}
+	
+	
+	
 	
 
 }

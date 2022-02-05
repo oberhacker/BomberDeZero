@@ -25,7 +25,7 @@ public class Constantes {
 	public static int ZINDEX_CAPA_PAREDES_ARRIBA=200;
 	
 	public static int ZINDEX_CAPA_BORDE_ABAJO=300;
-	public static int ZINDEX_CAPA_TECHO_PIEDRAS=600;
+	public static int ZINDEX_CAPA_TECHO_PIEDRAS=800;
 	
 	public static int ZINDEX_BOMBERMAN_ARRIBA=560;
 	public static int ZINDEX_BOMBERMAN_ABAJO=195;	
@@ -37,6 +37,7 @@ public class Constantes {
 	
 	
 	public static final int FONT_BOMBA_MAPA = 60;
+	public static final int ZINDEX_MUROFRAGMENTOS = 900;	
 	
 	
 	public static float TIEMPO_POR_CUADRADO=0.40f;
