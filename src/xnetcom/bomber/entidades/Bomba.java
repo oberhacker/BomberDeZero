@@ -292,6 +292,7 @@ public class Bomba {
 		currentTileRectangle.setScaleCenter(0, 0);
 		
 		
+		
 		reiniciaBatch();
 		
 		currentTileRectangle.attachChild(sprBomba);

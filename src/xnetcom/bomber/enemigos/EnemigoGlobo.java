@@ -1,5 +1,6 @@
 package xnetcom.bomber.enemigos;
 
+import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 
@@ -7,23 +8,52 @@ import xnetcom.bomber.BomberGame;
 
 public class EnemigoGlobo extends EnemigoBase {
 
+	
 	public EnemigoGlobo(BomberGame context, int columna, int fila) {
 		super(context, columna, fila);
 		tipoEnemigo = TipoEnemigo.GLOBO;
 		tiempoPorCuadro = 0.70f;
 		tiempoFotograma = 120;
-		TiledTextureRegion principalTR = context.almacenEnemigos.globoTR;
-		spritePrincipal = new AnimatedSprite(0, -20, principalTR, context.getVertexBufferObjectManager());
-		spritePrincipal.setOffsetCenter(0, 0);
-		spritePrincipal.setScale(0.7f);
-		// principal.setZIndex(BomberGame.ZINDEX_ENEMIGOS);
 
-		baseTileRectangle.attachChild(spritePrincipal);
-
+//		 ponEnbase();
+		 ponenGroup();
+		 baseTileRectangle.registerUpdateHandler(new IUpdateHandler() {
+			
+			@Override
+			public void reset() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onUpdate(float pSecondsElapsed) {
+				spritePrincipal.setPosition(baseTileRectangle.getX(), baseTileRectangle.getY());
+		
+				
+			}
+		});
 		iniciaInteligenciaIA();
 
 	}
 
+	public void ponenGroup(){
+		spritePrincipal = new AnimatedSprite(0, 0, context.almacenEnemigos.globoTR, context.getVertexBufferObjectManager());
+		spritePrincipal.setOffsetCenter(0, 0);
+		spritePrincipal.setScale(0.7f);
+		spritePrincipal.setPosition(coordenadas.getX(), coordenadas.getYCorregido());
+		context.almacenEnemigos.group.attachChild(spritePrincipal);
+		context.escenaJuego.scene.sortChildren();		
+	}
+	
+	public void ponEnbase(){
+		TiledTextureRegion principalTR = context.almacenEnemigos.globoTR;
+		spritePrincipal = new AnimatedSprite(0, -20, principalTR, context.getVertexBufferObjectManager());
+		spritePrincipal.setOffsetCenter(0, 0);
+		spritePrincipal.setScale(0.7f);
+		baseTileRectangle.attachChild(spritePrincipal);
+	}
+	
+	
 	@Override
 	public void mover(Direction dir) {
 		if (dir == Direction.LEFT) {

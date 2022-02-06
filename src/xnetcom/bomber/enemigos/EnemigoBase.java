@@ -19,6 +19,7 @@ import org.andengine.extension.tmx.TMXLayer;
 import org.andengine.extension.tmx.TMXTile;
 import org.andengine.util.Constants;
 
+import android.util.Log;
 import xnetcom.bomber.BomberGame;
 import xnetcom.bomber.util.Constantes;
 import xnetcom.bomber.util.Coordenadas;
@@ -93,46 +94,59 @@ public abstract class EnemigoBase {
 		currentTileRectangle.setColor(50, 0, 0);
 		currentTileRectangle.setScaleCenter(0, 0);
 
-
 		
-		
-//		baseTileRectangle.registerUpdateHandler(new TimerHandler(0.1f, true, new ITimerCallback() {
-//			@Override
-//			public void onTimePassed(final TimerHandler pTimerHandler) {
-//				updater();
-//			}
-//		}));
-		
-		baseTileRectangle.registerUpdateHandler(new IUpdateHandler() {
+		baseTileRectangle.registerUpdateHandler(new TimerHandler(0.1f, true, new ITimerCallback() {
 			@Override
-			public void onUpdate(float pSecondsElapsed) {
-				 updater();
+			public void onTimePassed(final TimerHandler pTimerHandler) {
+				updater();
 			}
-
-			@Override
-			public void reset() {
-
-			}
-		});
-
+		}));
+		
 		context.escenaJuego.scene.attachChild(baseTileRectangle);
 		context.escenaJuego.scene.attachChild(currentTileRectangle);
 		
-//		
 
 	}
 
 	public void detach() {
-		spritePrincipal.detachSelf();
-		currentTileRectangle.detachSelf();
-		colidesTileRectangle.detachSelf();
-		baseTileRectangle.detachSelf();
+		context.runOnUpdateThread(new Runnable() {
+			public void run() {
+			
+				spritePrincipal.clearEntityModifiers();
+				spritePrincipal.clearUpdateHandlers();
+				spritePrincipal.setIgnoreUpdate(true);
+//				spritePrincipal.detachSelf();
+				context.escenaJuego.scene.detachChild(spritePrincipal) ;
+				
+				currentTileRectangle.clearEntityModifiers();
+				currentTileRectangle.clearUpdateHandlers();
+				currentTileRectangle.setIgnoreUpdate(true);
+//				currentTileRectangle.detachSelf();
+				context.escenaJuego.scene.detachChild(currentTileRectangle) ;
+				
+				
+				colidesTileRectangle.clearEntityModifiers();
+				colidesTileRectangle.clearUpdateHandlers();
+				colidesTileRectangle.setIgnoreUpdate(true);
+//				colidesTileRectangle.detachSelf();
+				context.escenaJuego.scene.detachChild(colidesTileRectangle) ;
+				
+				baseTileRectangle.clearEntityModifiers();
+				baseTileRectangle.clearUpdateHandlers();
+				baseTileRectangle.setIgnoreUpdate(true);
+//				baseTileRectangle.detachSelf();
+				context.escenaJuego.scene.detachChild(baseTileRectangle) ;
+			}
+		});		
+
 	}
 
 	int innerColumna = 0;
 	int innerFila = 0;
 
 	private void updater() {
+		
+//		Log.d("ENEMIGO", "UPDATE");
 		final float[] playerFootCordinates = baseTileRectangle.convertLocalCoordinatesToSceneCoordinates(EnemigoBase.PIES_X, EnemigoBase.PIES_Y);
 		TMXLayer tmxLayer = context.escenaJuego.mTMXTiledMap.getTMXLayers().get(1);
 		TMXTile tmxTile = tmxLayer.getTMXTileAt(playerFootCordinates[Constants.VERTEX_INDEX_X], playerFootCordinates[Constants.VERTEX_INDEX_Y]);
@@ -170,9 +184,9 @@ public abstract class EnemigoBase {
 	}
 
 	public Coordenadas getCoordenadas() {
-		synchronized (coordenadas) {
+//		synchronized (coordenadas) {
 			return coordenadas;
-		}
+//		}
 	}
 
 	public boolean puedoDerecha() {
@@ -245,6 +259,7 @@ public abstract class EnemigoBase {
 		clearEntityModifiers();
 		animarMuerte();
 	}
+	
 
 	private void clearEntityModifiers() {
 		spritePrincipal.clearEntityModifiers();
@@ -274,13 +289,13 @@ public abstract class EnemigoBase {
 
 		@Override
 		public void onAnimationLoopFinished(AnimatedSprite pAnimatedSprite, int pRemainingLoopCount, int pInitialLoopCount) {
-			detach();
+			
 
 		}
 
 		@Override
 		public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
-			// TODO Auto-generated method stub
+			detach();
 
 		}
 	}

@@ -35,6 +35,7 @@ public class AlmacenBombas {
 		}
 	}
 	
+	
 	private Bomba circulaBomba(){
 		if (nextBomba>=almacen.size()){
 			nextBomba=0;
@@ -44,6 +45,7 @@ public class AlmacenBombas {
 		return bomba;
 		
 	}
+	
 	
 	public void reinicia(){
 		for (Bomba bomba : almacen) {

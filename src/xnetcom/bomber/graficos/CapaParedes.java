@@ -34,6 +34,8 @@ public class CapaParedes {
 	
 	private Iterator<AnimatedSprite> itr;
 	private ArrayList<AnimatedSprite> almacenExplosiones;
+	public MiSpriteGroup grupoExplosiones;
+	
 	
 	public CapaParedes(final BomberGame context){
 		this.context=context;
@@ -58,13 +60,12 @@ public class CapaParedes {
 		AnimatedSprite spr = itr.next();
 		spr.setPosition(coodenadas.getX()-80,coodenadas.getY()+50);
 		spr.setVisible(true);
-		
-
 		spr.setZIndex(Constantes.ZINDEX_MUROFRAGMENTOS);
 		
 		spr.animate(30, false, new ListenerExplotar(spr));		
 		if (!spr.hasParent()) {
-			context.escenaJuego.scene.attachChild(spr);
+//			context.escenaJuego.scene.attachChild(spr);
+			grupoExplosiones.attachChild(spr);
 		}
 	}
 	
@@ -76,11 +77,17 @@ public class CapaParedes {
 		
 		
 		almacenExplosiones = new ArrayList<AnimatedSprite>();
-		for (int i = 0; i < 30; i++) {
+		grupoExplosiones= new MiSpriteGroup(explosionBTA, 30, context.getVertexBufferObjectManager());
+		grupoExplosiones.setOffsetCenter(0, 0);
+		grupoExplosiones.setPosition(0, 0);
+		grupoExplosiones.setZIndex(Constantes.ZINDEX_MUROFRAGMENTOS);
+		
+		for (int i = 0; i < 20; i++) {
 			AnimatedSprite ans =new AnimatedSprite(0, 0, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(explosionBTA, context, "gfx/pared_explo.png", 0, 0, 2, 2),context.getVertexBufferObjectManager());
 			ans.setScaleCenter(0, 0);
 			ans.setOffsetCenter(0, 0);
 			almacenExplosiones.add(ans);
+			
 		}	
 		itr= almacenExplosiones.iterator();
 
@@ -110,8 +117,8 @@ public class CapaParedes {
 
 	
 	public void ponPared(int columna,int fila){
-		TiledSprite spriteArriba = spritePoolArriba.obtainPoolItem();		
-		TiledSprite spriteAbajo = spritePoolAbajo.obtainPoolItem();
+		AnimatedSprite spriteArriba = spritePoolArriba.obtainPoolItem();		
+		AnimatedSprite spriteAbajo = spritePoolAbajo.obtainPoolItem();
 		Coordenadas coodenadas= new Coordenadas(columna, fila);
 		
 		spriteArriba.setPosition(coodenadas.getX(), coodenadas.getY()+3);		
@@ -130,6 +137,7 @@ public class CapaParedes {
 	public void onSceneCreated(){
 		context.escenaJuego.scene.attachChild(spriteGroupAbajo);
 		context.escenaJuego.scene.attachChild(spriteGroupArriba);
+		context.escenaJuego.scene.attachChild(grupoExplosiones);
 	}
 	
 	
@@ -199,13 +207,13 @@ public class CapaParedes {
 	
 	public class TrozoPared{		
 		
-		public TiledSprite trozoArriba;
-		public TiledSprite trozoAbajo;
+		public AnimatedSprite trozoArriba;
+		public AnimatedSprite trozoAbajo;
 		public Coordenadas coodenadas;
 		public BomberGame context;
 		
 		
-		public TrozoPared(BomberGame context, TiledSprite trozoArriba, TiledSprite trozoAbajo, Coordenadas coodenadas){
+		public TrozoPared(BomberGame context, AnimatedSprite trozoArriba, AnimatedSprite trozoAbajo, Coordenadas coodenadas){
 			this.trozoArriba=trozoArriba;
 			this.trozoAbajo=trozoAbajo;
 			this.coodenadas=coodenadas;
@@ -230,6 +238,7 @@ public class CapaParedes {
 		}
 	}
 
+	
 	public class ListenerExplotar implements IAnimationListener{
 
 		private AnimatedSprite sprt;		
@@ -259,7 +268,11 @@ public class CapaParedes {
 		@Override
 		public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
 			// TODO Auto-generated method stub
-			this.sprt.setVisible(false);
+			context.runOnUpdateThread(new Runnable() {
+				public void run() {
+					sprt.detachSelf();
+				}});
+//			this.sprt.setVisible(false);
 		}
 		
 	}
