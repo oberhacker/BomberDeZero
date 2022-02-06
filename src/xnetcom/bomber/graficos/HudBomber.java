@@ -218,6 +218,8 @@ public class HudBomber {
 		context.getMiEngine().setScene(context.menuMapas.escena);
 		context.getMiEngine().setCamaraNormal();
 		
+//		context
+		
 
 	}
 	

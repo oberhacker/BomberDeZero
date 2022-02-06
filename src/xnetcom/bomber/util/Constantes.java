@@ -13,8 +13,7 @@ public class Constantes {
 	public static float TILE_HEIGHT =64;
 	public static float TILE_WIDTH =FARTOR_FORMA*TILE_HEIGHT;
 	
-		
-	
+			
 	public static int ZINDEX_CAPA_SUELO=0;
 	public static int ZINDEX_CAPA_PIEDRAS_SOMBRA=100;
 	
@@ -37,7 +36,8 @@ public class Constantes {
 	
 	
 	public static final int FONT_BOMBA_MAPA = 60;
-	public static final int ZINDEX_MUROFRAGMENTOS = 900;	
+	public static final int ZINDEX_MUROFRAGMENTOS = 900;
+	public static final int ZINDEX_ENEMIGOS = 199;	
 	
 	
 	public static float TIEMPO_POR_CUADRADO=0.40f;

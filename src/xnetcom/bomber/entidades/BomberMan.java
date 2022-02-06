@@ -65,6 +65,7 @@ public class BomberMan {
 	public float FACTOR_ACHATADO = 0.96f;
 
 	public Rectangle baseTileRectangle;
+	public Rectangle colidesTileRectangle;
 
 	private Integer fila = 0;
 	private Integer columna = 0;
@@ -129,7 +130,7 @@ public class BomberMan {
 //		bomberAbajo.attachChild(bomberAbajo);
 
 		// ajustamos el personaje dento de su cuadro
-		bomberAbajo.setX(bomberAbajo.getX() - 15);
+		bomberAbajo.setX(bomberAbajo.getX() - 10);
 
 		bomberAbajo.setZIndex(Constantes.ZINDEX_BOMBERMAN_ABAJO);
 		bomberArriba.setZIndex(Constantes.ZINDEX_BOMBERMAN_ARRIBA);
@@ -152,8 +153,6 @@ public class BomberMan {
 		currentTileRectangle.setOffsetCenter(0, 0);
 		currentTileRectangle.setColor(50, 0, 0);
 		currentTileRectangle.setScaleCenter(0, 0);
-		// currentTileRectangle.setScaleX(Constantes.FARTOR_FORMA);
-		currentTileRectangle.setPosition(context.escenaJuego.mTMXTiledMap.getTMXLayers().get(0).getTileX(2), context.escenaJuego.mTMXTiledMap.getTMXLayers().get(0).getTileY(2));
 		currentTileRectangle.setPosition(2 * context.escenaJuego.mTMXTiledMap.getTileWidth() * Constantes.FARTOR_FORMA, currentTileRectangle.getY());
 
 		currentTileRectangle.setZIndex(Constantes.ZINDEX_BOMBERMAN_ABAJO - 2);
@@ -179,6 +178,16 @@ public class BomberMan {
 		baseTileRectangle.setZIndex(Constantes.ZINDEX_BOMBERMAN_ABAJO - 1);
 
 		baseTileRectangle.setPosition(getXinicial(), getYinicial());
+		
+		colidesTileRectangle= new Rectangle(0, 0, Constantes.TILE_WIDTH-20, Constantes.TILE_HEIGHT-20,	context.getVertexBufferObjectManager());	
+		colidesTileRectangle.setColor(0, 100, 50);
+		colidesTileRectangle.setOffsetCenter(0, 0);
+		colidesTileRectangle.setScaleCenter(0, 0);
+		colidesTileRectangle.setPosition(10,10);
+		baseTileRectangle.attachChild(colidesTileRectangle);
+		if (!Constantes.DEBUG_BASE_RECTANGLE_VISIBLE) {
+			colidesTileRectangle.setAlpha(0f);
+		}
 
 		scene.attachChild(currentTileRectangle);
 		scene.attachChild(bomberArriba);
@@ -207,7 +216,7 @@ public class BomberMan {
 		//////////////
 
 		
-		bomberArriba.setX(baseTileRectangle.getX()- 15);
+		bomberArriba.setX(baseTileRectangle.getX()- 10);
 		bomberArriba.setY(baseTileRectangle.getY());
 		final float[] playerFootCordinates = getSprite().convertLocalCoordinatesToSceneCoordinates(BomberMan.PIES_X, BomberMan.PIES_Y);
 		TMXLayer tmxLayer = context.escenaJuego.mTMXTiledMap.getTMXLayers().get(1);

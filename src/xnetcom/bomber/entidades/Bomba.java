@@ -427,6 +427,7 @@ public class Bomba {
 				
 		context.almacenBombas.bombasPlantadas.decrementAndGet();
 		context.escenaJuego.matriz.explota(coordenadas);
+		context.almacenEnemigos.mataEnemigos(coordenadas);
 	}	
 	
 	

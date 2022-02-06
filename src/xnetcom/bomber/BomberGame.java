@@ -71,6 +71,8 @@ public class BomberGame extends SimpleBaseGameActivity {
 	public ParserTMX parser;
 	public DatabaseHandler databaseHandler;
 	
+	public AlmacenEnemigos almacenEnemigos;
+	
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 //		Toast.makeText(this, "The tile the player is walking on will be highlighted.", Toast.LENGTH_LONG).show();
@@ -111,7 +113,8 @@ public class BomberGame extends SimpleBaseGameActivity {
 		Preferencias.inicia(this);	
 		basedatos= new DatabaseHandler(this);
 		parser = new ParserTMX(this);
-		databaseHandler = new DatabaseHandler(this);
+		databaseHandler = new DatabaseHandler(this);		
+		almacenEnemigos= new AlmacenEnemigos(this);
 		// esto pal final del metodo
 		inicializaPrimeraVez();
 	}

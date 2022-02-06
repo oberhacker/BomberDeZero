@@ -32,7 +32,7 @@ public class EscenaJuego {
 	
 	
 	public Matriz matriz;
-	public AlmacenEnemigos almacenEnemigos;
+	
 	
 
 	public TMXLayer capaSuelo;
@@ -47,7 +47,6 @@ public class EscenaJuego {
 	public EscenaJuego(BomberGame context) {			
 		this.context = context;
 		this.matriz= new Matriz();	
-		this.almacenEnemigos= new AlmacenEnemigos(context);
 		this.hud = new HudBomber(context);
 		
 	}
@@ -103,23 +102,23 @@ public class EscenaJuego {
 							} else if (pTMXTileProperties.containsTMXProperty("pared", "true")) {
 								context.capaParedes.ponPared(pTMXTile.getTileColumn(), pTMXTile.getTileRow());
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "moco")) {
-								almacenEnemigos.creaEnemigo(TipoEnemigo.MOCO,pTMXTile.getTileRow(),pTMXTile.getTileColumn());
+								context.almacenEnemigos.creaEnemigo(TipoEnemigo.MOCO,pTMXTile.getTileRow(),pTMXTile.getTileColumn());
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "moneda")) {
-								almacenEnemigos.creaEnemigo(TipoEnemigo.MONEDA,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
+								context.almacenEnemigos.creaEnemigo(TipoEnemigo.MONEDA,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "globo")) {
-								almacenEnemigos.creaEnemigo(TipoEnemigo.GLOBO,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
+								context.almacenEnemigos.creaEnemigo(TipoEnemigo.GLOBO,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "fantasma")) {
-								almacenEnemigos.creaEnemigo(TipoEnemigo.FANTASMA,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
+								context.almacenEnemigos.creaEnemigo(TipoEnemigo.FANTASMA,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "gotanaranja")) {
-								almacenEnemigos.creaEnemigo(TipoEnemigo.GOTA_NARANJA,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
+								context.almacenEnemigos.creaEnemigo(TipoEnemigo.GOTA_NARANJA,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "GLOBO_AZUL")) {
-								almacenEnemigos.creaEnemigo(TipoEnemigo.GLOBO_AZUL,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
+								context.almacenEnemigos.creaEnemigo(TipoEnemigo.GLOBO_AZUL,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "MOCO_ROJO")) {
-								almacenEnemigos.creaEnemigo(TipoEnemigo.MOCO_ROJO,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
+								context.almacenEnemigos.creaEnemigo(TipoEnemigo.MOCO_ROJO,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "MONEDA_MARRON")) {
-								almacenEnemigos.creaEnemigo(TipoEnemigo.MONEDA_MARRON,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
+								context.almacenEnemigos.creaEnemigo(TipoEnemigo.MONEDA_MARRON,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "GOTA_ROJA")) {
-								almacenEnemigos.creaEnemigo(TipoEnemigo.GOTA_ROJA,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
+								context.almacenEnemigos.creaEnemigo(TipoEnemigo.GOTA_ROJA,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
 							} else if (pTMXTileProperties.containsTMXProperty("moneda", "bomba")) {
 								datosMapa.setM_bomba(datosMapa.getM_bomba()+1);
 							} else if (pTMXTileProperties.containsTMXProperty("moneda", "corazon")) {

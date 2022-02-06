@@ -79,8 +79,10 @@ public class Carga {
 							context.menuMapas.carga();
 							setPorcentaje(60);							
 							context.capaParedes.carga();
-							setPorcentaje(80);							
+							setPorcentaje(70);							
 							context.escenaJuego.cargar();
+							setPorcentaje(80);
+							context.almacenEnemigos.carga();
 							setPorcentaje(100);
 						} catch (Exception e) {
 							// TODO Auto-generated catch block

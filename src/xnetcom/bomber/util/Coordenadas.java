@@ -29,7 +29,9 @@ public class Coordenadas {
 	public float getY(){
 		return (12*Constantes.TILE_HEIGHT) - fila*Constantes.TILE_HEIGHT;
 	}
-	
+	public float getYCorregido(){
+		return (14*Constantes.TILE_HEIGHT) - fila*Constantes.TILE_HEIGHT;
+	}
 
 	
 	
