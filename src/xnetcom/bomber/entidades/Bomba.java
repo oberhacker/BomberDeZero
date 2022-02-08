@@ -181,8 +181,7 @@ public class Bomba {
 		sprIzquierdaFin = new AnimatedSprite(sprCentro.getX() - (sprCentro.getWidth() * 4), sprCentro.getY(), context.almacenBombas.mFuegoFinIzquierdaTR, context.getVertexBufferObjectManager());// gles2
 		normaliza(sprIzquierdaFin);
 
-		sprBomba = new AnimatedSprite(sprCentro.getX() - 5, sprCentro.getY() - 10, context.almacenBombas.bombaTR, context.getVertexBufferObjectManager());
-		sprBomba.setOffsetCenter(0, 0);
+
 
 		batch = new SpriteGroup(context.almacenBombas.fuegoBBTA, 21, context.getVertexBufferObjectManager());
 		batch.setOffsetCenter(0, 0);
@@ -228,7 +227,7 @@ public class Bomba {
 		
 		reiniciaBatch();
 		
-		currentTileRectangle.attachChild(sprBomba);
+
 		currentTileRectangle.setZIndex(Constantes.ZINDEX_BOMBA);
 		currentTileRectangle.setAlpha(0);
 		currentTileRectangle.setPosition(0, 0);
@@ -263,7 +262,7 @@ public class Bomba {
 		sprIzquierdaFin.setVisible(false);
 		sprIzquierda_1.setVisible(false);
 		sprIzquierda_2.setVisible(false);
-		sprBomba.setVisible(false);
+//		sprBomba.setVisible(false);
 	}
 
 	public boolean plantarBomba(int tamExplosion, int secuencia, boolean detonadorRemoto) {
@@ -296,6 +295,12 @@ public class Bomba {
 
 		batch.setPosition(context.bomberman.currentTileRectangle.getX(), context.bomberman.currentTileRectangle.getY());
 		
+		
+		sprBomba = new AnimatedSprite(sprCentro.getX() - 5, sprCentro.getY() - 10, context.almacenBombas.bombaTR, context.getVertexBufferObjectManager());
+		sprBomba.setOffsetCenter(0, 0);
+		
+		currentTileRectangle.attachChild(sprBomba);
+		
 		currentTileRectangle.setPosition(context.bomberman.currentTileRectangle.getX(), context.bomberman.currentTileRectangle.getY());
 		context.soundManager.plantaBomba();
 		context.soundManager.sonarMecha();		
@@ -313,7 +318,7 @@ public class Bomba {
 	
 	public void reinicia(){
 		context.soundManager.pararMecha();
-		sprBomba.setVisible(false);
+//		sprBomba.setVisible(false);
 		batch.clearEntityModifiers();
 		sprCentro.clearEntityModifiers();
 		this.setDetonada(true);		
@@ -352,7 +357,11 @@ public class Bomba {
 //		batch.setVisible(true);
 		creaFragmentoExplosiones();
 		context.soundManager.sonidoExplosion();
-		sprBomba.setVisible(false);
+//		sprBomba.setVisible(false);
+		sprBomba.clearEntityModifiers();
+		sprBomba.clearUpdateHandlers();
+		sprBomba.setIgnoreUpdate(true);
+		sprBomba.detachSelf();
 		context.escenaJuego.matriz.setValor(Matriz.NADA, fila, columna,null,null);
 		context.vibrar(300);
 		

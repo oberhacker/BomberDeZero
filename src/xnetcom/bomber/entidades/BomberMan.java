@@ -214,7 +214,7 @@ public class BomberMan {
 		
 		
 		//////////////
-
+		//context.escenaJuego.hud.debugText.setText("Hijos "+context.escenaJuego.scene.getChildCount());
 		
 		bomberArriba.setX(baseTileRectangle.getX()- 10);
 		bomberArriba.setY(baseTileRectangle.getY());

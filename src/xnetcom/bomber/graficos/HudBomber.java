@@ -50,7 +50,7 @@ public class HudBomber {
 	Sprite btn_1;
 	Sprite btn_2;
 	Sprite pause;
-	Text debugText;
+	public Text debugText;
 	
 	public DigitalOnScreenControl mDigitalOnScreenControl;
 
