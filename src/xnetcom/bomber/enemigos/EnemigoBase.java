@@ -122,8 +122,8 @@ public abstract class EnemigoBase {
 				spritePrincipal.clearEntityModifiers();
 				spritePrincipal.clearUpdateHandlers();
 				spritePrincipal.setIgnoreUpdate(true);
-//				spritePrincipal.detachSelf();
-				context.escenaJuego.scene.detachChild(spritePrincipal) ;
+				spritePrincipal.detachSelf();
+//				context.escenaJuego.scene.detachChild(spritePrincipal) ;
 				
 				spritePrincipal.clearEntityModifiers();
 				spritePrincipal.clearUpdateHandlers();
@@ -133,21 +133,21 @@ public abstract class EnemigoBase {
 				currentTileRectangle.clearEntityModifiers();
 				currentTileRectangle.clearUpdateHandlers();
 				currentTileRectangle.setIgnoreUpdate(true);
-//				currentTileRectangle.detachSelf();
-				context.escenaJuego.scene.detachChild(currentTileRectangle) ;
+				currentTileRectangle.detachSelf();
+//				context.escenaJuego.scene.detachChild(currentTileRectangle) ;
 				
 				
 				colidesTileRectangle.clearEntityModifiers();
 				colidesTileRectangle.clearUpdateHandlers();
 				colidesTileRectangle.setIgnoreUpdate(true);
-//				colidesTileRectangle.detachSelf();
-				context.escenaJuego.scene.detachChild(colidesTileRectangle) ;
+				colidesTileRectangle.detachSelf();
+//				context.escenaJuego.scene.detachChild(colidesTileRectangle) ;
 				
 				baseTileRectangle.clearEntityModifiers();
 				baseTileRectangle.clearUpdateHandlers();
 				baseTileRectangle.setIgnoreUpdate(true);
-//				baseTileRectangle.detachSelf();
-				context.escenaJuego.scene.detachChild(baseTileRectangle) ;
+				baseTileRectangle.detachSelf();
+//				context.escenaJuego.scene.detachChild(baseTileRectangle) ;
 			}
 		});		
 

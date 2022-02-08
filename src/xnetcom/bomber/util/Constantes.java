@@ -3,9 +3,9 @@ package xnetcom.bomber.util;
 public class Constantes {
 	
 	
-	public static boolean DEBUG_BASE_RECTANGLE_VISIBLE=false;
-	public static boolean DEBUG_CURRENT_RECTANGLE_VISIBLE=false;
-	public static boolean DEBUG_TEXT=false; 
+	public static boolean DEBUG_BASE_RECTANGLE_VISIBLE=true;
+	public static boolean DEBUG_CURRENT_RECTANGLE_VISIBLE=true;
+	public static boolean DEBUG_TEXT=true; 
 	
 	public static int TILE_TAM=64;
 	public static float FARTOR_FORMA = 1.15625f;

@@ -24,6 +24,7 @@ public class AlmacenEnemigos {
 		GLOBO, MOCO, MONEDA, FANTASMA, GOTA_NARANJA, GLOBO_AZUL, MOCO_ROJO, MONEDA_MARRON, GOTA_ROJA,
 	}
 	
+	public ArrayList<TipoEnemigo> enemigosIniciales;
 	public ArrayList<EnemigoBase> almacen;
 	private BomberGame context;
 	
@@ -47,22 +48,25 @@ public class AlmacenEnemigos {
 	}
 	
 	
-	
-	/**
-	 * crea un enemigo lo mete en el array de enemigos vivos y lo añade a la escena
-	 */
-	public void creaEnemigo( TipoEnemigo tipoEnemigo,int fila, int columna){
-		
-		if (groupGlobo==null){
+	public boolean ini=false;
+	public void inicializaGrupos(){
+		if (!ini){
+			ini=true;		
 			groupGlobo= new SpriteGroup(globo_naranja_ani, 100, context.getVertexBufferObjectManager());
 			groupGlobo.setOffsetCenter(0, 0);
 			groupGlobo.setPosition(0, 0);
 			groupGlobo.setZIndex(Constantes.ZINDEX_ENEMIGO);
 			context.escenaJuego.scene.sortChildren();
-			context.escenaJuego.scene.attachChild(groupGlobo);
+			context.escenaJuego.scene.attachChild(groupGlobo);			
 		}
-
-		
+	}
+	
+	
+	/**
+	 * crea un enemigo lo mete en el array de enemigos vivos y lo añade a la escena
+	 */
+	
+	public void creaEnemigo( TipoEnemigo tipoEnemigo,int fila, int columna){
 		//completar logica
 		switch (tipoEnemigo) {
 		case GLOBO:
@@ -73,6 +77,12 @@ public class AlmacenEnemigos {
 		default:
 			break;
 		}
+		
+	}
+	public void creaEnemigoInicial( TipoEnemigo tipoEnemigo,int fila, int columna){
+		inicializaGrupos();
+		enemigosIniciales.add(tipoEnemigo);
+		creaEnemigo(tipoEnemigo, fila, columna);
 	}
 	
 	
@@ -106,8 +116,26 @@ public class AlmacenEnemigos {
 		}
 	}
 	
-	public void reseteaEnemigos(){
+	public void eliminaTodosEnemigos(){
+		synchronized (almacen) {
+			for (EnemigoBase enemigo : almacen) {
+				enemigo.detach();
+			}
+			almacen.clear();			
+		}
+	}
+
+	public void reiniciaEnemigos(){
 		
+		
+		 for (TipoEnemigo enemigo : enemigosIniciales) {
+			 creaEnemigo(enemigo, 2, 15);			
+		}
+	}
+
+	public void inicializaAlmacen() {
+		eliminaTodosEnemigos();		
+		enemigosIniciales= new ArrayList<AlmacenEnemigos.TipoEnemigo>();
 	}
 
 }
