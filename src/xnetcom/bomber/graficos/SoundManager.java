@@ -50,13 +50,23 @@ public class SoundManager {
 				bomset.add(plantada);
 
 			}
-
 			this.estrellas = SoundFactory.createSoundFromAsset(context.getEngine().getSoundManager(), context, "estrellas.mp3");
 		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 		this.estrellas.setVolume(1);
 
+		try {
+			this.pasosB = SoundFactory.createSoundFromAsset(context.getEngine().getSoundManager(), context, "pasos7.wav");			
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+		//this.pasosB.setVolume(1);
+		pasosB.setLooping(true);
+		
+		
+		
+		
 		// musica1.setVolume(0.1f);
 
 		for (Sound explosion : explosion) {
@@ -145,6 +155,28 @@ public class SoundManager {
 	}
 
 	int bombas = 0;
+	
+	boolean sonandoPasos=false;
+	public void sonarPasos() {
+		new Thread() {
+			public void run() {
+				if (!sonandoPasos){
+					sonandoPasos=true;
+					pasosB.play();					
+				}
+			};
+		}.start();
+	}
+	
+	public void pararPasos() {
+		new Thread() {
+			public void run() {
+				sonandoPasos=false;
+				pasosB.pause();
+			};
+		}.start();
+	}
+	
 
 	public void sonarMecha() {
 		new Thread() {

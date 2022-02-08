@@ -15,8 +15,9 @@ public class EnemigoGlobo extends EnemigoBase {
 		tiempoPorCuadro = 0.70f;
 		tiempoFotograma = 120;
 
-//		 ponEnbase();
-		 ponenGroup();
+		
+		setPosicionCorreccionTexturaPrincipal(-2, -20);
+		 attachSpriteGroup();
 		 baseTileRectangle.registerUpdateHandler(new IUpdateHandler() {
 			
 			@Override
@@ -27,7 +28,7 @@ public class EnemigoGlobo extends EnemigoBase {
 			
 			@Override
 			public void onUpdate(float pSecondsElapsed) {
-				spritePrincipal.setPosition(baseTileRectangle.getX(), baseTileRectangle.getY());
+				spritePrincipal.setPosition(baseTileRectangle.getX()+correccionTexturaPrincipalX, baseTileRectangle.getY()+correccionTexturaPrincipalY);
 		
 				
 			}
@@ -36,21 +37,13 @@ public class EnemigoGlobo extends EnemigoBase {
 
 	}
 
-	public void ponenGroup(){
+	public void attachSpriteGroup(){
 		spritePrincipal = new AnimatedSprite(0, 0, context.almacenEnemigos.globoTR, context.getVertexBufferObjectManager());
 		spritePrincipal.setOffsetCenter(0, 0);
 		spritePrincipal.setScale(0.7f);
-		spritePrincipal.setPosition(coordenadas.getX(), coordenadas.getYCorregido());
-		context.almacenEnemigos.group.attachChild(spritePrincipal);
+		spritePrincipal.setPosition(coordenadas.getX()+correccionTexturaPrincipalX, coordenadas.getYCorregido()+correccionTexturaPrincipalY);
+		context.almacenEnemigos.groupGlobo.attachChild(spritePrincipal);
 		context.escenaJuego.scene.sortChildren();		
-	}
-	
-	public void ponEnbase(){
-		TiledTextureRegion principalTR = context.almacenEnemigos.globoTR;
-		spritePrincipal = new AnimatedSprite(0, -20, principalTR, context.getVertexBufferObjectManager());
-		spritePrincipal.setOffsetCenter(0, 0);
-		spritePrincipal.setScale(0.7f);
-		baseTileRectangle.attachChild(spritePrincipal);
 	}
 	
 	

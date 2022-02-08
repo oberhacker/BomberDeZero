@@ -1,6 +1,7 @@
 package xnetcom.bomber.entidades;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
@@ -11,6 +12,7 @@ import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
+import org.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.andengine.entity.text.Text;
 import org.andengine.extension.tmx.TMXLayer;
 import org.andengine.extension.tmx.TMXTile;
@@ -26,6 +28,7 @@ import org.andengine.util.modifier.IModifier;
 
 import xnetcom.bomber.BomberGame;
 import xnetcom.bomber.util.Constantes;
+import xnetcom.bomber.util.Coordenadas;
 import xnetcom.bomber.util.Matriz;
 import xnetcom.bomber.util.Matriz.Casilla;
 import android.graphics.Typeface;
@@ -88,6 +91,7 @@ public class BomberMan {
 		baseTileRectangle.setPosition(getXinicial(), getYinicial());
 		bomberAbajo.setCurrentTileIndex(0);
 		bomberAbajo.setCurrentTileIndex(0);		
+		setnoMuerto();
 	}
 	
 
@@ -497,6 +501,10 @@ public class BomberMan {
 	}
 
 	public void moverArriba() {
+		if(isMuerto()){
+			return;
+		}
+		context.soundManager.sonarPasos();
 		detener();
 		playerDirection = PlayerDirection.UP;
 		if (!isLimiteArriba()) {
@@ -540,6 +548,10 @@ public class BomberMan {
 	}
 
 	public void moverAbajo() {
+		if(isMuerto()){
+			return;
+		}
+		context.soundManager.sonarPasos();
 		detener();
 		playerDirection = PlayerDirection.DOWN;
 		if (!isLimiteAbajo()) {
@@ -585,6 +597,10 @@ public class BomberMan {
 	}
 
 	public void moverDerecha() {
+		if(isMuerto()){
+			return;
+		}
+		context.soundManager.sonarPasos();
 		detener();
 		playerDirection = PlayerDirection.RIGHT;
 		if (!isLimiteDerecha()) {
@@ -628,6 +644,10 @@ public class BomberMan {
 	}
 
 	public void moverIzquierda() {
+		if(isMuerto()){
+			return;
+		}
+		context.soundManager.sonarPasos();
 		detener();
 		playerDirection = PlayerDirection.LEFT;
 		if (!isLimiteIzquierda()) {
@@ -683,6 +703,7 @@ public class BomberMan {
 	public void detenerPararAnimacion() {
 		stopAnimation();
 		detener();
+		context.soundManager.pararPasos();
 	}
 
 	public void moverRecto() {
@@ -750,5 +771,143 @@ public class BomberMan {
 			muerto = false;
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	int [] array;
+	public void morir(boolean fuego) {
+		
+		if (isMuerto()){
+			return;		
+		}
+		setMuerto();
+		
+		Log.d("MORIR", "MORIR");
+		
+		int currentTile= bomberAbajo.getCurrentTileIndex();
+		
+		array= new int[]{48,49,48,49};
+		if (fuego){
+			if (0<=currentTile && currentTile<=11){
+				////System.out.println("0-11");
+				array = new int[]{48,49,48,49};
+			}
+			if (12<=currentTile && currentTile<=23){
+				////System.out.println("12- 23");
+				array = new int[]{50,51,50, 51};
+			}			
+			if (24<=currentTile && currentTile<=35){
+				////System.out.println("2 -35");
+				array = new int[]{52,53,52, 53};
+			}
+			if (36<=currentTile && currentTile<=47){
+				////System.out.println("36-47");
+				array = new int[]{54,55,54, 55};
+			}
+		
+		}else {
+			if (0<=currentTile && currentTile<=11){
+				////System.out.println("0-11");
+				array = new int[]{11,56,11, 56};
+			}
+			if (12<=currentTile && currentTile<=23){
+				////System.out.println("12- 23");
+				array = new int[]{23,23,23, 23};
+			}
+			if (24<=currentTile && currentTile<=35){
+				////System.out.println("2 -35");
+				array = new int[]{24,57,24, 57};
+			}
+			if (36<=currentTile && currentTile<=47){
+				////System.out.println("36-47");
+				array = new int[]{47,58,47, 58};
+			}
+			
+		}		
+		
+		
+		// bomber.stopAnimation();
+		detenerPararAnimacion();
+		final long tiempo = 500;
+		Log.d("INICIO ANIMACION", "INICIO ANIMACION");
+		
+		new Thread(){
+			public void run() {
+				try {
+					sleep(2500);
+					context.gameManager.reiniciarBomberMan();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}				
+
+			};
+		}.start();	
+
+		bomberAbajo.animate(new long[] { tiempo, tiempo, tiempo, tiempo }, array, 0, new IAnimationListener() {
+
+			@Override
+			public void onAnimationStarted(AnimatedSprite pAnimatedSprite, int pInitialLoopCount) {
+				Log.d("ANIMATION STARTED", "ANIMATION STARTED");
+
+			}
+
+			@Override
+			public void onAnimationFrameChanged(AnimatedSprite pAnimatedSprite, int pOldFrameIndex, int pNewFrameIndex) {
+				Log.d("onAnimationFrameChanged", "frame " + pNewFrameIndex);
+
+			}
+
+			@Override
+			public void onAnimationLoopFinished(AnimatedSprite pAnimatedSprite, int pRemainingLoopCount, int pInitialLoopCount) {
+				Log.d("onAnimationLoopFinished", "onAnimationLoopFinished");
+
+			}
+
+			@Override
+			public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
+				Log.d("onAnimationFinished", "onAnimationFinished");
+//				context.gameManager.reiniciarBomberMan();
+
+			}
+		});
+
+	}
+
+	public void matarPorCoordenadas(ArrayList<Coordenadas> coordenadas) {
+		for (Coordenadas coordenada : coordenadas) {
+			if(coordenada.getColumna()==getColumna() && coordenada.getFila()==getFila()){
+				if (isMuerto()){
+					return;
+				}
+				morir(true);
+				return;
+			}
+		}	
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

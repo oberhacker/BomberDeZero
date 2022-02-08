@@ -18,13 +18,13 @@ import xnetcom.bomber.util.Coordenadas;
 public class AlmacenEnemigos {
 	
 	
-	public SpriteGroup group;
+	public SpriteGroup groupGlobo;
 	
 	public enum TipoEnemigo {
 		GLOBO, MOCO, MONEDA, FANTASMA, GOTA_NARANJA, GLOBO_AZUL, MOCO_ROJO, MONEDA_MARRON, GOTA_ROJA,
 	}
 	
-	private ArrayList<EnemigoBase> almacen;
+	public ArrayList<EnemigoBase> almacen;
 	private BomberGame context;
 	
 	
@@ -53,15 +53,13 @@ public class AlmacenEnemigos {
 	 */
 	public void creaEnemigo( TipoEnemigo tipoEnemigo,int fila, int columna){
 		
-		if (group==null){
-			group= new SpriteGroup(globo_naranja_ani, 100, context.getVertexBufferObjectManager());
-			group.setOffsetCenter(0, 0);
-			group.setPosition(0, 0);
-			group.setZIndex(Constantes.ZINDEX_CAPA_TECHO_PIEDRAS);
+		if (groupGlobo==null){
+			groupGlobo= new SpriteGroup(globo_naranja_ani, 100, context.getVertexBufferObjectManager());
+			groupGlobo.setOffsetCenter(0, 0);
+			groupGlobo.setPosition(0, 0);
+			groupGlobo.setZIndex(Constantes.ZINDEX_ENEMIGO);
 			context.escenaJuego.scene.sortChildren();
-			context.escenaJuego.scene.attachChild(group);
-			
-
+			context.escenaJuego.scene.attachChild(groupGlobo);
 		}
 
 		
@@ -102,6 +100,11 @@ public class AlmacenEnemigos {
 	}
 
 
+	public void pararTodosEnemigo(){
+		for (EnemigoBase enemigo : almacen) {
+			enemigo.detener();
+		}
+	}
 	
 	public void reseteaEnemigos(){
 		

@@ -224,6 +224,7 @@ public class EscenaJuego {
 		context.miengine.setCaramaJuego();		
 		context.capaParedes.recalculaPared();		
 		scene.sortChildren();
+		context.gameManager.inicia();
 		return scene;
 	}
 

@@ -108,6 +108,13 @@ public abstract class EnemigoBase {
 
 	}
 
+	public int correccionTexturaPrincipalX=0;
+	public int correccionTexturaPrincipalY=0;
+	public void setPosicionCorreccionTexturaPrincipal(int x, int y){
+		correccionTexturaPrincipalX=x;
+		correccionTexturaPrincipalY=y;
+	}
+	
 	public void detach() {
 		context.runOnUpdateThread(new Runnable() {
 			public void run() {
@@ -117,6 +124,11 @@ public abstract class EnemigoBase {
 				spritePrincipal.setIgnoreUpdate(true);
 //				spritePrincipal.detachSelf();
 				context.escenaJuego.scene.detachChild(spritePrincipal) ;
+				
+				spritePrincipal.clearEntityModifiers();
+				spritePrincipal.clearUpdateHandlers();
+				spritePrincipal.setIgnoreUpdate(true);
+				spritePrincipal.detachSelf();
 				
 				currentTileRectangle.clearEntityModifiers();
 				currentTileRectangle.clearUpdateHandlers();
@@ -648,6 +660,11 @@ public abstract class EnemigoBase {
 
 	}
 	
+	
+	public void detener(){
+		baseTileRectangle.setIgnoreUpdate(true);
+		spritePrincipal.stopAnimation();	
+	}
 	
 	public abstract void animarDerecha();
 
