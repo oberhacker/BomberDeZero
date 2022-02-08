@@ -31,26 +31,26 @@ import android.widget.Toast;
 public class Bomba {
 
 	public BomberGame context;
-	public BitmapTextureAtlas bombaBTA;
-	public BuildableBitmapTextureAtlas fuegoBBTA;
+//	public BitmapTextureAtlas bombaBTA;
+//	public BuildableBitmapTextureAtlas fuegoBBTA;
 
 	private ArrayList<Coordenadas> coordenadas;
 	
 	
-	private TiledTextureRegion mFuegoCentroTR;
-	private TiledTextureRegion mFuegoCentroDerechaTR;
-	private TiledTextureRegion mFuegoCentroIzquierdaTR;
-	private TiledTextureRegion mFuegoCentroArribaTR;
-	private TiledTextureRegion mFuegoCentroAbajoTR;
-	private TiledTextureRegion mFuegoHorizontalTR;
-	private TiledTextureRegion mFuegoVerticalTR;
+//	private TiledTextureRegion mFuegoCentroTR;
+//	private TiledTextureRegion mFuegoCentroDerechaTR;
+//	private TiledTextureRegion mFuegoCentroIzquierdaTR;
+//	private TiledTextureRegion mFuegoCentroArribaTR;
+//	private TiledTextureRegion mFuegoCentroAbajoTR;
+//	private TiledTextureRegion mFuegoHorizontalTR;
+//	private TiledTextureRegion mFuegoVerticalTR;
+//
+//	private TiledTextureRegion mFuegoFinDerechaTR;
+//	private TiledTextureRegion mFuegoFinIzquierdaTR;
+//	private TiledTextureRegion mFuegoFinArribaTR;
+//	private TiledTextureRegion mFuegoFinAbajoTR;
 
-	private TiledTextureRegion mFuegoFinDerechaTR;
-	private TiledTextureRegion mFuegoFinIzquierdaTR;
-	private TiledTextureRegion mFuegoFinArribaTR;
-	private TiledTextureRegion mFuegoFinAbajoTR;
-
-	private TiledTextureRegion bombaTR;
+//	private TiledTextureRegion bombaTR;
 
 	public AnimatedSprite sprCentro;
 	private AnimatedSprite sprDerecha_0;
@@ -103,57 +103,8 @@ public class Bomba {
 		this.context = context;
 	}
 
-	public void cargaTexturas(Bomba clone) {
-		
-		if (clone!=null){
-			clonarTexturas(clone);			
-		}else{
-			this.bombaBTA = new BitmapTextureAtlas(context.getTextureManager(), 512, 256, TextureOptions.REPEATING_BILINEAR_PREMULTIPLYALPHA);
-			BitmapTextureAtlasTextureRegionFactory.createFromSource(bombaBTA, new TransparentBitmapTextureAtlasSource(512, 256), 0, 0);
-			this.fuegoBBTA = new BuildableBitmapTextureAtlas(context.getTextureManager(), 2048, 256, TextureOptions.REPEATING_NEAREST_PREMULTIPLYALPHA);
-			this.mFuegoCentroTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_r_ani_74.png", 5, 1);
-			this.mFuegoCentroAbajoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_abajo_r_ani_74.png", 5, 1);
-			this.mFuegoCentroArribaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_arriba_r_ani_74.png", 5, 1);
-			this.mFuegoCentroDerechaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_derecha_r_ani_74.png", 5, 1);
-			this.mFuegoCentroIzquierdaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_izquierda_r_ani_74.png", 5, 1);
-			this.mFuegoFinAbajoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_fin_abajo_r_ani_74.png", 5, 1);
-			this.mFuegoFinArribaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_fin_arriba_r_ani_74.png", 5, 1);
-			this.mFuegoFinDerechaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_fin_derecha_r_ani_74.png", 5, 1);
-			this.mFuegoFinIzquierdaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_fin_izquierda_r_ani_74.png", 5, 1);
-			this.mFuegoHorizontalTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_horizontal_r_ani_74.png", 5, 1);
-			this.mFuegoVerticalTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_vertical_r_ani_74.png", 5, 1);
-			this.bombaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.bombaBTA, context, "gfx/bomba_ani90.png", 0, 0, 4, 2);
 
-			try {
-				fuegoBBTA.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 2));
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			context.getEngine().getTextureManager().loadTexture(fuegoBBTA);
-			context.getEngine().getTextureManager().loadTexture(bombaBTA);
-		}	
 
-		creaBatch();
-	}
-
-	
-	public void clonarTexturas(Bomba clone){
-		this.mFuegoCentroAbajoTR=clone.mFuegoCentroAbajoTR.deepCopy();
-		this.mFuegoCentroArribaTR=clone.mFuegoCentroArribaTR.deepCopy();
-		this.mFuegoCentroDerechaTR=clone.mFuegoCentroDerechaTR.deepCopy();
-		this.mFuegoCentroIzquierdaTR=clone.mFuegoCentroIzquierdaTR.deepCopy();
-		this.mFuegoCentroTR=clone.mFuegoCentroTR.deepCopy();
-		this.mFuegoFinAbajoTR=clone.mFuegoFinAbajoTR.deepCopy();
-		this.mFuegoFinArribaTR=clone.mFuegoFinArribaTR.deepCopy();
-		this.mFuegoFinDerechaTR=clone.mFuegoFinDerechaTR.deepCopy();
-		this.mFuegoFinIzquierdaTR=clone.mFuegoFinIzquierdaTR.deepCopy();
-		this.mFuegoHorizontalTR=clone.mFuegoHorizontalTR.deepCopy();
-		this.mFuegoVerticalTR=clone.mFuegoVerticalTR.deepCopy();	
-		this.bombaTR=clone.bombaTR.deepCopy();
-		this.bombaBTA=clone.bombaBTA;
-		this.fuegoBBTA=clone.fuegoBBTA;
-	}
 	
 	
 	public void normaliza(AnimatedSprite sprite) {
@@ -166,7 +117,7 @@ public class Bomba {
 	public void creaBatch() {
 		// Srpite maestro
 
-		sprCentro = new AnimatedSprite(0,0, mFuegoCentroTR, context.getVertexBufferObjectManager()) {
+		sprCentro = new AnimatedSprite(0,0, context.almacenBombas.mFuegoCentroTR, context.getVertexBufferObjectManager()) {
 			public void setAlpha(float pAlpha) {
 				sprAbajo_1.setAlpha(pAlpha);
 				sprAbajo_2.setAlpha(pAlpha);
@@ -212,46 +163,46 @@ public class Bomba {
 
 		normaliza(sprCentro);
 
-		sprDerecha_0 = new AnimatedSprite(sprCentro.getX() + sprCentro.getWidth(), sprCentro.getY(), mFuegoCentroDerechaTR, context.getVertexBufferObjectManager());
+		sprDerecha_0 = new AnimatedSprite(sprCentro.getX() + sprCentro.getWidth(), sprCentro.getY(), context.almacenBombas.mFuegoCentroDerechaTR, context.getVertexBufferObjectManager());
 		normaliza(sprDerecha_0);
 
-		sprIzquierda_0 = new AnimatedSprite(sprCentro.getX() - sprCentro.getWidth(), sprCentro.getY(), mFuegoCentroIzquierdaTR, context.getVertexBufferObjectManager());
+		sprIzquierda_0 = new AnimatedSprite(sprCentro.getX() - sprCentro.getWidth(), sprCentro.getY(), context.almacenBombas.mFuegoCentroIzquierdaTR, context.getVertexBufferObjectManager());
 		normaliza(sprIzquierda_0);
-		sprArriba_0 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() + sprCentro.getHeight(), mFuegoCentroArribaTR, context.getVertexBufferObjectManager());
+		sprArriba_0 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() + sprCentro.getHeight(), context.almacenBombas.mFuegoCentroArribaTR, context.getVertexBufferObjectManager());
 		normaliza(sprArriba_0);
-		sprAbajo_0 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() - sprCentro.getHeight(), mFuegoCentroAbajoTR, context.getVertexBufferObjectManager());
+		sprAbajo_0 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() - sprCentro.getHeight(), context.almacenBombas.mFuegoCentroAbajoTR, context.getVertexBufferObjectManager());
 		normaliza(sprAbajo_0);
-		sprArriba_1 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() + (sprCentro.getHeight() * 2), mFuegoVerticalTR, context.getVertexBufferObjectManager());
+		sprArriba_1 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() + (sprCentro.getHeight() * 2), context.almacenBombas.mFuegoVerticalTR, context.getVertexBufferObjectManager());
 		normaliza(sprArriba_1);
-		sprArriba_2 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() + (sprCentro.getHeight() * 3), mFuegoVerticalTR, context.getVertexBufferObjectManager());
+		sprArriba_2 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() + (sprCentro.getHeight() * 3), context.almacenBombas.mFuegoVerticalTR, context.getVertexBufferObjectManager());
 		normaliza(sprArriba_2);
-		sprAbajo_1 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() - (sprCentro.getHeight() * 2), mFuegoVerticalTR, context.getVertexBufferObjectManager());
+		sprAbajo_1 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() - (sprCentro.getHeight() * 2), context.almacenBombas.mFuegoVerticalTR, context.getVertexBufferObjectManager());
 		normaliza(sprAbajo_1);
-		sprAbajo_2 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() - (sprCentro.getHeight() * 3), mFuegoVerticalTR, context.getVertexBufferObjectManager());
+		sprAbajo_2 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() - (sprCentro.getHeight() * 3), context.almacenBombas.mFuegoVerticalTR, context.getVertexBufferObjectManager());
 		normaliza(sprAbajo_2);
-		sprDerecha_1 = new AnimatedSprite(sprCentro.getX() + (sprCentro.getWidth() * 2), sprCentro.getY(), mFuegoHorizontalTR, context.getVertexBufferObjectManager());// gles2
+		sprDerecha_1 = new AnimatedSprite(sprCentro.getX() + (sprCentro.getWidth() * 2), sprCentro.getY(), context.almacenBombas.mFuegoHorizontalTR, context.getVertexBufferObjectManager());// gles2
 		normaliza(sprDerecha_1);
-		sprDerecha_2 = new AnimatedSprite(sprCentro.getX() + (sprCentro.getWidth() * 3), sprCentro.getY(), mFuegoHorizontalTR, context.getVertexBufferObjectManager());// gles2
+		sprDerecha_2 = new AnimatedSprite(sprCentro.getX() + (sprCentro.getWidth() * 3), sprCentro.getY(), context.almacenBombas.mFuegoHorizontalTR, context.getVertexBufferObjectManager());// gles2
 		normaliza(sprDerecha_2);
-		sprIzquierda_1 = new AnimatedSprite(sprCentro.getX() - (sprCentro.getWidth() * 2), sprCentro.getY(), mFuegoHorizontalTR, context.getVertexBufferObjectManager());// gles2
+		sprIzquierda_1 = new AnimatedSprite(sprCentro.getX() - (sprCentro.getWidth() * 2), sprCentro.getY(), context.almacenBombas.mFuegoHorizontalTR, context.getVertexBufferObjectManager());// gles2
 		normaliza(sprIzquierda_1);
-		sprIzquierda_2 = new AnimatedSprite(sprCentro.getX() - (sprCentro.getWidth() * 3), sprCentro.getY(), mFuegoHorizontalTR, context.getVertexBufferObjectManager());// gles2
+		sprIzquierda_2 = new AnimatedSprite(sprCentro.getX() - (sprCentro.getWidth() * 3), sprCentro.getY(), context.almacenBombas.mFuegoHorizontalTR, context.getVertexBufferObjectManager());// gles2
 		normaliza(sprIzquierda_2);
 
-		sprArribaFin = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() + (sprCentro.getHeight() * 4), mFuegoFinArribaTR, context.getVertexBufferObjectManager());
+		sprArribaFin = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() + (sprCentro.getHeight() * 4), context.almacenBombas.mFuegoFinArribaTR, context.getVertexBufferObjectManager());
 		normaliza(sprArribaFin);
-		sprAbajoFin = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() - (sprCentro.getHeight() * 4), mFuegoFinAbajoTR, context.getVertexBufferObjectManager());
+		sprAbajoFin = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() - (sprCentro.getHeight() * 4), context.almacenBombas.mFuegoFinAbajoTR, context.getVertexBufferObjectManager());
 		normaliza(sprAbajoFin);
 
-		sprDerechaFin = new AnimatedSprite(sprCentro.getX() + (sprCentro.getWidth() * 4), sprCentro.getY(), mFuegoFinDerechaTR, context.getVertexBufferObjectManager());// gles2
+		sprDerechaFin = new AnimatedSprite(sprCentro.getX() + (sprCentro.getWidth() * 4), sprCentro.getY(), context.almacenBombas.mFuegoFinDerechaTR, context.getVertexBufferObjectManager());// gles2
 		normaliza(sprDerechaFin);
-		sprIzquierdaFin = new AnimatedSprite(sprCentro.getX() - (sprCentro.getWidth() * 4), sprCentro.getY(), mFuegoFinIzquierdaTR, context.getVertexBufferObjectManager());// gles2
+		sprIzquierdaFin = new AnimatedSprite(sprCentro.getX() - (sprCentro.getWidth() * 4), sprCentro.getY(), context.almacenBombas.mFuegoFinIzquierdaTR, context.getVertexBufferObjectManager());// gles2
 		normaliza(sprIzquierdaFin);
 
-		sprBomba = new AnimatedSprite(sprCentro.getX() - 5, sprCentro.getY() - 10, bombaTR, context.getVertexBufferObjectManager());
+		sprBomba = new AnimatedSprite(sprCentro.getX() - 5, sprCentro.getY() - 10, context.almacenBombas.bombaTR, context.getVertexBufferObjectManager());
 		sprBomba.setOffsetCenter(0, 0);
 
-		batch = new SpriteGroup(fuegoBBTA, 21, context.getVertexBufferObjectManager());
+		batch = new SpriteGroup(context.almacenBombas.fuegoBBTA, 21, context.getVertexBufferObjectManager());
 		batch.setOffsetCenter(0, 0);
 		batch.setScaleCenter(0, 0);
 		

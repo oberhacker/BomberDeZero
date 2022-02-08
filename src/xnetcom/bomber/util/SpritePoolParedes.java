@@ -40,8 +40,19 @@ public class SpritePoolParedes extends GenericPool<AnimatedSprite> {
         return lSprite;
     }
 
+    
+    
+    
     @Override
     protected void onHandleRecycleItem(final AnimatedSprite pSprite) {
+//    	context.runOnUpdateThread(new Runnable() {
+//			public void run() {
+//				pSprite.clearEntityModifiers();
+//				pSprite.clearUpdateHandlers();
+//				pSprite.setIgnoreUpdate(true);
+//				pSprite.detachSelf();
+//			}
+//		});    	
     	pSprite.detachSelf();
     	Log.d("POOL", "onHandleRecycleItem");
     	

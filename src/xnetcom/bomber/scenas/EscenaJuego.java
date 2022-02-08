@@ -89,6 +89,7 @@ public class EscenaJuego {
 			primeraCarga=true;
 			scene= new Scene();	
 		}
+		
 
 		try {
 
@@ -100,7 +101,9 @@ public class EscenaJuego {
 							if (pTMXTileProperties.containsTMXProperty("muro", "true")) {
 								matriz.setValor(Matriz.MURO, pTMXTile.getTileRow(), pTMXTile.getTileColumn(),null,null);
 							} else if (pTMXTileProperties.containsTMXProperty("pared", "true")) {
-								context.capaParedes.ponPared(pTMXTile.getTileColumn(), pTMXTile.getTileRow());
+								context.capaParedes.ponPared(pTMXTile.getTileColumn(), pTMXTile.getTileRow(),true);
+							} else if (pTMXTileProperties.containsTMXProperty("pared", "false")) {
+								context.capaParedes.ponPared(pTMXTile.getTileColumn(), pTMXTile.getTileRow(),false);								
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "moco")) {
 								context.almacenEnemigos.creaEnemigo(TipoEnemigo.MOCO,pTMXTile.getTileRow(),pTMXTile.getTileColumn());
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "moneda")) {

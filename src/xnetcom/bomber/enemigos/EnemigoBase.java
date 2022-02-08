@@ -302,7 +302,13 @@ public abstract class EnemigoBase {
 
 	public void iniciaInteligenciaIA() {
 		this.direccion = EligeDireccion();
-		inteligencia();
+		baseTileRectangle.registerEntityModifier(new DelayModifier(0.1f){
+			@Override
+			protected void onModifierFinished(IEntity pItem) {
+				inteligencia();
+			}
+		});	
+		
 	}
 
 	

@@ -21,10 +21,10 @@ public class Constantes {
 	
 	public static int ZINDEX_BOMBA=180;
 	
-	public static int ZINDEX_CAPA_PAREDES_ARRIBA=200;
+	public static int ZINDEX_CAPA_PAREDES_ARRIBA=800;
 	
-	public static int ZINDEX_CAPA_BORDE_ABAJO=300;
-	public static int ZINDEX_CAPA_TECHO_PIEDRAS=800;
+	public static int ZINDEX_CAPA_BORDE_ABAJO=810;
+	public static int ZINDEX_CAPA_TECHO_PIEDRAS=880;
 	
 	public static int ZINDEX_BOMBERMAN_ARRIBA=560;
 	public static int ZINDEX_BOMBERMAN_ABAJO=195;	

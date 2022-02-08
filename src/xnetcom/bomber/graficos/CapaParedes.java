@@ -116,19 +116,32 @@ public class CapaParedes {
 	
 
 	
-	public void ponPared(int columna,int fila){
+	public void ponPared(int columna,int fila, boolean paredVerdadera){
 		AnimatedSprite spriteArriba = spritePoolArriba.obtainPoolItem();		
 		AnimatedSprite spriteAbajo = spritePoolAbajo.obtainPoolItem();
 		Coordenadas coodenadas= new Coordenadas(columna, fila);
 		
-		spriteArriba.setPosition(coodenadas.getX(), coodenadas.getY()+3);		
-		spriteGroupArriba.attachChild(spriteArriba);
+		spriteArriba.setPosition(coodenadas.getX(), coodenadas.getY()+3);	
+		if (spriteArriba.hasParent()){
+			System.out.println("tiene parent");
+		}else{
+			spriteGroupArriba.attachChild(spriteArriba);	
+		}
+		
 		
 		spriteAbajo.setPosition(coodenadas.getX(), coodenadas.getY()+3);		
-		spriteGroupAbajo.attachChild(spriteAbajo);		
-		TrozoPared trozo= new TrozoPared(context,spriteArriba, spriteAbajo, coodenadas);
+		if (spriteAbajo.hasParent()){
+			System.out.println("tiene parent");
+		}else{
+			spriteGroupAbajo.attachChild(spriteAbajo);	
+		}
+	
+		TrozoPared trozo= new TrozoPared(context,spriteArriba, spriteAbajo, coodenadas,paredVerdadera);
 		listaMuros.add(trozo);
-		context.escenaJuego.matriz.setValor(Matriz.PARED, fila, columna, null, trozo);		
+		if (paredVerdadera){
+			context.escenaJuego.matriz.setValor(Matriz.PARED, fila, columna, null, trozo);		
+		}
+		
 		
 	}
 	
@@ -211,14 +224,15 @@ public class CapaParedes {
 		public AnimatedSprite trozoAbajo;
 		public Coordenadas coodenadas;
 		public BomberGame context;
+		public boolean verdadera;
 		
 		
-		public TrozoPared(BomberGame context, AnimatedSprite trozoArriba, AnimatedSprite trozoAbajo, Coordenadas coodenadas){
+		public TrozoPared(BomberGame context, AnimatedSprite trozoArriba, AnimatedSprite trozoAbajo, Coordenadas coodenadas,boolean verdadera){
 			this.trozoArriba=trozoArriba;
 			this.trozoAbajo=trozoAbajo;
 			this.coodenadas=coodenadas;
 			this.context=context;
-			
+			this.verdadera=verdadera;
 		}
 		
 		public void explota(){
