@@ -31,26 +31,8 @@ import android.widget.Toast;
 public class Bomba {
 
 	public BomberGame context;
-//	public BitmapTextureAtlas bombaBTA;
-//	public BuildableBitmapTextureAtlas fuegoBBTA;
 
 	private ArrayList<Coordenadas> coordenadas;
-	
-	
-//	private TiledTextureRegion mFuegoCentroTR;
-//	private TiledTextureRegion mFuegoCentroDerechaTR;
-//	private TiledTextureRegion mFuegoCentroIzquierdaTR;
-//	private TiledTextureRegion mFuegoCentroArribaTR;
-//	private TiledTextureRegion mFuegoCentroAbajoTR;
-//	private TiledTextureRegion mFuegoHorizontalTR;
-//	private TiledTextureRegion mFuegoVerticalTR;
-//
-//	private TiledTextureRegion mFuegoFinDerechaTR;
-//	private TiledTextureRegion mFuegoFinIzquierdaTR;
-//	private TiledTextureRegion mFuegoFinArribaTR;
-//	private TiledTextureRegion mFuegoFinAbajoTR;
-
-//	private TiledTextureRegion bombaTR;
 
 	public AnimatedSprite sprCentro;
 	private AnimatedSprite sprDerecha_0;
