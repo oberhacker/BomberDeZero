@@ -14,9 +14,9 @@ import org.andengine.extension.tmx.util.exception.TMXLoadException;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.util.debug.Debug;
 
-import xnetcom.bomber.AlmacenEnemigos;
-import xnetcom.bomber.AlmacenEnemigos.TipoEnemigo;
 import xnetcom.bomber.BomberGame;
+import xnetcom.bomber.enemigos.AlmacenEnemigos;
+import xnetcom.bomber.enemigos.AlmacenEnemigos.TipoEnemigo;
 import xnetcom.bomber.graficos.HudBomber;
 import xnetcom.bomber.sql.DatosMapa;
 import xnetcom.bomber.util.Constantes;

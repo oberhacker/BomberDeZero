@@ -1,52 +1,80 @@
 package xnetcom.bomber.enemigos;
 
 import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 
+import android.util.Log;
 import xnetcom.bomber.BomberGame;
+import xnetcom.bomber.util.Constantes;
 
 public class EnemigoGlobo extends EnemigoBase {
 
-	
-	public EnemigoGlobo(BomberGame context, int columna, int fila) {
-		super(context, columna, fila);
+	public EnemigoGlobo(BomberGame context) {
+		super(context);
+	}
+
+	public void inicia(int columna, int fila) {
+		super.inicia(columna, fila);
+
+		
 		tipoEnemigo = TipoEnemigo.GLOBO;
 		tiempoPorCuadro = 0.70f;
 		tiempoFotograma = 120;
 
-		
 		setPosicionCorreccionTexturaPrincipal(-2, -20);
-		 attachSpriteGroup();
-		 baseTileRectangle.registerUpdateHandler(new IUpdateHandler() {
-			
+		attachSpriteGroup();
+		spritePrincipal.setVisible(true);
+		
+		
+//		baseTileRectangle = new Rectangle(0, 0, Constantes.TILE_WIDTH, Constantes.TILE_HEIGHT, context.getVertexBufferObjectManager());
+//		baseTileRectangle.setOffsetCenter(0, 0);
+//		baseTileRectangle.setColor(50, 50, 50);
+//		baseTileRectangle.setScaleCenter(0, 0);
+//		baseTileRectangle.setZIndex(Constantes.ZINDEX_ENEMIGOS);
+//		context.escenaJuego.scene.attachChild(baseTileRectangle);
+
+		
+		baseTileRectangle.registerUpdateHandler(new IUpdateHandler() {
 			@Override
 			public void reset() {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onUpdate(float pSecondsElapsed) {
-				spritePrincipal.setPosition(baseTileRectangle.getX()+correccionTexturaPrincipalX, baseTileRectangle.getY()+correccionTexturaPrincipalY);
-		
-				
+				Log.d("UPDATE", "GLOBO baseTileRectangle");
+				spritePrincipal.setPosition(baseTileRectangle.getX() + correccionTexturaPrincipalX, baseTileRectangle.getY() + correccionTexturaPrincipalY);
+
 			}
 		});
 		iniciaInteligenciaIA();
 
 	}
+	
+	
 
-	public void attachSpriteGroup(){
+
+	public void attachSpriteGroup() {
+		// si no es null ya esta attchado
+		if (spritePrincipal!=null){
+			return;
+		}
 		spritePrincipal = new AnimatedSprite(0, 0, context.almacenEnemigos.globoTR, context.getVertexBufferObjectManager());
 		spritePrincipal.setOffsetCenter(0, 0);
 		spritePrincipal.setScale(0.7f);
-		spritePrincipal.setPosition(coordenadas.getX()+correccionTexturaPrincipalX, coordenadas.getYCorregido()+correccionTexturaPrincipalY);
+		spritePrincipal.setPosition(coordenadas.getX() + correccionTexturaPrincipalX, coordenadas.getYCorregido() + correccionTexturaPrincipalY);
 		context.almacenEnemigos.groupGlobo.attachChild(spritePrincipal);
-		context.escenaJuego.scene.sortChildren();		
+		try {
+			context.escenaJuego.scene.sortChildren();
+		} catch (Exception e) {
+			Log.e("ERROR GLOBO ", "ORDENAR");
+		}
+
 	}
-	
-	
+
 	@Override
 	public void mover(Direction dir) {
 		if (dir == Direction.LEFT) {
@@ -59,44 +87,39 @@ public class EnemigoGlobo extends EnemigoBase {
 
 	@Override
 	public void animarDerecha() {
-		if (direccionAnimacion!=Direction.RIGHT){	
-			direccionAnimacion=Direction.RIGHT;
-			spritePrincipal.animate(new long[]{tiempoFotograma, tiempoFotograma, tiempoFotograma, 
-					tiempoFotograma, tiempoFotograma,tiempoFotograma,tiempoFotograma,tiempoFotograma,
-					tiempoFotograma,tiempoFotograma},new int[]{0, 1, 2, 3, 4, 5, 4, 3, 2, 1}, 1000);
-		}		
+		if (direccionAnimacion != Direction.RIGHT) {
+			direccionAnimacion = Direction.RIGHT;
+			spritePrincipal.animate(new long[] { tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma,
+					tiempoFotograma, tiempoFotograma }, new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 }, 1000);
+		}
 	}
 
 	@Override
 	public void animarIzquierda() {
-		if (direccionAnimacion!=Direction.LEFT){	
-			direccionAnimacion=Direction.LEFT;
-			spritePrincipal.animate(new long[]{tiempoFotograma, tiempoFotograma, tiempoFotograma, 
-					tiempoFotograma, tiempoFotograma,tiempoFotograma,tiempoFotograma,tiempoFotograma,
-					tiempoFotograma,tiempoFotograma},new int[]{0, 1, 2, 3, 4, 5, 4, 3, 2, 1}, 1000);
-		}		
-		
+		if (direccionAnimacion != Direction.LEFT) {
+			direccionAnimacion = Direction.LEFT;
+			spritePrincipal.animate(new long[] { tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma,
+					tiempoFotograma, tiempoFotograma }, new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 }, 1000);
+		}
+
 	}
 
 	@Override
 	public void animarArriba() {
-		if (direccionAnimacion!=Direction.UP){	
-			direccionAnimacion=Direction.UP;
-			spritePrincipal.animate(new long[]{tiempoFotograma, tiempoFotograma, tiempoFotograma, 
-					tiempoFotograma, tiempoFotograma,tiempoFotograma,tiempoFotograma,tiempoFotograma,
-					tiempoFotograma,tiempoFotograma},new int[]{6, 7, 8, 9, 10, 11, 10, 9, 8, 7}, 1000);
+		if (direccionAnimacion != Direction.UP) {
+			direccionAnimacion = Direction.UP;
+			spritePrincipal.animate(new long[] { tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma,
+					tiempoFotograma, tiempoFotograma }, new int[] { 6, 7, 8, 9, 10, 11, 10, 9, 8, 7 }, 1000);
 		}
-		
-		
+
 	}
 
 	@Override
 	public void animarAbajo() {
-		if (direccionAnimacion!=Direction.DOWN){	
-			direccionAnimacion=Direction.DOWN;
-			spritePrincipal.animate(new long[]{tiempoFotograma, tiempoFotograma, tiempoFotograma, 
-					tiempoFotograma, tiempoFotograma,tiempoFotograma,tiempoFotograma,tiempoFotograma,
-					tiempoFotograma,tiempoFotograma},new int[]{0, 1, 2, 3, 4, 5, 4, 3, 2, 1}, 1000);
+		if (direccionAnimacion != Direction.DOWN) {
+			direccionAnimacion = Direction.DOWN;
+			spritePrincipal.animate(new long[] { tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma,
+					tiempoFotograma, tiempoFotograma }, new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 }, 1000);
 		}
 	}
 

@@ -1,24 +1,22 @@
-package xnetcom.bomber;
+package xnetcom.bomber.enemigos;
 
 import java.util.ArrayList;
 
-import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.batch.SpriteGroup;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 
-import android.provider.ContactsContract.CommonDataKinds.Contactables;
-import xnetcom.bomber.enemigos.EnemigoBase;
-import xnetcom.bomber.enemigos.EnemigoGlobo;
+import xnetcom.bomber.BomberGame;
 import xnetcom.bomber.util.Constantes;
 import xnetcom.bomber.util.Coordenadas;
+import xnetcom.bomber.util.SpritePoolGlobo;
 
 public class AlmacenEnemigos {
 	
 	
-	public SpriteGroup groupGlobo;
+	
 	
 	public enum TipoEnemigo {
 		GLOBO, MOCO, MONEDA, FANTASMA, GOTA_NARANJA, GLOBO_AZUL, MOCO_ROJO, MONEDA_MARRON, GOTA_ROJA,
@@ -27,13 +25,17 @@ public class AlmacenEnemigos {
 	public ArrayList<TipoEnemigo> enemigosIniciales;
 	public ArrayList<EnemigoBase> almacen;
 	private BomberGame context;
+	public SpriteGroup groupGlobo;
 	
+	
+	SpritePoolGlobo spritePoolGlobo;
 	
 	public TiledTextureRegion globoTR;
 	
 	public AlmacenEnemigos(BomberGame context) {
 		this.context = context;
 		almacen = new ArrayList<EnemigoBase>();
+		spritePoolGlobo= new SpritePoolGlobo(context);
 	}
 	
 	
@@ -56,8 +58,8 @@ public class AlmacenEnemigos {
 			groupGlobo.setOffsetCenter(0, 0);
 			groupGlobo.setPosition(0, 0);
 			groupGlobo.setZIndex(Constantes.ZINDEX_ENEMIGO);
+			context.escenaJuego.scene.attachChild(groupGlobo);		
 			context.escenaJuego.scene.sortChildren();
-			context.escenaJuego.scene.attachChild(groupGlobo);			
 		}
 	}
 	
@@ -70,7 +72,8 @@ public class AlmacenEnemigos {
 		//completar logica
 		switch (tipoEnemigo) {
 		case GLOBO:
-			EnemigoBase enemigo= new EnemigoGlobo(context, columna, fila);
+			EnemigoBase enemigo=spritePoolGlobo.obtainPoolItem();
+			enemigo.inicia(columna, fila);
 			almacen.add(enemigo);
 			break;
 
@@ -86,50 +89,72 @@ public class AlmacenEnemigos {
 	}
 	
 	
-	public void mataEnemigos(final ArrayList<Coordenadas> coordenadas){
-		context.runOnUpdateThread(new Runnable() {			
-			@Override
+	public void mataEnemigos(final ArrayList<Coordenadas> coordenadas) {
+
+		new Thread() {
 			public void run() {
-				synchronized (almacen) {
-					ArrayList<EnemigoBase> eliminados = new ArrayList<EnemigoBase>();					
-					for (EnemigoBase enemigo : almacen) {
-						if (enemigo.matarPorCoordenadas(coordenadas)){
-							eliminados.add(enemigo);
-						}					
+				try {
+					for (int i = 0; i < 3; i++) {
+						synchronized (almacen) {
+							ArrayList<EnemigoBase> eliminados = new ArrayList<EnemigoBase>();
+							for (EnemigoBase enemigo : almacen) {
+								if (enemigo.matarPorCoordenadas(coordenadas)) {
+									eliminados.add(enemigo);
+								}
+							}
+							for (EnemigoBase eliminado : eliminados) {
+								almacen.remove(eliminado);
+								dettachDePool(eliminado);
+							}
+						}
+						sleep(200);
+
 					}
-					for (EnemigoBase eliminado : eliminados) {
-						almacen.remove(eliminado);
-					}				
-					
+				} catch (Exception e) {
+
 				}
 
-			}
-		});
+			};
+		}.start();
 
-		
+
 	}
 
+	
+	
+	public void dettachDePool(EnemigoBase eliminado){
+		switch (eliminado.tipoEnemigo) {
+		case GLOBO:
+			spritePoolGlobo.recyclePoolItem((EnemigoGlobo)eliminado);					
+			break;
+
+		default:
+			break;
+		}
+	}
 
 	public void pararTodosEnemigo(){
-		for (EnemigoBase enemigo : almacen) {
-			enemigo.detener();
+		synchronized (almacen) {
+			for (EnemigoBase enemigo : almacen) {
+				enemigo.detener();
+			}
 		}
+
 	}
 	
 	public void eliminaTodosEnemigos(){
 		synchronized (almacen) {
 			for (EnemigoBase enemigo : almacen) {
 				enemigo.detach();
+				dettachDePool(enemigo);
 			}
 			almacen.clear();			
 		}
 	}
 
-	public void reiniciaEnemigos(){
-		
-		
+	public void reiniciaEnemigos(){		
 		 for (TipoEnemigo enemigo : enemigosIniciales) {
-			 creaEnemigo(enemigo, 2, 15);			
+			 creaEnemigo(enemigo, 5, 4);			
 		}
 	}
 

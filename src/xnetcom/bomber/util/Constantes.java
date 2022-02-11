@@ -5,6 +5,10 @@ public class Constantes {
 	
 	public static boolean DEBUG_BASE_RECTANGLE_VISIBLE=true;
 	public static boolean DEBUG_CURRENT_RECTANGLE_VISIBLE=true;
+	public static boolean DEBUG_IMMORTAL=false;
+	
+	
+	
 	public static boolean DEBUG_TEXT=true; 
 	
 	public static int TILE_TAM=64;

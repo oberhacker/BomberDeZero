@@ -6,6 +6,7 @@ import org.andengine.engine.handler.IUpdateHandler;
 
 import android.util.Log;
 import xnetcom.bomber.enemigos.EnemigoBase;
+import xnetcom.bomber.util.Constantes;
 import xnetcom.bomber.util.Coordenadas;
 
 public class GameManager {
@@ -40,12 +41,21 @@ public class GameManager {
 
 		// comprobamos matar a bomberman
 		synchronized (context.almacenEnemigos.almacen) {
-			for (EnemigoBase enemigoBase : context.almacenEnemigos.almacen) {
-				if (enemigoBase.colidesTileRectangle.collidesWith(context.bomberman.colidesTileRectangle)) {
-					matarBomberman(false);
-					return;
-				}
+			
+			if (Constantes.DEBUG_IMMORTAL){
+				return;
 			}
+			try{
+				for (EnemigoBase enemigoBase : context.almacenEnemigos.almacen) {
+					if (enemigoBase.colidesTileRectangle.collidesWith(context.bomberman.colidesTileRectangle)) {
+						matarBomberman(false);
+						return;
+					}
+				}
+			}catch(Exception e){
+				Log.e("Almacen updater", "error");
+			}		
+
 		}
 
 	}

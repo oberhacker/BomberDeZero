@@ -13,6 +13,7 @@ import org.andengine.entity.modifier.DelayModifier;
 import org.andengine.entity.modifier.MoveXModifier;
 import org.andengine.entity.modifier.MoveYModifier;
 import org.andengine.entity.primitive.Rectangle;
+import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.andengine.extension.tmx.TMXLayer;
@@ -24,7 +25,7 @@ import xnetcom.bomber.BomberGame;
 import xnetcom.bomber.util.Constantes;
 import xnetcom.bomber.util.Coordenadas;
 import xnetcom.bomber.util.Matriz;
-
+import android.util.Log;
 public abstract class EnemigoBase {
 
 	public enum Direction {
@@ -58,27 +59,50 @@ public abstract class EnemigoBase {
 	
 	protected float tiempoRetardo=0.4f;
 	protected Direction direccionAnimacion=Direction.NONE;
-
-	public EnemigoBase(BomberGame context, int columna, int fila) {
+	
+	
+	public EnemigoBase(BomberGame context){
 		this.context = context;
-		generator= new Random();
-
-		muerto = new AtomicBoolean(false);
-
-		coordenadas = new Coordenadas(columna, fila);
+		
 		baseTileRectangle = new Rectangle(0, 0, Constantes.TILE_WIDTH, Constantes.TILE_HEIGHT, context.getVertexBufferObjectManager());
 		baseTileRectangle.setOffsetCenter(0, 0);
 		baseTileRectangle.setColor(50, 50, 50);
 		baseTileRectangle.setScaleCenter(0, 0);
-
-		baseTileRectangle.setPosition(coordenadas.getX(), coordenadas.getYCorregido());
-
+		
+		
 		colidesTileRectangle = new Rectangle(0, 0, Constantes.TILE_WIDTH - 20, Constantes.TILE_HEIGHT - 20, context.getVertexBufferObjectManager());
 		colidesTileRectangle.setColor(0, 100, 50);
 		colidesTileRectangle.setOffsetCenter(0, 0);
 		colidesTileRectangle.setScaleCenter(0, 0);
 		colidesTileRectangle.setPosition(10, 10);
-		baseTileRectangle.attachChild(colidesTileRectangle);
+		baseTileRectangle.attachChild(colidesTileRectangle);		
+		baseTileRectangle.setZIndex(Constantes.ZINDEX_ENEMIGOS);
+		
+		currentTileRectangle = new Rectangle(0, 0, Constantes.TILE_WIDTH, Constantes.TILE_HEIGHT, context.getVertexBufferObjectManager());
+		currentTileRectangle.setOffsetCenter(0, 0);
+		currentTileRectangle.setColor(50, 0, 0);
+		currentTileRectangle.setScaleCenter(0, 0);
+		
+		
+		context.escenaJuego.scene.attachChild(baseTileRectangle);
+		context.escenaJuego.scene.attachChild(currentTileRectangle);
+		
+	}
+	
+	
+
+	
+	public void inicia (int columna, int fila) {
+		
+		colidesTileRectangle.setVisible(true);
+		baseTileRectangle.setVisible(true);
+		generator= new Random();
+
+		muerto = new AtomicBoolean(false);
+
+		coordenadas = new Coordenadas(columna, fila);
+
+		baseTileRectangle.setPosition(coordenadas.getX(), coordenadas.getYCorregido());
 
 		if (!Constantes.DEBUG_BASE_RECTANGLE_VISIBLE) {
 			colidesTileRectangle.setAlpha(0f);
@@ -87,27 +111,22 @@ public abstract class EnemigoBase {
 		if (!Constantes.DEBUG_BASE_RECTANGLE_VISIBLE) {
 			baseTileRectangle.setAlpha(0f);
 		}
-		baseTileRectangle.setZIndex(Constantes.ZINDEX_ENEMIGOS);
-
-		currentTileRectangle = new Rectangle(0, 0, Constantes.TILE_WIDTH, Constantes.TILE_HEIGHT, context.getVertexBufferObjectManager());
-		currentTileRectangle.setOffsetCenter(0, 0);
-		currentTileRectangle.setColor(50, 0, 0);
-		currentTileRectangle.setScaleCenter(0, 0);
-
 		
-		baseTileRectangle.registerUpdateHandler(new TimerHandler(0.1f, true, new ITimerCallback() {
-			@Override
+		
+		
+		baseTileRectangle.registerUpdateHandler(new TimerHandler(0.1f, true, new ITimerCallback() {			
+			@Override			
+			
 			public void onTimePassed(final TimerHandler pTimerHandler) {
 				updater();
 			}
-		}));
-		
-		context.escenaJuego.scene.attachChild(baseTileRectangle);
-		context.escenaJuego.scene.attachChild(currentTileRectangle);
-		
+		}));		
 
-	}
+	}	
 
+	
+
+	
 	public int correccionTexturaPrincipalX=0;
 	public int correccionTexturaPrincipalY=0;
 	public void setPosicionCorreccionTexturaPrincipal(int x, int y){
@@ -115,50 +134,48 @@ public abstract class EnemigoBase {
 		correccionTexturaPrincipalY=y;
 	}
 	
+	
+	
 	public void detach() {
-		context.runOnUpdateThread(new Runnable() {
-			public void run() {
-			
+				direccion=Direction.NONE;
+				direccionAnimacion=Direction.NONE;
 				spritePrincipal.clearEntityModifiers();
 				spritePrincipal.clearUpdateHandlers();
 				spritePrincipal.setIgnoreUpdate(true);
-				spritePrincipal.detachSelf();
-//				context.escenaJuego.scene.detachChild(spritePrincipal) ;
-				
-				spritePrincipal.clearEntityModifiers();
-				spritePrincipal.clearUpdateHandlers();
-				spritePrincipal.setIgnoreUpdate(true);
-				spritePrincipal.detachSelf();
+				spritePrincipal.setVisible(false);
+//				context.escenaJuego.scene.detachChild(spritePrincipal) ;				
 				
 				currentTileRectangle.clearEntityModifiers();
 				currentTileRectangle.clearUpdateHandlers();
 				currentTileRectangle.setIgnoreUpdate(true);
-				currentTileRectangle.detachSelf();
-//				context.escenaJuego.scene.detachChild(currentTileRectangle) ;
-				
+				currentTileRectangle.setVisible(false);
+//				context.escenaJuego.scene.detachChild(currentTileRectangle) ;				
 				
 				colidesTileRectangle.clearEntityModifiers();
 				colidesTileRectangle.clearUpdateHandlers();
 				colidesTileRectangle.setIgnoreUpdate(true);
-				colidesTileRectangle.detachSelf();
+				colidesTileRectangle.setVisible(false);
 //				context.escenaJuego.scene.detachChild(colidesTileRectangle) ;
 				
 				baseTileRectangle.clearEntityModifiers();
 				baseTileRectangle.clearUpdateHandlers();
 				baseTileRectangle.setIgnoreUpdate(true);
-				baseTileRectangle.detachSelf();
+				baseTileRectangle.setVisible(false);
 //				context.escenaJuego.scene.detachChild(baseTileRectangle) ;
-			}
-		});		
 
+		
+		
 	}
+	
+	
+	
 
 	int innerColumna = 0;
 	int innerFila = 0;
 
-	private void updater() {
+	protected void updater() {
 		
-//		Log.d("ENEMIGO", "UPDATE");
+		Log.d("ENEMIGO", "UPDATE");
 		final float[] playerFootCordinates = baseTileRectangle.convertLocalCoordinatesToSceneCoordinates(EnemigoBase.PIES_X, EnemigoBase.PIES_Y);
 		TMXLayer tmxLayer = context.escenaJuego.mTMXTiledMap.getTMXLayers().get(1);
 		TMXTile tmxTile = tmxLayer.getTMXTileAt(playerFootCordinates[Constants.VERTEX_INDEX_X], playerFootCordinates[Constants.VERTEX_INDEX_Y]);
@@ -311,17 +328,44 @@ public abstract class EnemigoBase {
 
 		}
 	}
+	
 
 	public void iniciaInteligenciaIA() {
-		this.direccion = EligeDireccion();
-		baseTileRectangle.registerEntityModifier(new DelayModifier(0.1f){
-			@Override
-			protected void onModifierFinished(IEntity pItem) {
-				inteligencia();
-			}
-		});	
+		direccion = EligeDireccion();
+		baseTileRectangle.setIgnoreUpdate(false);		
+		currentTileRectangle.setIgnoreUpdate(false);
+		spritePrincipal.setIgnoreUpdate(false);
 		
-	}
+		new Thread() {
+			public void run() {
+				try {
+					sleep(300);
+					Log.d("INICIO INTELIGENCIAAA", "INICIO INTELIGENCIAAA");
+					inteligencia();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			};
+		}.start();
+		
+		
+		
+//		
+//		context.runOnUiThread(new Runnable() {
+//			public void run() {
+//				baseTileRectangle.registerEntityModifier(new DelayModifier(0.1f) {
+//					@Override
+//					protected void onModifierFinished(IEntity pItem) {
+//						inteligencia();
+//					}
+//				});
+//			}
+//		});		
+//		
+
+
+		}
 
 	
 	public void inteligencia(){			
@@ -491,7 +535,7 @@ public abstract class EnemigoBase {
 	
 	
 	public void mover(Direction dir) {
-
+		Log.d("muevo", "muevo");
 		float fromX = getCoordenadas().getX();
 		float fromY = getCoordenadas().getYCorregido();		
 		float toX=fromX;
@@ -504,11 +548,13 @@ public abstract class EnemigoBase {
 				@Override
 				protected void onModifierStarted(IEntity pItem) {
 					// playMusica();
+					Log.d("muevo", "muevo");
 					animarAbajo();
 				}
 
 				protected void onModifierFinished(IEntity pItem) {
 					llegado();
+					Log.d("llegado", "llegado");
 				}
 			});
 
@@ -520,11 +566,13 @@ public abstract class EnemigoBase {
 				@Override
 				protected void onModifierStarted(IEntity pItem) {
 					// playMusica();
+					Log.d("muevo", "muevo");
 					animarArriba();
 				}
 
 				protected void onModifierFinished(IEntity pItem) {
 					llegado();
+					Log.d("llegado", "llegado");
 				}
 			});
 			break;
@@ -534,11 +582,13 @@ public abstract class EnemigoBase {
 				@Override
 				protected void onModifierStarted(IEntity pItem) {
 					animarIzquierda();
+					Log.d("muevo", "muevo");
 					// playMusica();
 				}
 
 				protected void onModifierFinished(IEntity pItem) {
 					llegado();
+					Log.d("llegado", "llegado");
 				}
 			});
 			break;
@@ -549,10 +599,12 @@ public abstract class EnemigoBase {
 				protected void onModifierStarted(IEntity pItem) {
 					// playMusica();
 					animarDerecha();
+					Log.d("muevo", "muevo");
 				}
 
 				protected void onModifierFinished(IEntity pItem) {
 					llegado();
+					Log.d("llegado", "llegado");
 				}
 			});
 
@@ -565,10 +617,12 @@ public abstract class EnemigoBase {
 				protected void onModifierStarted(IEntity pItem) {
 					// playMusica();
 					//animarDerecha();
+					Log.d("moverNonNONE", "llegado");
 				}
 
 				protected void onModifierFinished(IEntity pItem) {
 					llegado();
+					Log.d("llegadoNONE", "llegado");
 				}
 			});
 			

@@ -880,6 +880,9 @@ public class BomberMan {
 	}
 
 	public boolean matarPorCoordenadas(ArrayList<Coordenadas> coordenadas) {
+		if (Constantes.DEBUG_IMMORTAL){
+			return false;
+		}
 		for (Coordenadas coordenada : coordenadas) {
 			if(coordenada.getColumna()==getColumna() && coordenada.getFila()==getFila()){
 				if (isMuerto()){

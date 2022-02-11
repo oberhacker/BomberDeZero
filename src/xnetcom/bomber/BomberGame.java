@@ -13,6 +13,7 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
+import xnetcom.bomber.enemigos.AlmacenEnemigos;
 import xnetcom.bomber.entidades.AlmacenBombas;
 import xnetcom.bomber.entidades.BomberMan;
 import xnetcom.bomber.graficos.CapaParedes;

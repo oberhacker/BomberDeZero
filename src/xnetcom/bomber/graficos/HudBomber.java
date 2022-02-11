@@ -226,14 +226,15 @@ public class HudBomber {
 
 	public void apretarBotonPlantabomba() {
 		context.vibrar(VIBRAR_BOTON);
-		context.almacenBombas.plantaBomba();
-		
+		context.almacenBombas.plantaBomba();		
 		System.out.println("APRETADOOOOOOO");
+
 	}
+
 
 	public void apretarBotonExplosion() {
 		context.vibrar(VIBRAR_BOTON);
-		context.almacenBombas.detonarBomba();;
+		context.almacenBombas.detonarBomba();;
 		System.out.println("APRETADOOOOOOO");
 	}
 	
