@@ -24,25 +24,13 @@ public class EnemigoGlobo extends EnemigoBase {
 		tiempoFotograma = 120;
 
 		setPosicionCorreccionTexturaPrincipal(-2, -20);
-		attachSpriteGroup();
-		spritePrincipal.setVisible(true);
-		
-		
-//		baseTileRectangle = new Rectangle(0, 0, Constantes.TILE_WIDTH, Constantes.TILE_HEIGHT, context.getVertexBufferObjectManager());
-//		baseTileRectangle.setOffsetCenter(0, 0);
-//		baseTileRectangle.setColor(50, 50, 50);
-//		baseTileRectangle.setScaleCenter(0, 0);
-//		baseTileRectangle.setZIndex(Constantes.ZINDEX_ENEMIGOS);
-//		context.escenaJuego.scene.attachChild(baseTileRectangle);
-
-		
+		attachSpriteGroup();		
+	
 		baseTileRectangle.registerUpdateHandler(new IUpdateHandler() {
 			@Override
 			public void reset() {
-				// TODO Auto-generated method stub
 
 			}
-
 			@Override
 			public void onUpdate(float pSecondsElapsed) {
 				Log.d("UPDATE", "GLOBO baseTileRectangle");
@@ -52,26 +40,27 @@ public class EnemigoGlobo extends EnemigoBase {
 		});
 		iniciaInteligenciaIA();
 
-	}
-	
-	
+	}	
 
 
 	public void attachSpriteGroup() {
 		// si no es null ya esta attchado
 		if (spritePrincipal!=null){
+			spritePrincipal.setVisible(true);	
 			return;
+		}else{
+			spritePrincipal = new AnimatedSprite(0, 0, context.almacenEnemigos.globoTR, context.getVertexBufferObjectManager());
+			spritePrincipal.setOffsetCenter(0, 0);
+			spritePrincipal.setScale(0.7f);
+			spritePrincipal.setPosition(coordenadas.getX() + correccionTexturaPrincipalX, coordenadas.getYCorregido() + correccionTexturaPrincipalY);
+			context.almacenEnemigos.groupGlobo.attachChild(spritePrincipal);
+			try {
+				context.escenaJuego.scene.sortChildren();
+			} catch (Exception e) {
+				Log.e("ERROR GLOBO ", "ORDENAR");
+			}
 		}
-		spritePrincipal = new AnimatedSprite(0, 0, context.almacenEnemigos.globoTR, context.getVertexBufferObjectManager());
-		spritePrincipal.setOffsetCenter(0, 0);
-		spritePrincipal.setScale(0.7f);
-		spritePrincipal.setPosition(coordenadas.getX() + correccionTexturaPrincipalX, coordenadas.getYCorregido() + correccionTexturaPrincipalY);
-		context.almacenEnemigos.groupGlobo.attachChild(spritePrincipal);
-		try {
-			context.escenaJuego.scene.sortChildren();
-		} catch (Exception e) {
-			Log.e("ERROR GLOBO ", "ORDENAR");
-		}
+
 
 	}
 
@@ -90,7 +79,7 @@ public class EnemigoGlobo extends EnemigoBase {
 		if (direccionAnimacion != Direction.RIGHT) {
 			direccionAnimacion = Direction.RIGHT;
 			spritePrincipal.animate(new long[] { tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma,
-					tiempoFotograma, tiempoFotograma }, new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 }, 1000);
+					tiempoFotograma, tiempoFotograma }, new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 }, true);
 		}
 	}
 
@@ -99,7 +88,7 @@ public class EnemigoGlobo extends EnemigoBase {
 		if (direccionAnimacion != Direction.LEFT) {
 			direccionAnimacion = Direction.LEFT;
 			spritePrincipal.animate(new long[] { tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma,
-					tiempoFotograma, tiempoFotograma }, new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 }, 1000);
+					tiempoFotograma, tiempoFotograma }, new int[] { 25, 24, 23, 22, 21, 20, 21, 22, 23, 24 }, true);
 		}
 
 	}
@@ -109,7 +98,7 @@ public class EnemigoGlobo extends EnemigoBase {
 		if (direccionAnimacion != Direction.UP) {
 			direccionAnimacion = Direction.UP;
 			spritePrincipal.animate(new long[] { tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma,
-					tiempoFotograma, tiempoFotograma }, new int[] { 6, 7, 8, 9, 10, 11, 10, 9, 8, 7 }, 1000);
+					tiempoFotograma, tiempoFotograma }, new int[] { 6, 7, 8, 9, 10, 11, 10, 9, 8, 7 }, true);
 		}
 
 	}
@@ -119,14 +108,14 @@ public class EnemigoGlobo extends EnemigoBase {
 		if (direccionAnimacion != Direction.DOWN) {
 			direccionAnimacion = Direction.DOWN;
 			spritePrincipal.animate(new long[] { tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma,
-					tiempoFotograma, tiempoFotograma }, new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 }, 1000);
+					tiempoFotograma, tiempoFotograma }, new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 }, true);
 		}
 	}
 
 	@Override
 	public void animarMuerte() {
 		int tiempo = 120;
-		spritePrincipal.animate(new long[] { tiempo, tiempo, tiempo, tiempo, tiempo, tiempo, tiempo }, new int[] { 13, 14, 15, 16, 17, 18, 19 }, 0, new ListenerMorir());
+		spritePrincipal.animate(new long[] { tiempo, tiempo, tiempo, tiempo, tiempo, tiempo, tiempo}, new int[] { 13, 14, 15, 16, 17, 18, 19 }, 0, new ListenerMorir());
 
 	}
 

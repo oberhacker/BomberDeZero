@@ -3,8 +3,8 @@ package xnetcom.bomber.util;
 public class Constantes {
 	
 	
-	public static boolean DEBUG_BASE_RECTANGLE_VISIBLE=true;
-	public static boolean DEBUG_CURRENT_RECTANGLE_VISIBLE=true;
+	public static boolean DEBUG_BASE_RECTANGLE_VISIBLE=false;
+	public static boolean DEBUG_CURRENT_RECTANGLE_VISIBLE=false;
 	public static boolean DEBUG_IMMORTAL=false;
 	
 	
@@ -30,7 +30,7 @@ public class Constantes {
 	public static int ZINDEX_CAPA_BORDE_ABAJO=810;
 	public static int ZINDEX_CAPA_TECHO_PIEDRAS=880;
 	
-	public static int ZINDEX_BOMBERMAN_ARRIBA=560;
+	public static int ZINDEX_BOMBERMAN_ARRIBA=850;
 	public static int ZINDEX_BOMBERMAN_ABAJO=195;	
 	
 	public static int ZINDEX_ENEMIGO=460;

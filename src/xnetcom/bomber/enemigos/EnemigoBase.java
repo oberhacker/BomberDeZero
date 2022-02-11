@@ -43,6 +43,7 @@ public abstract class EnemigoBase {
 	public TipoEnemigo tipoEnemigo;
 
 	protected AnimatedSprite spritePrincipal;
+	protected AnimatedSprite spritePrincipalTransparencia;
 	public Rectangle currentTileRectangle;
 	public Rectangle colidesTileRectangle;
 	public Rectangle baseTileRectangle;
@@ -51,6 +52,8 @@ public abstract class EnemigoBase {
 	
 	public Coordenadas coordenadas;
 	BomberGame context;
+	
+	public boolean fantasma;
 
 	public AtomicBoolean muerto;
 	
@@ -143,7 +146,15 @@ public abstract class EnemigoBase {
 				spritePrincipal.clearUpdateHandlers();
 				spritePrincipal.setIgnoreUpdate(true);
 				spritePrincipal.setVisible(false);
-//				context.escenaJuego.scene.detachChild(spritePrincipal) ;				
+//				context.escenaJuego.scene.detachChild(spritePrincipal) ;	
+				
+				if (spritePrincipalTransparencia!=null){
+					spritePrincipalTransparencia.clearEntityModifiers();
+					spritePrincipalTransparencia.clearUpdateHandlers();
+					spritePrincipalTransparencia.setIgnoreUpdate(true);
+					spritePrincipalTransparencia.setVisible(false);					
+				}
+				
 				
 				currentTileRectangle.clearEntityModifiers();
 				currentTileRectangle.clearUpdateHandlers();
@@ -225,7 +236,9 @@ public abstract class EnemigoBase {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (salida == Matriz.NADA || salida == Matriz.PUERTA || salida == Matriz.MONEDA) {
+		if (fantasma && salida == Matriz.PARED){
+			return true;
+		}else if (salida == Matriz.NADA || salida == Matriz.PUERTA || salida == Matriz.MONEDA) {
 			return true;
 		} else {
 			return false;
@@ -239,7 +252,9 @@ public abstract class EnemigoBase {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (salida == Matriz.NADA || salida == Matriz.PUERTA || salida == Matriz.MONEDA) {
+		if (fantasma && salida == Matriz.PARED){
+			return true;
+		}else if (salida == Matriz.NADA || salida == Matriz.PUERTA || salida == Matriz.MONEDA) {
 			return true;
 		} else {
 			return false;
@@ -253,7 +268,9 @@ public abstract class EnemigoBase {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (salida == Matriz.NADA || salida == Matriz.PUERTA || salida == Matriz.MONEDA) {
+		if (fantasma && salida == Matriz.PARED){
+			return true;
+		}else if (salida == Matriz.NADA || salida == Matriz.PUERTA || salida == Matriz.MONEDA) {
 			return true;
 		} else {
 			return false;
@@ -267,7 +284,9 @@ public abstract class EnemigoBase {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (salida == Matriz.NADA || salida == Matriz.PUERTA || salida == Matriz.MONEDA) {
+		if (fantasma && salida == Matriz.PARED){
+			return true;
+		}else if (salida == Matriz.NADA || salida == Matriz.PUERTA || salida == Matriz.MONEDA) {
 			return true;
 		} else {
 			return false;
@@ -292,6 +311,9 @@ public abstract class EnemigoBase {
 
 	private void clearEntityModifiers() {
 		spritePrincipal.clearEntityModifiers();
+		if (spritePrincipalTransparencia!=null){
+			spritePrincipalTransparencia.clearEntityModifiers();
+		}
 		currentTileRectangle.clearEntityModifiers();
 		colidesTileRectangle.clearEntityModifiers();
 		baseTileRectangle.clearEntityModifiers();
@@ -335,7 +357,9 @@ public abstract class EnemigoBase {
 		baseTileRectangle.setIgnoreUpdate(false);		
 		currentTileRectangle.setIgnoreUpdate(false);
 		spritePrincipal.setIgnoreUpdate(false);
-		
+		if (spritePrincipalTransparencia!=null){
+			spritePrincipalTransparencia.setIgnoreUpdate(false);
+		}
 		new Thread() {
 			public void run() {
 				try {
@@ -718,6 +742,9 @@ public abstract class EnemigoBase {
 	public void detener(){
 		baseTileRectangle.setIgnoreUpdate(true);
 		spritePrincipal.stopAnimation();	
+		if (spritePrincipalTransparencia!=null){
+			spritePrincipalTransparencia.stopAnimation();	
+		}
 	}
 	
 	public abstract void animarDerecha();
