@@ -76,11 +76,7 @@ public class EnemigoFantasma extends EnemigoBase{
 		context.almacenEnemigos.groupFantasmaTransparencia.attachChild(spritePrincipalTransparencia);
 		
 		
-		try {
-			context.escenaJuego.scene.sortChildren();
-		} catch (Exception e) {
-			Log.e("ERROR GLOBO ", "ORDENAR");
-		}
+
 
 	}
 	

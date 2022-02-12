@@ -65,15 +65,6 @@ public class EnemigoGloboAzul extends EnemigoBase {
 
 	}
 
-	@Override
-	public void mover(Direction dir) {
-		if (dir == Direction.LEFT) {
-			spritePrincipal.setFlippedHorizontal(true);
-		} else if (dir == Direction.RIGHT) {
-			spritePrincipal.setFlippedHorizontal(false);
-		}
-		super.mover(dir);
-	}
 
 	@Override
 	public void animarDerecha() {

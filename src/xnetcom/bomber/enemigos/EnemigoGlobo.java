@@ -54,25 +54,13 @@ public class EnemigoGlobo extends EnemigoBase {
 			spritePrincipal.setScale(0.7f);
 			spritePrincipal.setPosition(coordenadas.getX() + correccionTexturaPrincipalX, coordenadas.getYCorregido() + correccionTexturaPrincipalY);
 			context.almacenEnemigos.groupGlobo.attachChild(spritePrincipal);
-			try {
-				context.escenaJuego.scene.sortChildren();
-			} catch (Exception e) {
-				Log.e("ERROR GLOBO ", "ORDENAR");
-			}
+
 		}
 
 
 	}
 
-	@Override
-	public void mover(Direction dir) {
-		if (dir == Direction.LEFT) {
-			spritePrincipal.setFlippedHorizontal(true);
-		} else if (dir == Direction.RIGHT) {
-			spritePrincipal.setFlippedHorizontal(false);
-		}
-		super.mover(dir);
-	}
+
 
 	@Override
 	public void animarDerecha() {
