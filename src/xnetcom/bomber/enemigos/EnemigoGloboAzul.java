@@ -9,9 +9,9 @@ import android.util.Log;
 import xnetcom.bomber.BomberGame;
 import xnetcom.bomber.util.Constantes;
 
-public class EnemigoGlobo extends EnemigoBase {
+public class EnemigoGloboAzul extends EnemigoBase {
 
-	public EnemigoGlobo(BomberGame context) {
+	public EnemigoGloboAzul(BomberGame context) {
 		super(context);
 	}
 
@@ -19,9 +19,10 @@ public class EnemigoGlobo extends EnemigoBase {
 		super.inicia(columna, fila);
 
 		
-		tipoEnemigo = TipoEnemigo.GLOBO;
-		tiempoPorCuadro = 0.90f;
-		tiempoFotograma = 150;
+		tipoEnemigo = TipoEnemigo.GLOBO_AZUL;
+		tiempoPorCuadro = 0.60f;
+		tiempoFotograma = 100;
+		tiempoRetardo=0.1f;
 
 		setPosicionCorreccionTexturaPrincipal(-2, -25);
 		attachSpriteGroup();		
@@ -49,16 +50,16 @@ public class EnemigoGlobo extends EnemigoBase {
 			spritePrincipal.setVisible(true);	
 			return;
 		}else{
-			spritePrincipal = new AnimatedSprite(0, 0, context.almacenEnemigos.globoTR, context.getVertexBufferObjectManager());
+			spritePrincipal = new AnimatedSprite(0, 0, context.almacenEnemigos.globoAzulTR, context.getVertexBufferObjectManager());
 			spritePrincipal.setOffsetCenter(0, 0);
 			spritePrincipal.setScale(0.7f);
 			spritePrincipal.setPosition(coordenadas.getX() + correccionTexturaPrincipalX, coordenadas.getYCorregido() + correccionTexturaPrincipalY);
-			context.almacenEnemigos.groupGlobo.attachChild(spritePrincipal);
-			try {
-				context.escenaJuego.scene.sortChildren();
-			} catch (Exception e) {
-				Log.e("ERROR GLOBO ", "ORDENAR");
-			}
+			context.almacenEnemigos.groupGloboAzul.attachChild(spritePrincipal);
+//			try {
+//				context.escenaJuego.scene.sortChildren();
+//			} catch (Exception e) {
+//				Log.e("ERROR GLOBO ", "ORDENAR");
+//			}
 		}
 
 
@@ -115,7 +116,7 @@ public class EnemigoGlobo extends EnemigoBase {
 	@Override
 	public void animarMuerte() {
 		int tiempo = 120;
-		spritePrincipal.animate(new long[] { tiempo, tiempo, tiempo, tiempo, tiempo, tiempo, tiempo}, new int[] { 12, 13, 14, 14, 16, 17, 18 }, 0, new ListenerMorir());
+		spritePrincipal.animate(new long[] { tiempo, tiempo, tiempo, tiempo, tiempo, tiempo, tiempo}, new int[] { 12, 13, 14, 14, 16, 17, 18  }, 0, new ListenerMorir());
 
 	}
 

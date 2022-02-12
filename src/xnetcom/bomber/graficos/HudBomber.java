@@ -80,8 +80,7 @@ public class HudBomber {
 		}
 	}
 
-	public void carga() throws IOException {
-		
+	public void carga() throws IOException {		
 		
 		BitmapTextureAtlas pause_BTA = new BitmapTextureAtlas(context.getTextureManager(), 128, 128, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		TextureRegion pause_BTA_TR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(pause_BTA, context, "gfx/pause.png", 0, 0);

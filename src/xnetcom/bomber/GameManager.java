@@ -13,7 +13,7 @@ public class GameManager {
 
 	public int bombaTam = 4;
 	public int bombaNum = 5;
-	public boolean detonador =false;
+	public boolean detonador =true;
 
 	BomberGame context;
 

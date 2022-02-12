@@ -15,6 +15,8 @@ import xnetcom.bomber.util.Coordenadas;
 import xnetcom.bomber.util.Matriz;
 import xnetcom.bomber.util.SpritePoolFantasma;
 import xnetcom.bomber.util.SpritePoolGlobo;
+import xnetcom.bomber.util.SpritePoolGloboAzul;
+import xnetcom.bomber.util.SpritePoolMoco;
 
 public class AlmacenEnemigos {
 	
@@ -32,25 +34,36 @@ public class AlmacenEnemigos {
 	public SpriteGroup groupGlobo;	
 	public SpritePoolGlobo spritePoolGlobo;
 	
+	public SpriteGroup groupGloboAzul;	
+	public SpritePoolGloboAzul spritePoolGloboAzul;
+	
 	public SpriteGroup groupFantasmaTransparencia;	
 	public SpriteGroup groupFantasma;	
 	public SpritePoolFantasma spritePoolFantasma;
 	
-	
+	public SpriteGroup groupMocoTransparencia;	
+	public SpriteGroup groupMoco;	
+	public SpritePoolMoco spritePoolMoco;
 
 	
 	public TiledTextureRegion globoTR;
 	public TiledTextureRegion fantasmaTR;
 	
-	BitmapTextureAtlas globo_naranja_ani;
-	BitmapTextureAtlas fantasma_tile90;
+	public BitmapTextureAtlas globo_naranja_ani;
+	public BitmapTextureAtlas fantasma_tile90;
+	public BitmapTextureAtlas MocoBTA;
+	public TiledTextureRegion MocoTR;
+	public BitmapTextureAtlas globo_azul_ani;
+	public TiledTextureRegion globoAzulTR;
 	
 	public AlmacenEnemigos(BomberGame context) {
 		this.context = context;
 		generator= new Random();
 		almacen = new ArrayList<EnemigoBase>();
 		spritePoolGlobo= new SpritePoolGlobo(context);
+		spritePoolGloboAzul= new SpritePoolGloboAzul(context);
 		spritePoolFantasma=new SpritePoolFantasma(context);
+		spritePoolMoco= new SpritePoolMoco(context);
 		
 	}
 	
@@ -68,7 +81,13 @@ public class AlmacenEnemigos {
 		this.fantasma_tile90.load();
 		this.fantasmaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(fantasma_tile90, context, "gfx/fantasma_tile90.png",0,0,  5, 5);
 		
+		this.MocoBTA = new BitmapTextureAtlas(context.getTextureManager(),1024, 512, TextureOptions.BILINEAR);
+		this.MocoBTA.load();
+		this.MocoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(MocoBTA, context, "gfx/moco_tiled90.png",0,0,  6, 5);
 		
+		this.globo_azul_ani = new BitmapTextureAtlas(context.getTextureManager(),1024, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);	
+		this.globo_azul_ani.load();
+		this.globoAzulTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(globo_azul_ani, context, "gfx/globo_azul_ani.png", 0,0,13, 3);
 		
 
 
@@ -84,21 +103,50 @@ public class AlmacenEnemigos {
 			groupGlobo.setPosition(0, 0);
 			groupGlobo.setZIndex(Constantes.ZINDEX_ENEMIGO);
 			
+			
+			groupGloboAzul= new SpriteGroup(globo_azul_ani, 100, context.getVertexBufferObjectManager());
+			groupGloboAzul.setOffsetCenter(0, 0);
+			groupGloboAzul.setPosition(0, 0);
+			groupGloboAzul.setZIndex(Constantes.ZINDEX_ENEMIGO);
+			
+			
 			groupFantasma= new SpriteGroup(fantasma_tile90, 100, context.getVertexBufferObjectManager());
 			groupFantasma.setOffsetCenter(0, 0);
 			groupFantasma.setPosition(0, 0);
 			groupFantasma.setZIndex(Constantes.ZINDEX_CAPA_PAREDES_ABAJO-1);
-//			groupFantasma.setAlpha(0.4f);
+
 			
 			groupFantasmaTransparencia= new SpriteGroup(fantasma_tile90, 100, context.getVertexBufferObjectManager());
 			groupFantasmaTransparencia.setOffsetCenter(0, 0);
 			groupFantasmaTransparencia.setPosition(0, 0);
 			groupFantasmaTransparencia.setZIndex(Constantes.ZINDEX_CAPA_PAREDES_ARRIBA+1);
-//			groupFantasmaTransparencia.setAlpha(0.4f);
+
+			
+			
+			
+			groupMoco= new SpriteGroup(MocoBTA, 100, context.getVertexBufferObjectManager());
+			groupMoco.setOffsetCenter(0, 0);
+			groupMoco.setPosition(0, 0);
+			groupMoco.setZIndex(Constantes.ZINDEX_CAPA_PAREDES_ABAJO-1);
+
+			
+			groupMocoTransparencia= new SpriteGroup(MocoBTA, 100, context.getVertexBufferObjectManager());
+			groupMocoTransparencia.setOffsetCenter(0, 0);
+			groupMocoTransparencia.setPosition(0, 0);
+			groupMocoTransparencia.setZIndex(Constantes.ZINDEX_CAPA_PAREDES_ARRIBA+1);
+
+			
+			
+			
 			
 			context.escenaJuego.scene.attachChild(groupGlobo);	
+			context.escenaJuego.scene.attachChild(groupGloboAzul);	
 			context.escenaJuego.scene.attachChild(groupFantasma);	
 			context.escenaJuego.scene.attachChild(groupFantasmaTransparencia);		
+			
+			context.escenaJuego.scene.attachChild(groupMoco);	
+			context.escenaJuego.scene.attachChild(groupMocoTransparencia);	
+			
 			context.escenaJuego.scene.sortChildren();
 			
 			
@@ -127,8 +175,26 @@ public class AlmacenEnemigos {
 			}
 			break;
 			
+		case GLOBO_AZUL:
+			enemigo = spritePoolGloboAzul.obtainPoolItem();
+			coordenada = eligePosiciones();
+			if (coordenada != null) {
+				enemigo.inicia(coordenada.getColumna(), coordenada.getFila());
+				almacen.add(enemigo);
+			}
+			break;
+			
 		case FANTASMA:
 			enemigo =spritePoolFantasma.obtainPoolItem();
+			coordenada = eligePosiciones();
+			if (coordenada != null) {
+				enemigo.inicia(coordenada.getColumna(), coordenada.getFila());
+				almacen.add(enemigo);
+			}
+			break;
+			
+		case MOCO:
+			enemigo =spritePoolMoco.obtainPoolItem();
 			coordenada = eligePosiciones();
 			if (coordenada != null) {
 				enemigo.inicia(coordenada.getColumna(), coordenada.getFila());
@@ -201,6 +267,15 @@ public class AlmacenEnemigos {
 		switch (eliminado.tipoEnemigo) {
 		case GLOBO:
 			spritePoolGlobo.recyclePoolItem((EnemigoGlobo)eliminado);					
+			break;
+		case FANTASMA:
+			spritePoolFantasma.recyclePoolItem((EnemigoFantasma)eliminado);					
+			break;
+		case MOCO:
+			spritePoolMoco.recyclePoolItem((EnemigoMoco)eliminado);					
+			break;
+		case GLOBO_AZUL:
+			spritePoolGloboAzul.recyclePoolItem((EnemigoGloboAzul)eliminado);					
 			break;
 
 		default:

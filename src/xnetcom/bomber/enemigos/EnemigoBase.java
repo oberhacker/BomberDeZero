@@ -35,7 +35,7 @@ public abstract class EnemigoBase {
 	public enum TipoEnemigo {
 		GLOBO, FANTASMA, MOCO, MONEDA, GOTA_AZUL, GOTA_NARANJA, GLOBO_AZUL, GOTA_ROJA, MOCO_ROJO, MONEDA_MARRON
 	}
-
+	AtomicBoolean estoyEnPared= new AtomicBoolean(false);
 	public static int PIES_X = 32;
 	public static int PIES_Y = 32;
 
@@ -54,6 +54,7 @@ public abstract class EnemigoBase {
 	BomberGame context;
 	
 	public boolean fantasma;
+	public boolean moco;
 
 	public AtomicBoolean muerto;
 	
@@ -85,7 +86,7 @@ public abstract class EnemigoBase {
 		currentTileRectangle.setOffsetCenter(0, 0);
 		currentTileRectangle.setColor(50, 0, 0);
 		currentTileRectangle.setScaleCenter(0, 0);
-		
+		currentTileRectangle.setZIndex(Constantes.ZINDEX_ENEMIGOS-1);
 		
 		context.escenaJuego.scene.attachChild(baseTileRectangle);
 		context.escenaJuego.scene.attachChild(currentTileRectangle);
@@ -99,6 +100,7 @@ public abstract class EnemigoBase {
 		
 		colidesTileRectangle.setVisible(true);
 		baseTileRectangle.setVisible(true);
+		currentTileRectangle.setVisible(true);		
 		generator= new Random();
 
 		muerto = new AtomicBoolean(false);
@@ -114,7 +116,9 @@ public abstract class EnemigoBase {
 		if (!Constantes.DEBUG_BASE_RECTANGLE_VISIBLE) {
 			baseTileRectangle.setAlpha(0f);
 		}
-		
+		if (!Constantes.DEBUG_CURRENT_RECTANGLE_VISIBLE){
+			currentTileRectangle.setAlpha(0f);
+		}
 		
 		
 		baseTileRectangle.registerUpdateHandler(new TimerHandler(0.1f, true, new ITimerCallback() {			
@@ -205,7 +209,7 @@ public abstract class EnemigoBase {
 		}
 
 	}
-
+	
 	private void cambiaPosicion(final int innerColumna, final int innerFila) {
 		new Thread() {
 			public void run() {
@@ -213,6 +217,11 @@ public abstract class EnemigoBase {
 					synchronized (coordenadas) {
 						coordenadas.setColumna(innerColumna);
 						coordenadas.setFila(innerFila);
+					}
+					if(context.escenaJuego.matriz.getValor(innerFila, innerColumna).tipoCasilla==Matriz.PARED){
+						estoyEnPared.set(true);
+					}else{
+						estoyEnPared.set(false);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -236,7 +245,9 @@ public abstract class EnemigoBase {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (fantasma && salida == Matriz.PARED){
+		if (moco && salida == Matriz.PARED){
+			return true;
+		}else 	if (fantasma && (salida == Matriz.PARED || salida == Matriz.BOMBA)){
 			return true;
 		}else if (salida == Matriz.NADA || salida == Matriz.PUERTA || salida == Matriz.MONEDA) {
 			return true;
@@ -252,7 +263,9 @@ public abstract class EnemigoBase {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (fantasma && salida == Matriz.PARED){
+		if (moco && salida == Matriz.PARED){
+			return true;
+		}else 	if (fantasma && (salida == Matriz.PARED || salida == Matriz.BOMBA)){
 			return true;
 		}else if (salida == Matriz.NADA || salida == Matriz.PUERTA || salida == Matriz.MONEDA) {
 			return true;
@@ -268,7 +281,9 @@ public abstract class EnemigoBase {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (fantasma && salida == Matriz.PARED){
+		if (moco && salida == Matriz.PARED){
+			return true;
+		}else 	if (fantasma && (salida == Matriz.PARED || salida == Matriz.BOMBA)){
 			return true;
 		}else if (salida == Matriz.NADA || salida == Matriz.PUERTA || salida == Matriz.MONEDA) {
 			return true;
@@ -284,7 +299,10 @@ public abstract class EnemigoBase {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (fantasma && salida == Matriz.PARED){
+
+		if (moco && salida == Matriz.PARED){
+			return true;
+		}else 	if (fantasma && (salida == Matriz.PARED || salida == Matriz.BOMBA)){
 			return true;
 		}else if (salida == Matriz.NADA || salida == Matriz.PUERTA || salida == Matriz.MONEDA) {
 			return true;
