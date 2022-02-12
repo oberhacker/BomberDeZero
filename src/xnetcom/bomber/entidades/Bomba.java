@@ -295,11 +295,12 @@ public class Bomba {
 
 		batch.setPosition(context.bomberman.currentTileRectangle.getX(), context.bomberman.currentTileRectangle.getY());
 		
-		
-		sprBomba = new AnimatedSprite(sprCentro.getX() - 5, sprCentro.getY() - 10, context.almacenBombas.bombaTR, context.getVertexBufferObjectManager());
-		sprBomba.setOffsetCenter(0, 0);
-		
-		currentTileRectangle.attachChild(sprBomba);
+		if (sprBomba==null){
+			sprBomba = new AnimatedSprite(sprCentro.getX() - 5, sprCentro.getY() - 10, context.almacenBombas.bombaTR, context.getVertexBufferObjectManager());
+			sprBomba.setOffsetCenter(0, 0);
+			currentTileRectangle.attachChild(sprBomba);
+		}
+		sprBomba.reset();
 		
 		currentTileRectangle.setPosition(context.bomberman.currentTileRectangle.getX(), context.bomberman.currentTileRectangle.getY());
 		context.soundManager.plantaBomba();
@@ -360,11 +361,11 @@ public class Bomba {
 //		sprBomba.setVisible(false);
 		sprBomba.clearEntityModifiers();
 		sprBomba.clearUpdateHandlers();
+		sprBomba.setVisible(false);
 		sprBomba.setIgnoreUpdate(true);
-		sprBomba.detachSelf();
+
 		context.escenaJuego.matriz.setValor(Matriz.NADA, fila, columna,null,null);
-		context.vibrar(300);
-		
+		context.vibrar(300);		
 		sprCentro.animate(ANIMATE_DURATION, false, new ListenerExplotar());
 		// detonamos las demas bombas
 				
@@ -623,6 +624,7 @@ public class Bomba {
 		@Override
 		public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
 //			batch.setVisible(false);
+			batch.reset();
 			reiniciaBatch();
 			batch.setIgnoreUpdate(true);			
 		}
@@ -654,7 +656,7 @@ public class Bomba {
 		@Override
 		public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
 			
-//			detonar();
+			detonar();
 			
 		}
 

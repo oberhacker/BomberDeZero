@@ -88,7 +88,7 @@ public class EnemigoGlobo extends EnemigoBase {
 		if (direccionAnimacion != Direction.LEFT) {
 			direccionAnimacion = Direction.LEFT;
 			spritePrincipal.animate(new long[] { tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma,
-					tiempoFotograma, tiempoFotograma }, new int[] { 25, 24, 23, 22, 21, 20, 21, 22, 23, 24 }, true);
+					tiempoFotograma, tiempoFotograma }, new int[] { 24, 23, 22, 21, 20, 19, 20, 21, 22, 23 }, true);
 		}
 
 	}
@@ -108,7 +108,7 @@ public class EnemigoGlobo extends EnemigoBase {
 		if (direccionAnimacion != Direction.DOWN) {
 			direccionAnimacion = Direction.DOWN;
 			spritePrincipal.animate(new long[] { tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma, tiempoFotograma,
-					tiempoFotograma, tiempoFotograma }, new int[] { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1 }, true);
+					tiempoFotograma, tiempoFotograma }, new int[] { 26, 27, 28, 29, 30, 31, 30, 29, 28, 27 }, true);
 		}
 	}
 

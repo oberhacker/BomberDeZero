@@ -60,9 +60,9 @@ public class AlmacenEnemigos {
 	
 	
 	public void carga(){
-		this.globo_naranja_ani = new BitmapTextureAtlas(context.getTextureManager(),1024, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);	
+		this.globo_naranja_ani = new BitmapTextureAtlas(context.getTextureManager(),1024, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);	
 		this.globo_naranja_ani.load();
-		this.globoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(globo_naranja_ani, context, "gfx/globo_naranja_ani.png", 0,0,13, 2);
+		this.globoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(globo_naranja_ani, context, "gfx/globo_naranja_ani.png", 0,0,13, 3);
 		
 		this.fantasma_tile90 = new BitmapTextureAtlas(context.getTextureManager(),512, 512, TextureOptions.BILINEAR);
 		this.fantasma_tile90.load();
