@@ -33,7 +33,7 @@ public class EnemigoGlobo extends EnemigoBase {
 			}
 			@Override
 			public void onUpdate(float pSecondsElapsed) {
-				Log.d("UPDATE", "GLOBO baseTileRectangle");
+//				Log.d("UPDATE", "GLOBO baseTileRectangle");
 				spritePrincipal.setPosition(baseTileRectangle.getX() + correccionTexturaPrincipalX, baseTileRectangle.getY() + correccionTexturaPrincipalY);
 
 			}

@@ -14,6 +14,7 @@ import org.andengine.extension.tmx.util.exception.TMXLoadException;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.util.debug.Debug;
 
+import android.util.Log;
 import xnetcom.bomber.BomberGame;
 import xnetcom.bomber.enemigos.AlmacenEnemigos;
 import xnetcom.bomber.enemigos.AlmacenEnemigos.TipoEnemigo;
@@ -114,7 +115,10 @@ public class EscenaJuego {
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "fantasma")) {
 								context.almacenEnemigos.creaEnemigoInicial(TipoEnemigo.FANTASMA,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "gotanaranja")) {
+								Log.d("INICIO", "Colum"+pTMXTile.getTileColumn() +"fila "+pTMXTile.getTileRow());
 								context.almacenEnemigos.creaEnemigoInicial(TipoEnemigo.GOTA_NARANJA,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
+							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "gota")) {
+								context.almacenEnemigos.creaEnemigoInicial(TipoEnemigo.GOTA_AZUL,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "GLOBO_AZUL")) {
 								context.almacenEnemigos.creaEnemigoInicial(TipoEnemigo.GLOBO_AZUL,pTMXTile.getTileRow(), pTMXTile.getTileColumn());
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "MOCO_ROJO")) {
@@ -221,6 +225,11 @@ public class EscenaJuego {
 			context.camaraJuego.setChaseEntity(context.bomberman.getSprite());
 			context.capaParedes.onSceneCreated();
 		}
+//		context.camaraJuego.setCenter(0, 832);
+//		context.camaraJuego.updateChaseEntity();
+//		context.camaraJuego.onUpdate(0.02f);
+//		context.camaraJuego.setYMax(960);
+		
 
 		context.miengine.setCaramaJuego();		
 		context.capaParedes.recalculaPared();		

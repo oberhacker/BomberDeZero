@@ -5,12 +5,12 @@ package xnetcom.bomber.util;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.SmoothCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.util.GLState;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 /**
  * (c) 2010 Nicolas Gramlich 
@@ -51,8 +51,8 @@ public class MiEngine extends Engine {
 		return super.mCamera;
 	}
 
-	public Camera getCamaraJuego() {
-		return super.mCamera;
+	public SmoothCamera getCamaraJuego() {
+		return (SmoothCamera)super.mCamera;
 	}
 
 	public Camera getCamaraNormal() {

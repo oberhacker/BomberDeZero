@@ -37,8 +37,8 @@ public class GameManager {
 
 	public void updater() {
 
-		context.escenaJuego.hud.debugText.setText(context.almacenEnemigos.almacen.size() + "");
-
+		context.escenaJuego.hud.debugText.setText(context.almacenEnemigos.almacen.size() + "  ymax"+context.miengine.getCamaraJuego().getYMax() );
+		
 		// comprobamos matar a bomberman
 		synchronized (context.almacenEnemigos.almacen) {
 			

@@ -7,9 +7,9 @@ import xnetcom.bomber.BomberGame;
 import xnetcom.bomber.enemigos.EnemigoBase.TipoEnemigo;
 import android.util.Log;
 
-public class EnemigoMoco extends EnemigoBase {
+public class EnemigoMocoRojo extends EnemigoBase {
 
-	public EnemigoMoco(BomberGame context) {
+	public EnemigoMocoRojo(BomberGame context) {
 		super(context);
 	}
 
@@ -20,10 +20,11 @@ public class EnemigoMoco extends EnemigoBase {
 		moco=true;
 		super.inicia(columna, fila);
 
-		tipoEnemigo = TipoEnemigo.MOCO;
+		tipoEnemigo = TipoEnemigo.MOCO_ROJO;
 		tiempoPorCuadroRapido = 1.1f;
-		tiempoPorCuadroLento = 2f;
+		tiempoPorCuadroLento = 0.5f;
 		tiempoFotograma = 120;
+		
 
 		setPosicionCorreccionTexturaPrincipal(-10, 2);
 		attachSpriteGroup();
@@ -37,7 +38,7 @@ public class EnemigoMoco extends EnemigoBase {
 			public void onUpdate(float pSecondsElapsed) {
 //				Log.d("UPDATE", "GLOBO baseTileRectangle");
 				spritePrincipal.setPosition(baseTileRectangle.getX() + correccionTexturaPrincipalX, baseTileRectangle.getY() + correccionTexturaPrincipalY);
-				spritePrincipalTransparencia.setPosition(baseTileRectangle.getX() + correccionTexturaPrincipalX, baseTileRectangle.getY() + correccionTexturaPrincipalY);
+//				spritePrincipalTransparencia.setPosition(baseTileRectangle.getX() + correccionTexturaPrincipalX, baseTileRectangle.getY() + correccionTexturaPrincipalY);
 			}
 		});
 		iniciaInteligenciaIA();
@@ -47,31 +48,31 @@ public class EnemigoMoco extends EnemigoBase {
 		// si no es null ya esta attchado
 		if (spritePrincipal != null) {
 			spritePrincipal.setVisible(true);
-			spritePrincipalTransparencia.setVisible(true);
+//			spritePrincipalTransparencia.setVisible(true);
 			return;
 		}
 
-		spritePrincipalTransparencia = new AnimatedSprite(0, 0, context.almacenEnemigos.mocoTR, context.getVertexBufferObjectManager());
-		spritePrincipalTransparencia.setOffsetCenter(0, 0);
+//		spritePrincipalTransparencia = new AnimatedSprite(0, 0, context.almacenEnemigos.mocoTR, context.getVertexBufferObjectManager());
+//		spritePrincipalTransparencia.setOffsetCenter(0, 0);
 		// spritePrincipalTransparencia.setScale(0.7f);
-		spritePrincipalTransparencia.setAlpha(0.7f);
+//		spritePrincipalTransparencia.setAlpha(0.7f);
 
-		spritePrincipal = new AnimatedSprite(0, 0, context.almacenEnemigos.mocoTR, context.getVertexBufferObjectManager()) {
+		spritePrincipal = new AnimatedSprite(0, 0, context.almacenEnemigos.mocoRojoTR, context.getVertexBufferObjectManager()) {
 			@Override
 			public void setCurrentTileIndex(int pCurrentTileIndex) {
-				spritePrincipalTransparencia.setCurrentTileIndex(pCurrentTileIndex);
+//				spritePrincipalTransparencia.setCurrentTileIndex(pCurrentTileIndex);
 				super.setCurrentTileIndex(pCurrentTileIndex);
 			}
 		};
-		spritePrincipal.setAlpha(0.9f);
+		spritePrincipal.setAlpha(0.8f);
 		spritePrincipal.setOffsetCenter(0, 0);
 		// spritePrincipal.setScale(0.7f);
 
 		spritePrincipal.setPosition(coordenadas.getX() + correccionTexturaPrincipalX, coordenadas.getYCorregido() + correccionTexturaPrincipalY);
-		spritePrincipalTransparencia.setPosition(coordenadas.getX() + correccionTexturaPrincipalX, coordenadas.getYCorregido() + correccionTexturaPrincipalY);
+//		spritePrincipalTransparencia.setPosition(coordenadas.getX() + correccionTexturaPrincipalX, coordenadas.getYCorregido() + correccionTexturaPrincipalY);
 
-		context.almacenEnemigos.groupMoco.attachChild(spritePrincipal);
-		context.almacenEnemigos.groupMocoTransparencia.attachChild(spritePrincipalTransparencia);
+		context.almacenEnemigos.groupMocoRojo.attachChild(spritePrincipal);
+//		context.almacenEnemigos.groupMocoTransparencia.attachChild(spritePrincipalTransparencia);
 
 	}
 

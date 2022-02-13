@@ -3,8 +3,8 @@ package xnetcom.bomber.util;
 public class Constantes {
 	
 	
-	public static boolean DEBUG_BASE_RECTANGLE_VISIBLE=true;
-	public static boolean DEBUG_CURRENT_RECTANGLE_VISIBLE=true;
+	public static boolean DEBUG_BASE_RECTANGLE_VISIBLE=false;
+	public static boolean DEBUG_CURRENT_RECTANGLE_VISIBLE=false;
 	public static boolean DEBUG_IMMORTAL=true;
 	
 	

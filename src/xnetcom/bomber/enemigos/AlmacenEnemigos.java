@@ -16,7 +16,10 @@ import xnetcom.bomber.util.Matriz;
 import xnetcom.bomber.util.SpritePoolFantasma;
 import xnetcom.bomber.util.SpritePoolGlobo;
 import xnetcom.bomber.util.SpritePoolGloboAzul;
+import xnetcom.bomber.util.SpritePoolGotaAzul;
+import xnetcom.bomber.util.SpritePoolGotaNaranja;
 import xnetcom.bomber.util.SpritePoolMoco;
+import xnetcom.bomber.util.SpritePoolMocoRojo;
 import xnetcom.bomber.util.SpritePoolMoneda;
 
 public class AlmacenEnemigos {
@@ -25,7 +28,7 @@ public class AlmacenEnemigos {
 	protected Random generator;
 	
 	public enum TipoEnemigo {
-		GLOBO, MOCO, MONEDA, FANTASMA, GOTA_NARANJA, GLOBO_AZUL, MOCO_ROJO, MONEDA_MARRON, GOTA_ROJA,
+		GLOBO, MOCO, MONEDA, FANTASMA,GOTA_AZUL, GOTA_NARANJA, GLOBO_AZUL, MOCO_ROJO, MONEDA_MARRON, GOTA_ROJA,
 	}
 	
 	public ArrayList<TipoEnemigo> enemigosIniciales;
@@ -34,6 +37,13 @@ public class AlmacenEnemigos {
 	
 	public SpriteGroup groupGlobo;	
 	public SpritePoolGlobo spritePoolGlobo;
+	
+	public SpriteGroup groupGotaAzul;	
+	public SpritePoolGotaAzul spritePoolGotaAzul;
+	
+	
+	public SpriteGroup groupGotaNaranja;	
+	public SpritePoolGotaNaranja spritePoolGotaNaranja;
 	
 	public SpriteGroup groupGloboAzul;	
 	public SpritePoolGloboAzul spritePoolGloboAzul;
@@ -48,6 +58,11 @@ public class AlmacenEnemigos {
 	public SpriteGroup groupMocoTransparencia;	
 	public SpriteGroup groupMoco;	
 	public SpritePoolMoco spritePoolMoco;
+	
+	
+	
+	public SpriteGroup groupMocoRojo;	
+	public SpritePoolMocoRojo spritePoolMocoRojo;
 
 	
 	public TiledTextureRegion globoTR;
@@ -55,12 +70,18 @@ public class AlmacenEnemigos {
 	
 	public BitmapTextureAtlas globo_naranja_ani;
 	public BitmapTextureAtlas fantasma_tile90;
-	public BitmapTextureAtlas MocoBTA;
-	public TiledTextureRegion MocoTR;
+	public BitmapTextureAtlas mocoBTA;
+	public TiledTextureRegion mocoTR;
 	public BitmapTextureAtlas globo_azul_ani;
 	public TiledTextureRegion globoAzulTR;
 	public BitmapTextureAtlas monedaBTA;
 	public TiledTextureRegion monedaTR;
+	public BitmapTextureAtlas gotaAzulBTA;
+	public TiledTextureRegion gotaAzulTR;
+	public BitmapTextureAtlas gotaNaranjaBTA;
+	public TiledTextureRegion gotaNaranjaTR;
+	public BitmapTextureAtlas mocoRojoBTA;
+	public TiledTextureRegion mocoRojoTR;
 	
 	public AlmacenEnemigos(BomberGame context) {
 		this.context = context;
@@ -71,7 +92,9 @@ public class AlmacenEnemigos {
 		spritePoolFantasma=new SpritePoolFantasma(context);
 		spritePoolMoco= new SpritePoolMoco(context);
 		spritePoolMoneda= new SpritePoolMoneda(context);
-		
+		spritePoolGotaAzul= new SpritePoolGotaAzul(context);
+		spritePoolGotaNaranja= new SpritePoolGotaNaranja(context);
+		spritePoolMocoRojo= new SpritePoolMocoRojo(context);
 	}
 	
 
@@ -84,13 +107,31 @@ public class AlmacenEnemigos {
 		this.globo_naranja_ani.load();
 		this.globoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(globo_naranja_ani, context, "gfx/globo_naranja_ani.png", 0,0,13, 3);
 		
+		
+		this.gotaAzulBTA = new BitmapTextureAtlas(context.getTextureManager(),1024, 512, TextureOptions.BILINEAR);	
+		this.gotaAzulBTA.load();
+		this.gotaAzulTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gotaAzulBTA, context, "gfx/gotaAzul.png", 0,0,10,6);
+		
+		
+		this.gotaNaranjaBTA = new BitmapTextureAtlas(context.getTextureManager(),1024, 512, TextureOptions.BILINEAR);	
+		this.gotaNaranjaBTA.load();
+		this.gotaNaranjaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gotaNaranjaBTA, context, "gfx/gota_naranja.png", 0,0,10,6);
+		
+		
+		
 		this.fantasma_tile90 = new BitmapTextureAtlas(context.getTextureManager(),512, 512, TextureOptions.BILINEAR);
 		this.fantasma_tile90.load();
 		this.fantasmaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(fantasma_tile90, context, "gfx/fantasma_tile90.png",0,0,  5, 5);
 		
-		this.MocoBTA = new BitmapTextureAtlas(context.getTextureManager(),1024, 512, TextureOptions.BILINEAR);
-		this.MocoBTA.load();
-		this.MocoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(MocoBTA, context, "gfx/moco_tiled90.png",0,0,  6, 5);
+		this.mocoBTA = new BitmapTextureAtlas(context.getTextureManager(),1024, 512, TextureOptions.BILINEAR);
+		this.mocoBTA.load();
+		this.mocoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mocoBTA, context, "gfx/moco_tiled90.png",0,0,  6, 5);
+		
+		
+		this.mocoRojoBTA = new BitmapTextureAtlas(context.getTextureManager(),1024, 512, TextureOptions.BILINEAR);
+		this.mocoRojoBTA.load();
+		this.mocoRojoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mocoRojoBTA, context, "gfx/moco_rojo.png",0,0,  6, 5);	
+		
 		
 		this.globo_azul_ani = new BitmapTextureAtlas(context.getTextureManager(),1024, 512, TextureOptions.BILINEAR);	
 		this.globo_azul_ani.load();
@@ -106,6 +147,7 @@ public class AlmacenEnemigos {
 	
 	
 	public boolean ini=false;
+
 	public void inicializaGrupos(){
 		if (!ini){
 			ini=true;		
@@ -113,6 +155,17 @@ public class AlmacenEnemigos {
 			groupGlobo.setOffsetCenter(0, 0);
 			groupGlobo.setPosition(0, 0);
 			groupGlobo.setZIndex(Constantes.ZINDEX_ENEMIGO);
+			
+			groupGotaAzul= new SpriteGroup(gotaAzulBTA, 100, context.getVertexBufferObjectManager());
+			groupGotaAzul.setOffsetCenter(0, 0);
+			groupGotaAzul.setPosition(0, 0);
+			groupGotaAzul.setZIndex(Constantes.ZINDEX_ENEMIGO);
+			
+			
+			groupGotaNaranja= new SpriteGroup(gotaNaranjaBTA, 100, context.getVertexBufferObjectManager());
+			groupGotaNaranja.setOffsetCenter(0, 0);
+			groupGotaNaranja.setPosition(0, 0);
+			groupGotaNaranja.setZIndex(Constantes.ZINDEX_ENEMIGO);
 			
 			
 			groupGloboAzul= new SpriteGroup(globo_azul_ani, 100, context.getVertexBufferObjectManager());
@@ -140,20 +193,29 @@ public class AlmacenEnemigos {
 			
 			
 			
-			groupMoco= new SpriteGroup(MocoBTA, 100, context.getVertexBufferObjectManager());
+			groupMoco= new SpriteGroup(mocoBTA, 100, context.getVertexBufferObjectManager());
 			groupMoco.setOffsetCenter(0, 0);
 			groupMoco.setPosition(0, 0);
 			groupMoco.setZIndex(Constantes.ZINDEX_CAPA_PAREDES_ABAJO-1);
 
 			
-			groupMocoTransparencia= new SpriteGroup(MocoBTA, 100, context.getVertexBufferObjectManager());
+			groupMocoTransparencia= new SpriteGroup(mocoBTA, 100, context.getVertexBufferObjectManager());
 			groupMocoTransparencia.setOffsetCenter(0, 0);
 			groupMocoTransparencia.setPosition(0, 0);
 			groupMocoTransparencia.setZIndex(Constantes.ZINDEX_CAPA_PAREDES_ARRIBA+1);
 
 			
 			
+			groupMocoRojo= new SpriteGroup(mocoRojoBTA, 100, context.getVertexBufferObjectManager());
+			groupMocoRojo.setOffsetCenter(0, 0);
+			groupMocoRojo.setPosition(0, 0);
+			groupMocoRojo.setZIndex(Constantes.ZINDEX_CAPA_PAREDES_ARRIBA+1);
 			
+			
+			
+			context.escenaJuego.scene.attachChild(groupMocoRojo);
+			context.escenaJuego.scene.attachChild(groupGotaNaranja);
+			context.escenaJuego.scene.attachChild(groupGotaAzul);
 			context.escenaJuego.scene.attachChild(groupMoneda);
 			context.escenaJuego.scene.attachChild(groupGlobo);	
 			context.escenaJuego.scene.attachChild(groupGloboAzul);	
@@ -215,8 +277,32 @@ public class AlmacenEnemigos {
 			}
 			break;
 			
+			
 		case MOCO:
 			enemigo =spritePoolMoco.obtainPoolItem();
+			if (coordenada != null) {
+				enemigo.inicia(coordenada.getColumna(), coordenada.getFila());
+				almacen.add(enemigo);
+			}
+			break;
+			
+		case MOCO_ROJO:
+			enemigo =spritePoolMocoRojo.obtainPoolItem();
+			if (coordenada != null) {
+				enemigo.inicia(coordenada.getColumna(), coordenada.getFila());
+				almacen.add(enemigo);
+			}
+			break;
+			
+		case GOTA_AZUL:
+			enemigo =spritePoolGotaAzul.obtainPoolItem();
+			if (coordenada != null) {
+				enemigo.inicia(coordenada.getColumna(), coordenada.getFila());
+				almacen.add(enemigo);
+			}
+			break;
+		case GOTA_NARANJA:
+			enemigo =spritePoolGotaNaranja.obtainPoolItem();
 			if (coordenada != null) {
 				enemigo.inicia(coordenada.getColumna(), coordenada.getFila());
 				almacen.add(enemigo);
@@ -301,6 +387,19 @@ public class AlmacenEnemigos {
 		case MONEDA:
 			spritePoolMoneda.recyclePoolItem((EnemigoMoneda)eliminado);					
 			break;
+		case GOTA_AZUL:
+			spritePoolGotaAzul.recyclePoolItem((EnemigoGotaAzul)eliminado);					
+			break;
+		case GOTA_NARANJA:
+			spritePoolGotaNaranja.recyclePoolItem((EnemigoGotaNaranja)eliminado);					
+			break;
+		case MOCO_ROJO:
+			spritePoolMocoRojo.recyclePoolItem((EnemigoMocoRojo)eliminado);					
+			break;
+		case GOTA_ROJA:
+			throw new RuntimeException();
+		case MONEDA_MARRON:
+			throw new RuntimeException();
 
 		default:
 			break;

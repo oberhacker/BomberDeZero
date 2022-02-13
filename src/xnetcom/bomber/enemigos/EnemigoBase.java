@@ -104,7 +104,7 @@ public abstract class EnemigoBase {
 		generator= new Random();
 
 		muerto = new AtomicBoolean(false);
-
+		Log.d("COOR", " inicia columna "+columna +"  fila " +fila);
 		coordenadas = new Coordenadas(columna, fila);
 
 		baseTileRectangle.setPosition(coordenadas.getX(), coordenadas.getYCorregido());
@@ -190,7 +190,7 @@ public abstract class EnemigoBase {
 
 	protected void updater() {
 		
-		Log.d("ENEMIGO", "UPDATE");
+//		Log.d("ENEMIGO", "UPDATE");
 		final float[] playerFootCordinates = baseTileRectangle.convertLocalCoordinatesToSceneCoordinates(EnemigoBase.PIES_X, EnemigoBase.PIES_Y);
 		TMXLayer tmxLayer = context.escenaJuego.mTMXTiledMap.getTMXLayers().get(1);
 		TMXTile tmxTile = tmxLayer.getTMXTileAt(playerFootCordinates[Constants.VERTEX_INDEX_X], playerFootCordinates[Constants.VERTEX_INDEX_Y]);
@@ -198,12 +198,20 @@ public abstract class EnemigoBase {
 		if (tmxTile != null) {
 			if (innerColumna != tmxTile.getTileColumn()) {
 				innerColumna = tmxTile.getTileColumn();
+				innerFila = tmxTile.getTileRow();
 				currentTileRectangle.setPosition(tmxLayer.getTileX(tmxTile.getTileColumn()) * Constantes.FARTOR_FORMA, tmxLayer.getTileY(tmxTile.getTileRow()));
+				if (innerColumna==0 ||innerFila==0 ){
+					System.out.println();
+				}
 				cambiaPosicion(innerColumna, innerFila);
 			}
 			if (innerFila != tmxTile.getTileRow()) {
 				innerFila = tmxTile.getTileRow();
+				innerColumna = tmxTile.getTileColumn();
 				currentTileRectangle.setPosition(tmxLayer.getTileX(tmxTile.getTileColumn()) * Constantes.FARTOR_FORMA, tmxLayer.getTileY(tmxTile.getTileRow()));
+				if (innerColumna==0 ||innerFila==0 ){
+					System.out.println();
+				}
 				cambiaPosicion(innerColumna, innerFila);
 			}
 		}
@@ -215,6 +223,7 @@ public abstract class EnemigoBase {
 			public void run() {
 				try {
 					synchronized (coordenadas) {
+						Log.d("COOR", "cambiaPosicion Columna"+innerColumna +" Fila"+innerFila);
 						coordenadas.setColumna(innerColumna);
 						coordenadas.setFila(innerFila);
 					}
