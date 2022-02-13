@@ -75,10 +75,8 @@ public class EnemigoGotaRoja extends EnemigoBase {
 		}
 
 		Direction dirSeguidor = seguidor();
-		//se ha perdido el rastro
-		if (dirSeguidor==Direction.NONE){
-			ultimaBomberX=0;
-			ultimaBomberY=0;
+		if (dirSeguidor!=Direction.NONE){
+			distanciaBomberReal=distanciaBomber;
 		}
 		Direction dirSeguidorSalto = seguidorSalto();
 
@@ -105,14 +103,19 @@ public class EnemigoGotaRoja extends EnemigoBase {
 		} else {
 			// si llego aqui y estoy enfadado es que le perdi
 			if (puedoSeguir(direccionActual)) {
-				
-				if()
-
-				if (tomaDecision(1, 100) < 60) {
+				distanciaBomberReal--;
+				if (distanciaBomberReal>=0){
 					direccionSalida = direccionActual;
-				} else {
-					direccionSalida = cambiaDireccion(direccionActual);
+					setEnfadado(true);
+				}else{
+					if (tomaDecision(1, 100) < 60) {
+						direccionSalida = direccionActual;
+					} else {
+						direccionSalida = cambiaDireccion(direccionActual);
+					}
+					setEnfadado(false);
 				}
+	
 				// direccionSalida =caminoMuyAndado(direccionSalida); // de
 				// momento lo quito que me gusta que vaya mas a su bola
 			} else {// si no puedo segui por donde iba
@@ -126,9 +129,10 @@ public class EnemigoGotaRoja extends EnemigoBase {
 				if (direccionSalida.equals(direccionActual)) {
 					direccionSalida = cambioSentido(direccionActual);
 				}
+				setEnfadado(false);
 			}
 			setDireccion(direccionSalida);
-			setEnfadado(false);
+			
 
 		}
 
@@ -145,13 +149,11 @@ public class EnemigoGotaRoja extends EnemigoBase {
 
 	}
 
-	int ultimaBomberX;
-	int ultimaBomberY;
+	int distanciaBomber;
+	int distanciaBomberReal;
 	public Direction seguidor() {
 		int X = context.bomberman.getColumna();
 		int Y = context.bomberman.getFila();
-		ultimaBomberX=X;
-		ultimaBomberY=Y;
 		int columna = coordenadas.getColumna();
 		int fila = coordenadas.getFila();
 
@@ -176,7 +178,7 @@ public class EnemigoGotaRoja extends EnemigoBase {
 			dir = Direction.DOWN;
 			diferencia = Y - fila;
 		}
-
+		distanciaBomber=diferencia;
 		switch (dir) {
 		case LEFT:
 			try {
