@@ -24,7 +24,7 @@ public class EnemigoGotaRoja extends EnemigoBase {
 		super.inicia(columna, fila);
 
 		tipoEnemigo = TipoEnemigo.GOTA_ROJA;
-		tiempoPorCuadro = 0.60f;
+		tiempoPorCuadro = 0.70f;
 		tiempoFotograma = 90;
 
 		setPosicionCorreccionTexturaPrincipal(8, 3);
@@ -61,7 +61,7 @@ public class EnemigoGotaRoja extends EnemigoBase {
 
 		}
 
-	}
+	}	
 
 	public void inteligencia() {
 		int columna = coordenadas.getColumna();
@@ -75,6 +75,11 @@ public class EnemigoGotaRoja extends EnemigoBase {
 		}
 
 		Direction dirSeguidor = seguidor();
+		//se ha perdido el rastro
+		if (dirSeguidor==Direction.NONE){
+			ultimaBomberX=0;
+			ultimaBomberY=0;
+		}
 		Direction dirSeguidorSalto = seguidorSalto();
 
 		if (dirSeguidor == Direction.NONE && dirSeguidorSalto != Direction.NONE) {
@@ -98,8 +103,10 @@ public class EnemigoGotaRoja extends EnemigoBase {
 			moverDosCuadros(direccionSalida);
 			return;
 		} else {
-
+			// si llego aqui y estoy enfadado es que le perdi
 			if (puedoSeguir(direccionActual)) {
+				
+				if()
 
 				if (tomaDecision(1, 100) < 60) {
 					direccionSalida = direccionActual;
@@ -138,9 +145,13 @@ public class EnemigoGotaRoja extends EnemigoBase {
 
 	}
 
+	int ultimaBomberX;
+	int ultimaBomberY;
 	public Direction seguidor() {
 		int X = context.bomberman.getColumna();
 		int Y = context.bomberman.getFila();
+		ultimaBomberX=X;
+		ultimaBomberY=Y;
 		int columna = coordenadas.getColumna();
 		int fila = coordenadas.getFila();
 
@@ -169,7 +180,8 @@ public class EnemigoGotaRoja extends EnemigoBase {
 		switch (dir) {
 		case LEFT:
 			try {
-				if (diferencia > 1 && context.escenaJuego.matriz.getValor(fila, columna - 1).tipoCasilla != Matriz.NADA) {
+				int tipocasilla=context.escenaJuego.matriz.getValor(fila, columna - 1).tipoCasilla;
+				if (diferencia > 1 && (tipocasilla != Matriz.NADA && tipocasilla != Matriz.BOMBA)) {
 					dir = Direction.NONE;
 					return dir;
 				}
@@ -177,7 +189,8 @@ public class EnemigoGotaRoja extends EnemigoBase {
 				System.out.println("error ");
 			}
 			try {
-				if (diferencia > 2 && context.escenaJuego.matriz.getValor(fila, columna - 2).tipoCasilla != Matriz.NADA) {
+				int tipocasilla=context.escenaJuego.matriz.getValor(fila, columna - 2).tipoCasilla;
+				if (diferencia > 2 &&  (tipocasilla!= Matriz.NADA && tipocasilla!= Matriz.BOMBA)) {
 					dir = Direction.NONE;
 					return dir;
 				}
@@ -185,7 +198,8 @@ public class EnemigoGotaRoja extends EnemigoBase {
 				System.out.println("error ");
 			}
 			try {
-				if (diferencia > 3 && context.escenaJuego.matriz.getValor(fila, columna - 3).tipoCasilla != Matriz.NADA) {
+				int tipocasilla=context.escenaJuego.matriz.getValor(fila, columna - 3).tipoCasilla;
+				if (diferencia > 3 &&  (tipocasilla!= Matriz.NADA && tipocasilla!= Matriz.BOMBA)) {
 					dir = Direction.NONE;
 					return dir;
 				}
@@ -193,7 +207,8 @@ public class EnemigoGotaRoja extends EnemigoBase {
 				System.out.println("error ");
 			}
 			try {
-				if (diferencia > 4 && context.escenaJuego.matriz.getValor(fila, columna - 4).tipoCasilla != Matriz.NADA) {
+				int tipoCasilla= context.escenaJuego.matriz.getValor(fila, columna - 4).tipoCasilla;
+				if (diferencia > 4 && ( tipoCasilla!= Matriz.NADA && tipoCasilla!= Matriz.BOMBA)) {
 					dir = Direction.NONE;
 					return dir;
 				}
@@ -205,7 +220,8 @@ public class EnemigoGotaRoja extends EnemigoBase {
 			
 		case RIGHT:
 			try {
-				if (diferencia > 1 && context.escenaJuego.matriz.getValor(fila, columna + 1).tipoCasilla != Matriz.NADA) {
+				int tipocasilla =context.escenaJuego.matriz.getValor(fila, columna + 1).tipoCasilla;
+				if (diferencia > 1 && (tipocasilla!= Matriz.NADA && tipocasilla!= Matriz.BOMBA)) {
 					dir = Direction.NONE;
 					return dir;
 				}
@@ -213,7 +229,8 @@ public class EnemigoGotaRoja extends EnemigoBase {
 				System.out.println("error ");
 			}
 			try {
-				if (diferencia > 2 && context.escenaJuego.matriz.getValor(fila, columna + 2).tipoCasilla != Matriz.NADA) {
+				int tipocasilla =context.escenaJuego.matriz.getValor(fila, columna + 2).tipoCasilla;
+				if (diferencia > 2 &&  (tipocasilla!= Matriz.NADA &&tipocasilla!= Matriz.BOMBA )) {
 					dir = Direction.NONE;
 					return dir;
 				}
@@ -221,7 +238,8 @@ public class EnemigoGotaRoja extends EnemigoBase {
 				System.out.println("error ");
 			}
 			try {
-				if (diferencia > 3 && context.escenaJuego.matriz.getValor(fila, columna + 3).tipoCasilla != Matriz.NADA) {
+				int tipocasilla=context.escenaJuego.matriz.getValor(fila, columna + 3).tipoCasilla; 
+				if (diferencia > 3 &&  (tipocasilla!= Matriz.NADA && tipocasilla!= Matriz.BOMBA)) {
 					dir = Direction.NONE;
 					return dir;
 				}
@@ -229,7 +247,8 @@ public class EnemigoGotaRoja extends EnemigoBase {
 				System.out.println("error ");
 			}
 			try {
-				if (diferencia > 4 && context.escenaJuego.matriz.getValor(fila, columna + 4).tipoCasilla != Matriz.NADA) {
+				int tipocasilla=context.escenaJuego.matriz.getValor(fila, columna + 4).tipoCasilla ;
+				if (diferencia > 4 &&  (tipocasilla!= Matriz.NADA && tipocasilla!= Matriz.BOMBA)) {
 					dir = Direction.NONE;
 					return dir;
 				}
@@ -241,28 +260,32 @@ public class EnemigoGotaRoja extends EnemigoBase {
 		case UP:
 
 			try {
-				if (diferencia > 1 && context.escenaJuego.matriz.getValor(fila - 1, columna).tipoCasilla != Matriz.NADA) {
+				int tipocasilla=context.escenaJuego.matriz.getValor(fila - 1, columna).tipoCasilla;
+				if (diferencia > 1 &&  (tipocasilla!= Matriz.NADA && tipocasilla!= Matriz.BOMBA)) {
 					dir = Direction.NONE;
 					return dir;
 				}
 			} catch (Exception e) {
 			}
 			try {
-				if (diferencia > 2 && context.escenaJuego.matriz.getValor(fila - 2, columna).tipoCasilla != Matriz.NADA) {
+				int tipocasilla =context.escenaJuego.matriz.getValor(fila - 2, columna).tipoCasilla;
+				if (diferencia > 2 &&  (tipocasilla!= Matriz.NADA &&tipocasilla!= Matriz.BOMBA )) {
 					dir = Direction.NONE;
 					return dir;
 				}
 			} catch (Exception e) {
 			}
 			try {
-				if (diferencia > 3 && context.escenaJuego.matriz.getValor(fila - 3, columna).tipoCasilla != Matriz.NADA) {
+				int tipocasilla=context.escenaJuego.matriz.getValor(fila - 3, columna).tipoCasilla;
+				if (diferencia > 3 &&  (tipocasilla!= Matriz.NADA && tipocasilla!= Matriz.BOMBA )) {
 					dir = Direction.NONE;
 					return dir;
 				}
 			} catch (Exception e) {
 			}
 			try {
-				if (diferencia > 4 && context.escenaJuego.matriz.getValor(fila - 4, columna).tipoCasilla != Matriz.NADA) {
+				int tipoCasilla=context.escenaJuego.matriz.getValor(fila - 4, columna).tipoCasilla;
+				if (diferencia > 4 && (tipoCasilla != Matriz.NADA && tipoCasilla != Matriz.BOMBA)) {
 					dir = Direction.NONE;
 					return dir;
 				}
@@ -272,7 +295,8 @@ public class EnemigoGotaRoja extends EnemigoBase {
 
 		case DOWN:
 			try {
-				if (diferencia > 1 && context.escenaJuego.matriz.getValor(fila + 1, columna).tipoCasilla != Matriz.NADA) {
+				int tipocasilla=context.escenaJuego.matriz.getValor(fila + 1, columna).tipoCasilla ;
+				if (diferencia > 1 && (tipocasilla!= Matriz.NADA && tipocasilla!= Matriz.BOMBA )) {
 					dir = Direction.NONE;
 					return dir;
 				}
@@ -280,7 +304,8 @@ public class EnemigoGotaRoja extends EnemigoBase {
 				System.out.println("error ");
 			}
 			try {
-				if (diferencia > 2 && context.escenaJuego.matriz.getValor(fila + 2, columna).tipoCasilla != Matriz.NADA) {
+				int tipocasilla=context.escenaJuego.matriz.getValor(fila + 2, columna).tipoCasilla;
+				if (diferencia > 2 && (tipocasilla!= Matriz.NADA&& tipocasilla!=Matriz.BOMBA)) {
 					dir = Direction.NONE;
 					return dir;
 				}
@@ -288,7 +313,8 @@ public class EnemigoGotaRoja extends EnemigoBase {
 				System.out.println("error ");
 			}
 			try {
-				if (diferencia > 3 && context.escenaJuego.matriz.getValor(fila + 3, columna).tipoCasilla != Matriz.NADA) {
+				int tipoCasilla=context.escenaJuego.matriz.getValor(fila + 3, columna).tipoCasilla;
+				if (diferencia > 3 &&  (tipoCasilla!= Matriz.NADA && tipoCasilla!= Matriz.BOMBA)){
 					dir = Direction.NONE;
 					return dir;
 				}
@@ -296,7 +322,8 @@ public class EnemigoGotaRoja extends EnemigoBase {
 				System.out.println("error ");
 			}
 			try {
-				if (diferencia > 4 && context.escenaJuego.matriz.getValor(fila + 4, columna).tipoCasilla != Matriz.NADA) {
+				int tipocasilla=context.escenaJuego.matriz.getValor(fila + 4, columna).tipoCasilla;
+				if (diferencia > 4 &&  (tipocasilla!= Matriz.NADA && tipocasilla!= Matriz.BOMBA)) {
 					dir = Direction.NONE;
 					return dir;
 				}
@@ -835,7 +862,7 @@ public class EnemigoGotaRoja extends EnemigoBase {
 	public void setEnfadado(boolean enfadado) {
 		if (enfadado) {
 			this.enfadado = true;
-			tiempoPorCuadro = 0.40f;
+			tiempoPorCuadro = 0.30f;
 		} else {
 			this.enfadado = false;
 			tiempoPorCuadro = 0.70f;

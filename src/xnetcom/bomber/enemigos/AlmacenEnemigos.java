@@ -446,9 +446,10 @@ public class AlmacenEnemigos {
 			break;
 		case GOTA_ROJA:
 			spritePoolGotaRoja.recyclePoolItem((EnemigoGotaRoja)eliminado);
+			break;
 		case MONEDA_MARRON:
 			spritePoolMonedaMarron.recyclePoolItem((EnemigoMonedaMarron)eliminado);	
-
+			break;
 		default:
 			break;
 		}
