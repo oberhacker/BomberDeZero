@@ -18,9 +18,11 @@ import xnetcom.bomber.util.SpritePoolGlobo;
 import xnetcom.bomber.util.SpritePoolGloboAzul;
 import xnetcom.bomber.util.SpritePoolGotaAzul;
 import xnetcom.bomber.util.SpritePoolGotaNaranja;
+import xnetcom.bomber.util.SpritePoolGotaRoja;
 import xnetcom.bomber.util.SpritePoolMoco;
 import xnetcom.bomber.util.SpritePoolMocoRojo;
 import xnetcom.bomber.util.SpritePoolMoneda;
+import xnetcom.bomber.util.SpritePoolMonedaMarron;
 
 public class AlmacenEnemigos {
 	
@@ -45,11 +47,17 @@ public class AlmacenEnemigos {
 	public SpriteGroup groupGotaNaranja;	
 	public SpritePoolGotaNaranja spritePoolGotaNaranja;
 	
+	public SpriteGroup groupGotaRoja;	
+	public SpritePoolGotaRoja spritePoolGotaRoja;
+	
 	public SpriteGroup groupGloboAzul;	
 	public SpritePoolGloboAzul spritePoolGloboAzul;
 	
 	public SpriteGroup groupMoneda;	
 	public SpritePoolMoneda spritePoolMoneda;
+	
+	public SpriteGroup groupMonedaMarron;	
+	public SpritePoolMonedaMarron spritePoolMonedaMarron;
 	
 	public SpriteGroup groupFantasmaTransparencia;	
 	public SpriteGroup groupFantasma;	
@@ -82,6 +90,10 @@ public class AlmacenEnemigos {
 	public TiledTextureRegion gotaNaranjaTR;
 	public BitmapTextureAtlas mocoRojoBTA;
 	public TiledTextureRegion mocoRojoTR;
+	public BitmapTextureAtlas monedaMarronBTA;
+	public TiledTextureRegion monedaMarronTR;
+	public BitmapTextureAtlas gotaRojaBTA;
+	public TiledTextureRegion gotaRojaTR;
 	
 	public AlmacenEnemigos(BomberGame context) {
 		this.context = context;
@@ -95,6 +107,8 @@ public class AlmacenEnemigos {
 		spritePoolGotaAzul= new SpritePoolGotaAzul(context);
 		spritePoolGotaNaranja= new SpritePoolGotaNaranja(context);
 		spritePoolMocoRojo= new SpritePoolMocoRojo(context);
+		spritePoolMonedaMarron= new SpritePoolMonedaMarron(context);
+		spritePoolGotaRoja= new SpritePoolGotaRoja(context);
 	}
 	
 
@@ -116,6 +130,10 @@ public class AlmacenEnemigos {
 		this.gotaNaranjaBTA = new BitmapTextureAtlas(context.getTextureManager(),1024, 512, TextureOptions.BILINEAR);	
 		this.gotaNaranjaBTA.load();
 		this.gotaNaranjaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gotaNaranjaBTA, context, "gfx/gota_naranja.png", 0,0,10,6);
+		
+		this.gotaRojaBTA = new BitmapTextureAtlas(context.getTextureManager(),1024, 512, TextureOptions.BILINEAR);	
+		this.gotaRojaBTA.load();
+		this.gotaRojaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gotaRojaBTA, context, "gfx/gota_roja.png", 0,0,10,6);
 		
 		
 		
@@ -142,6 +160,9 @@ public class AlmacenEnemigos {
 		this.monedaBTA.load();
 		this.monedaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(monedaBTA, context, "gfx/moneda_tiled.png",0,0,  6, 3);
 
+		this.monedaMarronBTA = new BitmapTextureAtlas(context.getTextureManager(),512, 256, TextureOptions.BILINEAR);
+		this.monedaMarronBTA.load();
+		this.monedaMarronTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(monedaMarronBTA, context, "gfx/moneda_tiled_marron.png",0,0,  6, 3);
 
 	}
 	
@@ -168,6 +189,13 @@ public class AlmacenEnemigos {
 			groupGotaNaranja.setZIndex(Constantes.ZINDEX_ENEMIGO);
 			
 			
+			
+			groupGotaRoja= new SpriteGroup(gotaRojaBTA, 100, context.getVertexBufferObjectManager());
+			groupGotaRoja.setOffsetCenter(0, 0);
+			groupGotaRoja.setPosition(0, 0);
+			groupGotaRoja.setZIndex(Constantes.ZINDEX_ENEMIGO);
+			
+			
 			groupGloboAzul= new SpriteGroup(globo_azul_ani, 100, context.getVertexBufferObjectManager());
 			groupGloboAzul.setOffsetCenter(0, 0);
 			groupGloboAzul.setPosition(0, 0);
@@ -178,6 +206,11 @@ public class AlmacenEnemigos {
 			groupMoneda.setPosition(0, 0);
 			groupMoneda.setZIndex(Constantes.ZINDEX_ENEMIGO);
 			
+			
+			groupMonedaMarron = new SpriteGroup(monedaMarronBTA, 100, context.getVertexBufferObjectManager());
+			groupMonedaMarron.setOffsetCenter(0, 0);
+			groupMonedaMarron.setPosition(0, 0);
+			groupMonedaMarron.setZIndex(Constantes.ZINDEX_ENEMIGO);
 			
 			groupFantasma= new SpriteGroup(fantasma_tile90, 100, context.getVertexBufferObjectManager());
 			groupFantasma.setOffsetCenter(0, 0);
@@ -212,7 +245,8 @@ public class AlmacenEnemigos {
 			groupMocoRojo.setZIndex(Constantes.ZINDEX_CAPA_PAREDES_ARRIBA+1);
 			
 			
-			
+			context.escenaJuego.scene.attachChild(groupGotaRoja);
+			context.escenaJuego.scene.attachChild(groupMonedaMarron);
 			context.escenaJuego.scene.attachChild(groupMocoRojo);
 			context.escenaJuego.scene.attachChild(groupGotaNaranja);
 			context.escenaJuego.scene.attachChild(groupGotaAzul);
@@ -308,6 +342,20 @@ public class AlmacenEnemigos {
 				almacen.add(enemigo);
 			}
 			break;
+		case MONEDA_MARRON:
+			enemigo = spritePoolMonedaMarron.obtainPoolItem();	
+			if (coordenada != null) {
+				enemigo.inicia(coordenada.getColumna(), coordenada.getFila());
+				almacen.add(enemigo);
+			}
+			break;
+		case GOTA_ROJA:
+			enemigo = spritePoolGotaRoja.obtainPoolItem();	
+			if (coordenada != null) {
+				enemigo.inicia(coordenada.getColumna(), coordenada.getFila());
+				almacen.add(enemigo);
+			}
+			break;
 		default:
 			break;
 		}
@@ -397,9 +445,9 @@ public class AlmacenEnemigos {
 			spritePoolMocoRojo.recyclePoolItem((EnemigoMocoRojo)eliminado);					
 			break;
 		case GOTA_ROJA:
-			throw new RuntimeException();
+			spritePoolGotaRoja.recyclePoolItem((EnemigoGotaRoja)eliminado);
 		case MONEDA_MARRON:
-			throw new RuntimeException();
+			spritePoolMonedaMarron.recyclePoolItem((EnemigoMonedaMarron)eliminado);	
 
 		default:
 			break;

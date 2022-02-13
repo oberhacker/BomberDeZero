@@ -51,6 +51,7 @@ public class EnemigoFantasma extends EnemigoBase{
 		}
 	
 		
+		
 		spritePrincipalTransparencia = new AnimatedSprite(0, 0, context.almacenEnemigos.fantasmaTR, context.getVertexBufferObjectManager());
 		spritePrincipalTransparencia.setOffsetCenter(0, 0);
 //		spritePrincipalTransparencia.setScale(0.7f);
