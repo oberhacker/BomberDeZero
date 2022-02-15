@@ -12,6 +12,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 
+import android.util.Log;
 import xnetcom.bomber.BomberGame;
 import xnetcom.bomber.util.Constantes;
 import xnetcom.bomber.util.Coordenadas;
@@ -30,7 +31,7 @@ public class CapaParedes {
 	public MiSpriteGroup spriteGroupAbajo;
 	
 	public ArrayList<TrozoPared> listaMuros;
-	
+	public ArrayList<TrozoPared> listaMurosMentira;
 	
 	private Iterator<AnimatedSprite> itr;
 	private ArrayList<AnimatedSprite> almacenExplosiones;
@@ -40,6 +41,7 @@ public class CapaParedes {
 	public CapaParedes(final BomberGame context){
 		this.context=context;
 		this.listaMuros=new ArrayList<TrozoPared>();
+		this.listaMurosMentira=new ArrayList<TrozoPared>();
 		
 	}
 
@@ -115,8 +117,30 @@ public class CapaParedes {
 	}
 	
 
+	public void restauraInicial(){
+		context.escenaJuego.matriz.eliminaParedesMatriz();
+		reiniciaPared();
+		Casilla[][] matriz = context.escenaJuego.matriz.getMatrizmuros();			
+		for (int y = 2; y < matriz.length; y++) {
+			for (int x = 2; x < matriz.length; x++) {			
+				if(matriz[y][x].tipoCasilla!=Matriz.PARED && matriz[y][x].paredInicial){
+					matriz[y][x].tipoCasilla=Matriz.PARED;
+					ponParedInicial(x,y, true);
+				}
+			}
+		}
+		recalculaPared();		
+	}
 	
-	public void ponPared(int columna,int fila, boolean paredVerdadera){
+	
+	int paredesDeMentidaMAX=23;
+	int totalParecesMentira=0;
+	public void ponParedInicial(int columna,int fila, boolean paredVerdadera){
+		if (!paredVerdadera && totalParecesMentira>=paredesDeMentidaMAX){
+			Log.w("PAREDES", "SUFICIENTES");
+			return;
+		}
+		
 		AnimatedSprite spriteArriba = spritePoolArriba.obtainPoolItem();		
 		AnimatedSprite spriteAbajo = spritePoolAbajo.obtainPoolItem();
 		Coordenadas coodenadas= new Coordenadas(columna, fila);
@@ -135,11 +159,17 @@ public class CapaParedes {
 		}else{
 			spriteGroupAbajo.attachChild(spriteAbajo);	
 		}
-	
-		TrozoPared trozo= new TrozoPared(context,spriteArriba, spriteAbajo, coodenadas,paredVerdadera);
-		listaMuros.add(trozo);
+		
+		spriteArriba.setVisible(true);
+		spriteGroupAbajo.setVisible(true);
+		TrozoPared trozo= new TrozoPared(context,spriteArriba, spriteAbajo,coodenadas,paredVerdadera);
+		
 		if (paredVerdadera){
-			context.escenaJuego.matriz.setValor(Matriz.PARED, fila, columna, null, trozo);		
+			listaMuros.add(trozo);
+			context.escenaJuego.matriz.setParedInicial(fila, columna, trozo);
+		}else{
+			listaMurosMentira.add(trozo);
+			totalParecesMentira++;
 		}
 		
 		
@@ -226,8 +256,12 @@ public class CapaParedes {
 		public BomberGame context;
 		public boolean verdadera;
 		
+		public void setVidible(boolean visible){
+			trozoArriba.setVisible(visible);
+			trozoAbajo.setVisible(visible);
+		}
 		
-		public TrozoPared(BomberGame context, AnimatedSprite trozoArriba, AnimatedSprite trozoAbajo, Coordenadas coodenadas,boolean verdadera){
+		public TrozoPared(BomberGame context, AnimatedSprite trozoArriba, AnimatedSprite trozoAbajo,Coordenadas coodenadas, boolean verdadera){
 			this.trozoArriba=trozoArriba;
 			this.trozoAbajo=trozoAbajo;
 			this.coodenadas=coodenadas;
@@ -238,8 +272,8 @@ public class CapaParedes {
 		public void explota(){
 			context.escenaJuego.matriz.setValor(Matriz.NADA, coodenadas.getFila(), coodenadas.getColumna(), null, null);
 			
-			trozoArriba.detachSelf();
-			trozoAbajo.detachSelf();
+//			trozoArriba.detachSelf();
+//			trozoAbajo.detachSelf();
 			
 			spritePoolAbajo.recyclePoolItem(trozoAbajo);
 			spritePoolArriba.recyclePoolItem(trozoArriba);

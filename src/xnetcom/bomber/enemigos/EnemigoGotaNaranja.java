@@ -47,6 +47,13 @@ public class EnemigoGotaNaranja extends EnemigoBase {
 
 	}
 
+	
+	@Override
+	public void detach() {
+		// TODO Auto-generated method stub
+		enfadado=false;
+		super.detach();
+	}
 	public void attachSpriteGroup() {
 		// si no es null ya esta attchado
 		if (spritePrincipal != null) {

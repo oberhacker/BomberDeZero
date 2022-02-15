@@ -62,6 +62,18 @@ public class EnemigoGotaRoja extends EnemigoBase {
 		}
 
 	}	
+	
+	
+	@Override
+	public void detach() {
+		spritePrincipal.reset();
+		currentTileRectangle.reset();
+		colidesTileRectangle.reset();
+		baseTileRectangle.reset();
+		enfadado=false;
+		distanciaBomberReal=0;
+		super.detach();
+	}
 
 	public void inteligencia() {
 		int columna = coordenadas.getColumna();

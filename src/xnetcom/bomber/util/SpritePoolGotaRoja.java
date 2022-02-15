@@ -25,6 +25,7 @@ public class SpritePoolGotaRoja extends GenericPool<EnemigoGotaRoja> {
     // ===========================================================
     @Override
     protected EnemigoGotaRoja onAllocatePoolItem() {
+    	Log.d("POOLEnemigoGotaRoja", "onAllocatePoolItem"); 
     	return  new EnemigoGotaRoja(context);
     }
 
@@ -33,12 +34,12 @@ public class SpritePoolGotaRoja extends GenericPool<EnemigoGotaRoja> {
     
     @Override
     protected void onHandleRecycleItem(final EnemigoGotaRoja pSprite) {
-    	Log.d("POOL", "onHandleRecycleItem");    	
+    	Log.d("POOLEnemigoGotaRoja", "onHandleRecycleItem");    	
     }
 
     @Override
     protected void onHandleObtainItem(final EnemigoGotaRoja pSprite) {
   
-    	Log.d("POOL", "onHandleObtainItem");
+    	Log.d("POOLEnemigoGotaRoja", "onHandleObtainItem");
     }
 }

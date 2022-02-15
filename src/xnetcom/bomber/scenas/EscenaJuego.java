@@ -64,7 +64,7 @@ public class EscenaJuego {
 
 	}
 
-	public void reinicia(){
+	public void reiniciaCargaMapa(){
 		context.capaParedes.reiniciaPared();
 		matriz.reiniciaMatriz();
 		context.almacenBombas.reinicia();
@@ -85,7 +85,7 @@ public class EscenaJuego {
 			capaTechoPiedras.detachSelf();
 			capaEntidades.detachSelf();			
 			mTMXTiledMap.detachSelf();		
-			reinicia();
+			reiniciaCargaMapa();
 		}else{
 			primeraCarga=true;
 			scene= new Scene();	
@@ -103,9 +103,9 @@ public class EscenaJuego {
 							if (pTMXTileProperties.containsTMXProperty("muro", "true")) {
 								matriz.setValor(Matriz.MURO, pTMXTile.getTileRow(), pTMXTile.getTileColumn(),null,null);
 							} else if (pTMXTileProperties.containsTMXProperty("pared", "true")) {
-								context.capaParedes.ponPared(pTMXTile.getTileColumn(), pTMXTile.getTileRow(),true);
+								context.capaParedes.ponParedInicial(pTMXTile.getTileColumn(), pTMXTile.getTileRow(),true);
 							} else if (pTMXTileProperties.containsTMXProperty("pared", "false")) {
-								context.capaParedes.ponPared(pTMXTile.getTileColumn(), pTMXTile.getTileRow(),false);								
+								context.capaParedes.ponParedInicial(pTMXTile.getTileColumn(), pTMXTile.getTileRow(),false);								
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "moco")) {
 								context.almacenEnemigos.creaEnemigoInicial(TipoEnemigo.MOCO,pTMXTile.getTileRow(),pTMXTile.getTileColumn());
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "moneda")) {

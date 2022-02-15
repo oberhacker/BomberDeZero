@@ -36,7 +36,7 @@ public class SpritePoolBombas extends GenericPool<AnimatedSprite> {
         final AnimatedSprite lSprite = new AnimatedSprite(0, 0, mFaceTextureRegion.deepCopy(),context.getVertexBufferObjectManager());
         lSprite.setScaleCenter(0, 0);
         lSprite.setOffsetCenter(0, 0);     
-        Log.d("POOL", "INICIALIZADO");
+//        Log.d("POOL", "INICIALIZADO");
         return lSprite;
     }
 
@@ -54,13 +54,13 @@ public class SpritePoolBombas extends GenericPool<AnimatedSprite> {
 //			}
 //		});    	
     	pSprite.detachSelf();
-    	Log.d("POOL", "onHandleRecycleItem");
+//    	Log.d("POOL", "onHandleRecycleItem");
     	
     }
 
     @Override
     protected void onHandleObtainItem(final AnimatedSprite pSprite) {
     	pSprite.reset();
-    	Log.d("POOL", "onHandleObtainItem");
+//    	Log.d("POOL", "onHandleObtainItem");
     }
 }

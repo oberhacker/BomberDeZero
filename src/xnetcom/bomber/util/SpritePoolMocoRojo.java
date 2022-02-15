@@ -24,20 +24,18 @@ public class SpritePoolMocoRojo extends GenericPool<EnemigoMocoRojo> {
     // ===========================================================
     @Override
     protected EnemigoMocoRojo onAllocatePoolItem() {
+    	Log.d("POOL", "EnemigoMocoRojo CREADO");   
     	return  new EnemigoMocoRojo(context);
     }
-
     
-    
-    
+       
     @Override
     protected void onHandleRecycleItem(final EnemigoMocoRojo pSprite) {
-    	Log.d("POOL", "onHandleRecycleItem");    	
+    	Log.d("POOL", " EnemigoMocoRojo onHandleRecycleItem");    	
     }
 
     @Override
-    protected void onHandleObtainItem(final EnemigoMocoRojo pSprite) {
-  
-    	Log.d("POOL", "onHandleObtainItem");
+    protected void onHandleObtainItem(final EnemigoMocoRojo pSprite) {  
+    	Log.d("POOL", "EnemigoMocoRojo onHandleObtainItem");
     }
 }

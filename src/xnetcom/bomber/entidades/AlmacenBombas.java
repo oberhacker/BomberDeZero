@@ -13,6 +13,8 @@ import org.andengine.opengl.texture.region.TiledTextureRegion;
 
 import xnetcom.bomber.BomberGame;
 import xnetcom.bomber.util.Constantes;
+import xnetcom.bomber.util.Matriz;
+import xnetcom.bomber.util.Matriz.Casilla;
 import xnetcom.bomber.util.TransparentBitmapTextureAtlasSource;
 
 public class AlmacenBombas {
@@ -109,6 +111,14 @@ public class AlmacenBombas {
 	public void reinicia(){
 		for (Bomba bomba : almacen) {
 			bomba.reinicia();
+		}
+		Casilla[][] matrizMuros = context.escenaJuego.matriz.getMatrizmuros();
+		for (Casilla[] casillas : matrizMuros) {
+			for (Casilla casilla : casillas) {
+				if (casilla.tipoCasilla==Matriz.BOMBA){
+					casilla.tipoCasilla=Matriz.NADA;
+				}
+			}
 		}
 		bombasPlantadas= new AtomicInteger(0);
 		

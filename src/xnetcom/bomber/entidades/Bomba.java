@@ -321,7 +321,12 @@ public class Bomba {
 		context.soundManager.pararMecha();
 //		sprBomba.setVisible(false);
 		batch.clearEntityModifiers();
-		sprCentro.clearEntityModifiers();
+		if (sprBomba!=null){
+			sprBomba.setIgnoreUpdate(true);
+			sprBomba.setVisible(false);
+			sprBomba.clearEntityModifiers();
+		}
+
 		this.setDetonada(true);		
 		
 	}

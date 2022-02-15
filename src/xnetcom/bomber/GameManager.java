@@ -65,6 +65,7 @@ public class GameManager {
 		context.almacenEnemigos.pararTodosEnemigo();
 	}
 
+	
 	public void matarPorCoordenadas(ArrayList<Coordenadas> coordenadas) {
 		boolean matado = context.bomberman.matarPorCoordenadas(coordenadas);
 		if (matado) {
@@ -72,10 +73,18 @@ public class GameManager {
 		}
 	}
 
-	public void reiniciarBomberMan() {
-		context.bomberman.reinicia();
-		context.almacenEnemigos.eliminaTodosEnemigos();		
-		context.almacenEnemigos.reiniciaEnemigos();
+	public void reiniciarPartida() {
+		context.runOnUpdateThread(new Runnable() {
+			public void run() {
+				context.bomberman.reinicia();
+				context.almacenBombas.reinicia();
+				context.almacenEnemigos.eliminaTodosEnemigos();		
+				context.almacenEnemigos.reiniciaEnemigos();
+				context.capaParedes.restauraInicial();
+			}});
+
+
+
 	}
 
 }

@@ -840,7 +840,7 @@ public class BomberMan {
 			public void run() {
 				try {
 					sleep(2500);
-					context.gameManager.reiniciarBomberMan();
+					context.gameManager.reiniciarPartida();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
