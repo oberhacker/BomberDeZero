@@ -22,19 +22,29 @@ public class GameManager {
 		this.context = context;
 	}
 
+	boolean ganado=false;
+	IUpdateHandler updater;
 	public void inicia() {
+		ganado=false;
 		eligePuerta();
-		context.escenaJuego.scene.registerUpdateHandler(new IUpdateHandler() {
-			@Override
-			public void onUpdate(float pSecondsElapsed) {
-				updater();
-			}
+		
+		if (updater==null){
+			updater = new IUpdateHandler() {
+				@Override
+				public void onUpdate(float pSecondsElapsed) {
+					updater();
+				}
 
-			@Override
-			public void reset() {
+				@Override
+				public void reset() {
 
-			}
-		});
+				}
+			};	
+			context.escenaJuego.scene.registerUpdateHandler(updater);
+		}
+	
+		
+		
 	}
 	
 	Coordenadas coodenadasPuerta;
@@ -52,14 +62,32 @@ public class GameManager {
 			for (Coordenadas coordenadas : coodenadas) {
 				if (coordenadas.getColumna()==coodenadasPuerta.getColumna() && coordenadas.getFila()==coodenadasPuerta.getFila()){
 					context.escenaJuego.spritePuerta.setVisible(true);					
-					context.escenaJuego.spritePuerta.setPosition(coodenadasPuerta.getX(), coodenadasPuerta.getYCorregido());					
+					context.escenaJuego.spritePuerta.setPosition(coodenadasPuerta.getX()-4f, coodenadasPuerta.getYCorregido()-4);	
+					return;
 				}
 			}
 		}
 	}
 
-	public void updater() {
-
+	
+	public void ganarPartida(){
+		Log.d("GANAR", "GANAR");
+	}
+	
+	
+	public void checkpuerta(){
+		if (context.escenaJuego.spritePuerta.isVisible()){
+			if (context.bomberman.getColumna()==coodenadasPuerta.getColumna() && context.bomberman.getFila()==coodenadasPuerta.getFila()){
+				if (context.almacenEnemigos.almacen.isEmpty()){
+					ganarPartida();
+				}
+			}
+		}
+	}
+	
+	
+	public void updater() {	
+		checkpuerta();
 		context.escenaJuego.hud.debugText.setText(context.almacenEnemigos.almacen.size() + "  ymax"+context.miengine.getCamaraJuego().getYMax() );
 		
 		// comprobamos matar a bomberman
@@ -105,6 +133,7 @@ public class GameManager {
 				context.almacenEnemigos.eliminaTodosEnemigos();		
 				context.almacenEnemigos.reiniciaEnemigos();
 				context.capaParedes.restauraInicial();
+				eligePuerta();
 			}});
 
 

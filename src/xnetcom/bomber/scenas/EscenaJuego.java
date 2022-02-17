@@ -63,8 +63,8 @@ public class EscenaJuego {
 		TextureRegion puerta_TR =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(puerta_BTA, context, "gfx/puerta.png", 0, 0);
 		
 		spritePuerta = new Sprite(0,0, puerta_TR,context.getEngine().getVertexBufferObjectManager());
-		spritePuerta.setWidth(Constantes.TILE_WIDTH);
-		spritePuerta.setHeight(Constantes.TILE_HEIGHT);
+		spritePuerta.setWidth(Constantes.TILE_WIDTH+5);
+		spritePuerta.setHeight(Constantes.TILE_HEIGHT+8);
 		spritePuerta.setVisible(false);
 		spritePuerta.setZIndex(Constantes.ZINDEX_BOMBERMAN_ABAJO-10);		
 		spritePuerta.setOffsetCenter(0, 0);

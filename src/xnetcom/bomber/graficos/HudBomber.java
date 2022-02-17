@@ -377,6 +377,7 @@ public class HudBomber {
 		btn_2.setPosition((context.CAMERA_WIDTH - 30)-(30+btn_2.getWidthScaled()*2), 10);
 	}
 
+	IUpdateHandler updater;
 	public void attachScena(Scene scene) {
 		scene.setChildScene(this.mDigitalOnScreenControl);	
 		
@@ -398,23 +399,20 @@ public class HudBomber {
 		context.getEngine().getCamera().setHUD(hud);
 		recolocaElementos();
 		
-		
-		scene.registerUpdateHandler(new IUpdateHandler() {
-			@Override
-			public void onUpdate(float pSecondsElapsed) {
-				
-				
-			}
+		if (updater==null){
+			updater=new IUpdateHandler() {
+				@Override
+				public void onUpdate(float pSecondsElapsed) {				
+					
+				}
 
-			@Override
-			public void reset() {
+				@Override
+				public void reset() {
 
-			}
-		});
-		
-		
-		
-		
+				}
+			};
+			scene.registerUpdateHandler(updater);
+		}		
 	}
 
 }

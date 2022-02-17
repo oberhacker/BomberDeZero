@@ -149,6 +149,9 @@ public class BomberMan {
 	public float getYinicial(){
 		return (context.escenaJuego.mTMXTiledMap.getHeight() - 3 * Constantes.TILE_TAM);
 	}
+	
+	
+	IUpdateHandler updater;
 	public void onCreateScene(Scene scene) {
 
 		currentTileRectangle = new Rectangle(0, 0, context.escenaJuego.mTMXTiledMap.getTileWidth() * Constantes.FARTOR_FORMA, context.escenaJuego.mTMXTiledMap.getTileHeight(),
@@ -197,18 +200,20 @@ public class BomberMan {
 		scene.attachChild(bomberArriba);
 		scene.attachChild(baseTileRectangle);
 
+		if (updater==null){
+			 updater=new IUpdateHandler() {
+					@Override
+					public void onUpdate(float pSecondsElapsed) {
+						updater();
+					}
 
-		scene.registerUpdateHandler(new IUpdateHandler() {
-			@Override
-			public void onUpdate(float pSecondsElapsed) {
-				updater();
-			}
+					@Override
+					public void reset() {
 
-			@Override
-			public void reset() {
-
-			}
-		});
+					}
+				};
+				scene.registerUpdateHandler(updater);
+		}	
 	}
 
 	int innerColumna = 0;
