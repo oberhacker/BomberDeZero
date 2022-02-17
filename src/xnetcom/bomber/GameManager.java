@@ -8,6 +8,7 @@ import android.util.Log;
 import xnetcom.bomber.enemigos.EnemigoBase;
 import xnetcom.bomber.util.Constantes;
 import xnetcom.bomber.util.Coordenadas;
+import xnetcom.bomber.util.Util;
 
 public class GameManager {
 
@@ -22,6 +23,7 @@ public class GameManager {
 	}
 
 	public void inicia() {
+		eligePuerta();
 		context.escenaJuego.scene.registerUpdateHandler(new IUpdateHandler() {
 			@Override
 			public void onUpdate(float pSecondsElapsed) {
@@ -33,6 +35,27 @@ public class GameManager {
 
 			}
 		});
+	}
+	
+	Coordenadas coodenadasPuerta;
+	
+	
+	public void eligePuerta(){
+		context.escenaJuego.spritePuerta.setVisible(false);
+		int seleccion=Util.tomaDecision(1, context.capaParedes.listaMuros.size());
+		coodenadasPuerta = context.capaParedes.listaMuros.get(seleccion).coodenadas;		
+	}
+	
+	
+	public void descubrePuerta(ArrayList<Coordenadas> coodenadas){
+		if (!context.escenaJuego.spritePuerta.isVisible()){
+			for (Coordenadas coordenadas : coodenadas) {
+				if (coordenadas.getColumna()==coodenadasPuerta.getColumna() && coordenadas.getFila()==coodenadasPuerta.getFila()){
+					context.escenaJuego.spritePuerta.setVisible(true);					
+					context.escenaJuego.spritePuerta.setPosition(coodenadasPuerta.getX(), coodenadasPuerta.getYCorregido());					
+				}
+			}
+		}
 	}
 
 	public void updater() {
@@ -67,6 +90,7 @@ public class GameManager {
 
 	
 	public void matarPorCoordenadas(ArrayList<Coordenadas> coordenadas) {
+		descubrePuerta(coordenadas);		
 		boolean matado = context.bomberman.matarPorCoordenadas(coordenadas);
 		if (matado) {
 			context.almacenEnemigos.pararTodosEnemigo();

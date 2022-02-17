@@ -3,6 +3,7 @@ package xnetcom.bomber.scenas;
 import java.io.IOException;
 
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.tmx.TMXLayer;
 import org.andengine.extension.tmx.TMXLoader;
 import org.andengine.extension.tmx.TMXLoader.ITMXTilePropertiesListener;
@@ -12,6 +13,9 @@ import org.andengine.extension.tmx.TMXTileProperty;
 import org.andengine.extension.tmx.TMXTiledMap;
 import org.andengine.extension.tmx.util.exception.TMXLoadException;
 import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.util.debug.Debug;
 
 import android.util.Log;
@@ -34,7 +38,7 @@ public class EscenaJuego {
 	
 	public Matriz matriz;
 	
-	
+	public Sprite spritePuerta;
 
 	public TMXLayer capaSuelo;
 	public TMXLayer capaPiedrasSombra;
@@ -53,6 +57,18 @@ public class EscenaJuego {
 	}
 
 	public void cargar() {
+		
+		BitmapTextureAtlas puerta_BTA =new BitmapTextureAtlas(context.getTextureManager(),128, 128, TextureOptions.BILINEAR);
+		puerta_BTA.load();
+		TextureRegion puerta_TR =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(puerta_BTA, context, "gfx/puerta.png", 0, 0);
+		
+		spritePuerta = new Sprite(0,0, puerta_TR,context.getEngine().getVertexBufferObjectManager());
+		spritePuerta.setWidth(Constantes.TILE_WIDTH);
+		spritePuerta.setHeight(Constantes.TILE_HEIGHT);
+		spritePuerta.setVisible(false);
+		spritePuerta.setZIndex(Constantes.ZINDEX_BOMBERMAN_ABAJO-10);		
+		spritePuerta.setOffsetCenter(0, 0);
+		
 		try {
 			hud.carga();
 			context.bomberman.carga();
@@ -224,6 +240,7 @@ public class EscenaJuego {
 			context.bomberman.onCreateScene(scene);
 			context.camaraJuego.setChaseEntity(context.bomberman.getSprite());
 			context.capaParedes.onSceneCreated();
+			scene.attachChild(spritePuerta);  
 		}
 //		context.camaraJuego.setCenter(0, 832);
 //		context.camaraJuego.updateChaseEntity();
@@ -233,6 +250,7 @@ public class EscenaJuego {
 
 		context.miengine.setCaramaJuego();		
 		context.capaParedes.recalculaPared();		
+		
 		scene.sortChildren();
 		context.gameManager.inicia();
 		return scene;

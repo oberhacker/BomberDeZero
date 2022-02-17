@@ -9,7 +9,7 @@ public class Constantes {
 	
 	
 	
-	public static boolean DEBUG_TEXT=true; 
+	public static boolean DEBUG_TEXT=false; 
 	
 	public static int TILE_TAM=64;
 	public static float FARTOR_FORMA = 1.15625f;

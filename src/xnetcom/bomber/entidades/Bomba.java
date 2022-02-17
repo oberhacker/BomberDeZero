@@ -378,6 +378,7 @@ public class Bomba {
 		context.escenaJuego.matriz.explota(coordenadas);
 		context.almacenEnemigos.mataEnemigos(coordenadas);
 		context.gameManager.matarPorCoordenadas(coordenadas);
+		
 	}	
 	
 	
