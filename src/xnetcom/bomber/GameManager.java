@@ -6,6 +6,8 @@ import org.andengine.engine.handler.IUpdateHandler;
 
 import android.util.Log;
 import xnetcom.bomber.enemigos.EnemigoBase;
+import xnetcom.bomber.sql.DatabaseHandler;
+import xnetcom.bomber.sql.DatosMapa;
 import xnetcom.bomber.util.Constantes;
 import xnetcom.bomber.util.Coordenadas;
 import xnetcom.bomber.util.Util;
@@ -15,6 +17,9 @@ public class GameManager {
 	public int bombaTam = 4;
 	public int bombaNum = 5;
 	public boolean detonador =true;
+	
+	public int muertoVeces=0;
+	public int boostersCogidos=0;
 
 	BomberGame context;
 
@@ -25,6 +30,8 @@ public class GameManager {
 	boolean ganado=false;
 	IUpdateHandler updater;
 	public void inicia() {
+		muertoVeces=0;
+		boostersCogidos=0;
 		ganado=false;
 		eligePuerta();
 		
@@ -52,7 +59,7 @@ public class GameManager {
 	
 	public void eligePuerta(){
 		context.escenaJuego.spritePuerta.setVisible(false);
-		int seleccion=Util.tomaDecision(1, context.capaParedes.listaMuros.size());
+		int seleccion=Util.tomaDecision(1, context.capaParedes.listaMuros.size()-1);
 		coodenadasPuerta = context.capaParedes.listaMuros.get(seleccion).coodenadas;		
 	}
 	
@@ -71,7 +78,19 @@ public class GameManager {
 
 	
 	public void ganarPartida(){
-		Log.d("GANAR", "GANAR");
+		if (!ganado){
+			ganado=true;
+			Log.d("GANAR", "GANAR");
+			int estrellas=1;
+			if (muertoVeces==0){
+				estrellas++;
+			}
+			if (boostersCogidos==context.escenaJuego.datosMapa.getBoosterTotales()){
+				estrellas++;
+			}					
+			guardaEstrellas(estrellas, context.escenaJuego.datosMapa.getNumeroMapa());			
+			context.tarjeta.muestraTarjeta(estrellas);
+		}		
 	}
 	
 	
@@ -135,9 +154,35 @@ public class GameManager {
 				context.capaParedes.restauraInicial();
 				eligePuerta();
 			}});
-
-
-
+	}
+	
+	
+	public void iniciaGuardaMapas(int mapaNum){
+		DatosMapa mapa = context.databaseHandler.getMapa(mapaNum);
+		DatosMapa mapaActulal =context.escenaJuego.datosMapa;		
+		mapaActulal.setEstrellas(mapa.getEstrellas());
+		context.databaseHandler.actualizaDatosMapa(mapaActulal);		
+	}
+	
+	
+	public void  guardaEstrellas(int estrellas, int numMap){
+		DatosMapa mapa = context.databaseHandler.getMapa(numMap);		
+		if (mapa.getEstrellas()<estrellas){
+			mapa.setEstrellas(estrellas);
+			context.databaseHandler.actualizaEstrellasMapa(mapa);
+		}
+		desbloqueaSiguienteMapa(numMap+1);		
+	}
+	
+	
+	public void desbloqueaSiguienteMapa(int nextMap){		
+		DatosMapa mapa = context.databaseHandler.getMapa(nextMap);
+		if (mapa.getEstrellas()==-1){
+			mapa=new DatosMapa();
+			mapa.setNumeroMapa(nextMap);	
+			mapa.setEstrellas(0);
+			context.databaseHandler.addMapa(mapa);
+		}		
 	}
 
 }

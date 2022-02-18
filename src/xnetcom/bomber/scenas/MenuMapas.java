@@ -216,6 +216,15 @@ public class MenuMapas {
 	}
 	
 	
+	public void verMenuMapas(){		
+		refrescaMapas();
+		context.getMiEngine().setScene(context.menuMapas.escena);
+		context.getMiEngine().setCamaraNormal();
+		
+	}
+	
+	
+	
 	
 	public void refrescaMapas(){
 		for (Icono_bomba icono_bomba : bombas) {

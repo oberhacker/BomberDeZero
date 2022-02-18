@@ -101,6 +101,9 @@ public class Icono_bomba extends AnimatedSprite{
 	
 	public void tocado(){
 		try {
+			if (estado==-1){
+				return;
+			}
 			Scene scene4 = context.escenaJuego.onCreateScene(numMapa);
 			context.getEngine().setScene(scene4);
 			if (estado!=-1){

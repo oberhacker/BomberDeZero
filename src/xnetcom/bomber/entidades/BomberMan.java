@@ -285,7 +285,7 @@ public class BomberMan {
 
 	public void cambiaPosicion() {
 		
-
+		
 		if (estaMovientoSinLimite()) {
 			switch (playerDirection) {
 
@@ -791,6 +791,7 @@ public class BomberMan {
 			return;		
 		}
 		setMuerto();
+		context.gameManager.muertoVeces++;
 		
 		Log.d("MORIR", "MORIR");
 		

@@ -1,7 +1,6 @@
 package xnetcom.bomber;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
@@ -18,6 +17,7 @@ import xnetcom.bomber.entidades.AlmacenBombas;
 import xnetcom.bomber.entidades.BomberMan;
 import xnetcom.bomber.graficos.CapaParedes;
 import xnetcom.bomber.graficos.SoundManager;
+import xnetcom.bomber.graficos.Tarjeta;
 import xnetcom.bomber.preferencias.Preferencias;
 import xnetcom.bomber.scenas.Carga;
 import xnetcom.bomber.scenas.EscenaJuego;
@@ -73,6 +73,7 @@ public class BomberGame extends SimpleBaseGameActivity {
 	public DatabaseHandler databaseHandler;
 	
 	public AlmacenEnemigos almacenEnemigos;
+	public Tarjeta tarjeta;
 	
 	@Override
 	public EngineOptions onCreateEngineOptions() {
@@ -116,6 +117,7 @@ public class BomberGame extends SimpleBaseGameActivity {
 		parser = new ParserTMX(this);
 		databaseHandler = new DatabaseHandler(this);		
 		almacenEnemigos= new AlmacenEnemigos(this);
+		tarjeta= new Tarjeta(this);
 		// esto pal final del metodo
 		inicializaPrimeraVez();
 	}
@@ -156,6 +158,30 @@ public class BomberGame extends SimpleBaseGameActivity {
 			mapa.setNumeroMapa(1);
 			databaseHandler.addMapa(mapa);			
 	
+		}else{
+			DatosMapa mapa = new DatosMapa();
+			mapa.setEnemigo_fantasma(1);
+			mapa.setEnemigo_globo(1);
+			mapa.setEnemigo_globoAzul(1);
+			mapa.setEnemigo_gota(1);
+			mapa.setEnemigo_gotaNaranja(0);
+			mapa.setEnemigo_gotaRoja(0);
+			mapa.setEnemigo_moco(0);
+			mapa.setEnemigo_mocoRojo(0);
+			mapa.setEnemigo_moneda(0);
+			mapa.setEnemigo_monedaMarron(0);
+			mapa.setEstrellas(0);
+			mapa.setM_bomba(0);
+			mapa.setM_corazon(1);
+			mapa.setM_correr(0);
+			mapa.setM_detonador(0);
+			mapa.setM_fantasma(0);
+			mapa.setM_fuerza(0);
+			mapa.setM_potenciador(0);
+			mapa.setNumeroMapa(7000);
+			databaseHandler.addMapa(mapa);	
+			
+			DatosMapa mapa7000 = databaseHandler.getMapa(7000);
 		}
 	}
 	

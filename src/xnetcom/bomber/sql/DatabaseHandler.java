@@ -96,11 +96,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	/**
 	 * All CRUD(Create, Read, Update, Delete) Operations
+	 * @return 
 	 */
 	
 	
 	
-	public void addMapa(DatosMapa datos) {
+	public long addMapa(DatosMapa datos) {
 		Log.d("sql", "addMapa getNumeroMapa ="+datos.getNumeroMapa());
 		
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -126,10 +127,38 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(ENEMIGO_MONEDAMARRON, datos.getEnemigo_monedaMarron()); 
 		values.put(ENEMIGO_GOTAROJA, datos.getEnemigo_gotaRoja()); 
 		
-		db.insert(TABLA_MAPAS, null, values);
+		long rows =db.insert(TABLA_MAPAS, null, values);
 		db.close(); // Closing database connection		
+		return rows;		
+	}	
+	
+	public void actualizaDatosMapa(DatosMapa datos){
 		
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(MAPA, datos.getNumeroMapa()); 
+		values.put(ESTRELLAS, datos.getEstrellas());
+		values.put(M_BOMBA, datos.getM_bomba()); 
+		values.put(M_CORAZON, datos.getM_corazon()); 
+		values.put(M_CORRER, datos.getM_correr()); 
+		values.put(M_DETONADOR, datos.getM_detonador()); 
+		values.put(M_FANTASMA, datos.getM_fantasma()); 
+		values.put(M_FUERZA, datos.getM_fuerza()); 
+		values.put(M_POTENCIADOR, datos.getM_potenciador()); 
 		
+		values.put(ENEMIGO_MOCO, datos.getEnemigo_moco()); 
+		values.put(ENEMIGO_MONEDA, datos.getEnemigo_moneda()); 
+		values.put(ENEMIGO_GOTA, datos.getEnemigo_gota()); 
+		values.put(ENEMIGO_GLOBO, datos.getEnemigo_globo()); 
+		values.put(ENEMIGO_FANTASMA, datos.getEnemigo_fantasma()); 
+		values.put(ENEMIGO_GOTANARANJA, datos.getEnemigo_gotaNaranja()); 
+		values.put(ENEMIGO_GLOBOAZUL, datos.getEnemigo_globoAzul()); 
+		values.put(ENEMIGO_MOCOROJO, datos.getEnemigo_mocoRojo()); 
+		values.put(ENEMIGO_MONEDAMARRON, datos.getEnemigo_monedaMarron()); 
+		values.put(ENEMIGO_GOTAROJA, datos.getEnemigo_gotaRoja()); 
+		
+		db.update(TABLA_MAPAS, values, MAPA + " = ?",	new String[] { String.valueOf(datos.getNumeroMapa())});
+		db.close(); // Closing database connection		
 	}
 	
 	public void desbloqueaMapa(int numMapa) {
@@ -138,14 +167,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			DatosMapa datos = getMapa(numMapa);
 			if (datos.getEstrellas() == -1) {
 				datos.setEstrellas(0);
-				actualizaMapa(datos);
+				actualizaEstrellasMapa(datos);
 			}
 		} catch (Exception e) {
 		}
 	}
 	
 	
-	public void actualizaMapa(DatosMapa datos){
+	public void actualizaEstrellasMapa(DatosMapa datos){
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();

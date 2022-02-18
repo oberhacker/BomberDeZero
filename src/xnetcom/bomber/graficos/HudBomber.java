@@ -347,13 +347,8 @@ public class HudBomber {
 	
 	
 	
-	public void pause(){
-		
-		context.getMiEngine().setScene(context.menuMapas.escena);
-		context.getMiEngine().setCamaraNormal();
-		
-//		context
-		
+	public void pause(){		
+		context.menuMapas.verMenuMapas();		
 
 	}
 	
@@ -368,7 +363,7 @@ public class HudBomber {
 
 	public void apretarBotonExplosion() {
 		context.vibrar(VIBRAR_BOTON);
-		context.almacenBombas.detonarBomba();;
+		context.almacenBombas.detonarBomba();
 		System.out.println("APRETADOOOOOOO");
 	}
 	
