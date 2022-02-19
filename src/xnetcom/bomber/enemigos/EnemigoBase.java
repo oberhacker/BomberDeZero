@@ -379,12 +379,22 @@ public abstract class EnemigoBase {
 	}
 	
 
+	
+	public void play(){
+		baseTileRectangle.setIgnoreUpdate(false);
+		spritePrincipal.setIgnoreUpdate(false);
+	}	
+	public void p(){
+		baseTileRectangle.setIgnoreUpdate(true);
+		spritePrincipal.setIgnoreUpdate(true);
+	}
+	
 	public void iniciaInteligenciaIA() {
 		direccion = EligeDireccion();
-		baseTileRectangle.setIgnoreUpdate(false);		
+		baseTileRectangle.setIgnoreUpdate(false);
 		currentTileRectangle.setIgnoreUpdate(false);
 		spritePrincipal.setIgnoreUpdate(false);
-		if (spritePrincipalTransparencia!=null){
+		if (spritePrincipalTransparencia != null) {
 			spritePrincipalTransparencia.setIgnoreUpdate(false);
 		}
 		new Thread() {
@@ -399,25 +409,7 @@ public abstract class EnemigoBase {
 
 			};
 		}.start();
-		
-		
-		
-//		
-//		context.runOnUiThread(new Runnable() {
-//			public void run() {
-//				baseTileRectangle.registerEntityModifier(new DelayModifier(0.1f) {
-//					@Override
-//					protected void onModifierFinished(IEntity pItem) {
-//						inteligencia();
-//					}
-//				});
-//			}
-//		});		
-//		
-
-
-		}
-
+	}
 	
 	public void inteligencia(){			
 		

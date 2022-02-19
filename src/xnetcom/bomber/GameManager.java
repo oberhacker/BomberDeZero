@@ -30,6 +30,7 @@ public class GameManager {
 	boolean ganado=false;
 	IUpdateHandler updater;
 	public void inicia() {
+		play();
 		muertoVeces=0;
 		boostersCogidos=0;
 		ganado=false;
@@ -76,11 +77,28 @@ public class GameManager {
 		}
 	}
 
+	public boolean pausa=false;
+	public void pausa(){
+		pausa=true;
+		context.bomberman.pausa();
+		context.almacenBombas.pausa();
+		context.almacenEnemigos.pausa();
+	}
+	
+	public void play(){
+		pausa=false;
+		context.almacenBombas.play();
+		context.bomberman.play();
+		context.almacenEnemigos.play();
+	}
+	
 	
 	public void ganarPartida(){
 		if (!ganado){
 			ganado=true;
 			Log.d("GANAR", "GANAR");
+			pausa();
+			
 			int estrellas=1;
 			if (muertoVeces==0){
 				estrellas++;

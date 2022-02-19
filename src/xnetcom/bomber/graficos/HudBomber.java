@@ -64,6 +64,9 @@ public class HudBomber {
 	private Text ct_monedas;
 
 	private void screenControl(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
+		if (context.gameManager.pausa){
+			return;
+		}		
 		if (context.bomberman != null) {
 			
 			if (pValueX > 0) {
@@ -220,7 +223,7 @@ public class HudBomber {
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
 				if (pSceneTouchEvent.getAction() == pSceneTouchEvent.ACTION_DOWN) {
-					pause();
+					toMenu();
 				}
 
 				return true;
@@ -264,6 +267,9 @@ public class HudBomber {
 	}
 
 	
+	public void toMenu(){
+		context.menuMapas.verMenuMapas();
+	}
 	
 	public Sprite creaMarcador(){
 		Sprite marcador= new Sprite(0, 0, hudTR, context.getVertexBufferObjectManager());
@@ -346,14 +352,23 @@ public class HudBomber {
 	}
 	
 	
-	
+	boolean pausa=false;
 	public void pause(){		
-		context.menuMapas.verMenuMapas();		
-
+		if (pausa){
+			context.gameManager.play();
+			pausa=false;
+		}else{
+			context.gameManager.pausa();
+			pausa=true;
+		}
+		
 	}
 	
 
 	public void apretarBotonPlantabomba() {
+		if (context.gameManager.pausa){
+			return;
+		}
 		context.vibrar(VIBRAR_BOTON);
 		context.almacenBombas.plantaBomba();		
 		System.out.println("APRETADOOOOOOO");
@@ -362,6 +377,9 @@ public class HudBomber {
 
 
 	public void apretarBotonExplosion() {
+		if (context.gameManager.pausa){
+			return;
+		}
 		context.vibrar(VIBRAR_BOTON);
 		context.almacenBombas.detonarBomba();
 		System.out.println("APRETADOOOOOOO");

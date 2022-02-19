@@ -705,18 +705,23 @@ public class BomberMan {
 		baseTileRectangle.clearEntityModifiers();
 	}
 
+	
+	public void pausa(){
+		baseTileRectangle.setIgnoreUpdate(true);
+		bomberAbajo.setIgnoreUpdate(true);
+	}
+	
+	public void play(){
+		baseTileRectangle.setIgnoreUpdate(false);
+		bomberAbajo.setIgnoreUpdate(false);
+	}
+	
 	public void detenerPararAnimacion() {
 		stopAnimation();
 		detener();
 		context.soundManager.pararPasos();
 	}
 
-	public void moverRecto() {
-		if (physicsHandler == null) {
-			physicsHandler = new PhysicsHandler(bomberAbajo);
-			bomberAbajo.registerUpdateHandler(physicsHandler);
-		}
-	}
 
 	// centra vertical cuando queremos movernos en horizontal dentro de mismo
 	// cuadro

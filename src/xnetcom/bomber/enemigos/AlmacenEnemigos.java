@@ -33,7 +33,12 @@ public class AlmacenEnemigos {
 		GLOBO, MOCO, MONEDA, FANTASMA,GOTA_AZUL, GOTA_NARANJA, GLOBO_AZUL, MOCO_ROJO, MONEDA_MARRON, GOTA_ROJA,
 	}
 	
-	public ArrayList<TipoEnemigo> enemigosIniciales;
+	public class EnemigoInicial{
+		public TipoEnemigo tipoEnemigo;
+		public Coordenadas coodenadas;		
+	}
+	
+	public ArrayList<EnemigoInicial> enemigosIniciales;
 	public ArrayList<EnemigoBase> almacen;
 	private BomberGame context;
 	
@@ -380,7 +385,10 @@ public class AlmacenEnemigos {
 	
 	public void creaEnemigoInicial( TipoEnemigo tipoEnemigo,int fila, int columna){
 		inicializaGrupos();
-		enemigosIniciales.add(tipoEnemigo);
+		EnemigoInicial enemigo= new EnemigoInicial();
+		enemigo.coodenadas= new Coordenadas(columna, fila);
+		enemigo.tipoEnemigo=tipoEnemigo;
+		enemigosIniciales.add(enemigo);
 		creaEnemigo(tipoEnemigo, fila, columna);
 	}
 	
@@ -455,6 +463,23 @@ public class AlmacenEnemigos {
 		}
 	}
 
+	
+	public void pausa(){
+		synchronized (almacen) {
+			for (EnemigoBase enemigo : almacen) {
+				enemigo.pausa();
+			}
+		}
+	}
+	public void play(){
+		synchronized (almacen) {
+			for (EnemigoBase enemigo : almacen) {
+				enemigo.play();
+			}
+		}
+	}
+	
+	
 	public void pararTodosEnemigo(){
 		synchronized (almacen) {
 			for (EnemigoBase enemigo : almacen) {
@@ -475,14 +500,14 @@ public class AlmacenEnemigos {
 	}
 
 	public void reiniciaEnemigos(){		
-		 for (TipoEnemigo enemigo : enemigosIniciales) {
-			 creaEnemigo(enemigo, 5, 4);			
+		 for (EnemigoInicial enemigo : enemigosIniciales) {
+			 creaEnemigo(enemigo.tipoEnemigo, enemigo.coodenadas.getFila(), enemigo.coodenadas.getColumna());			
 		}
 	}
 
 	public void inicializaAlmacen() {
 		eliminaTodosEnemigos();		
-		enemigosIniciales= new ArrayList<AlmacenEnemigos.TipoEnemigo>();
+		enemigosIniciales= new ArrayList<EnemigoInicial>();
 	}
 
 	protected int tomaDecision(int aStart, int aEnd) {

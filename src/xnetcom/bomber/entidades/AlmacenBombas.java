@@ -108,6 +108,18 @@ public class AlmacenBombas {
 	}
 	
 	
+	public void pausa(){
+		for (Bomba bomba : almacen) {
+			bomba.pausa();
+		}		
+	}
+	public void play(){
+		for (Bomba bomba : almacen) {
+			bomba.play();
+		}		
+	}
+	
+	
 	public void reinicia(){
 		for (Bomba bomba : almacen) {
 			bomba.reinicia();

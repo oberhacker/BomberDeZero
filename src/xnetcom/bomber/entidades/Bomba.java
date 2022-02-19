@@ -86,8 +86,17 @@ public class Bomba {
 	}
 
 
-
-	
+	public void pausa(){
+		if (sprBomba!=null){
+			sprBomba.setIgnoreUpdate(true);
+		}
+	}
+	public void play(){
+		if (sprBomba!=null && sprBomba.isVisible()){
+			sprBomba.setIgnoreUpdate(false);
+		}
+		
+	}
 	
 	public void normaliza(AnimatedSprite sprite) {
 //		sprite.setWidth(Constantes.TILE_WIDTH);
