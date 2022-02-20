@@ -384,7 +384,7 @@ public abstract class EnemigoBase {
 		baseTileRectangle.setIgnoreUpdate(false);
 		spritePrincipal.setIgnoreUpdate(false);
 	}	
-	public void p(){
+	public void pausa(){
 		baseTileRectangle.setIgnoreUpdate(true);
 		spritePrincipal.setIgnoreUpdate(true);
 	}

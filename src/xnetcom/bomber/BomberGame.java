@@ -14,6 +14,7 @@ import org.andengine.ui.activity.SimpleBaseGameActivity;
 
 import xnetcom.bomber.enemigos.AlmacenEnemigos;
 import xnetcom.bomber.entidades.AlmacenBombas;
+import xnetcom.bomber.entidades.AlmacenMonedas;
 import xnetcom.bomber.entidades.BomberMan;
 import xnetcom.bomber.graficos.CapaParedes;
 import xnetcom.bomber.graficos.SoundManager;
@@ -73,6 +74,7 @@ public class BomberGame extends SimpleBaseGameActivity {
 	public DatabaseHandler databaseHandler;
 	
 	public AlmacenEnemigos almacenEnemigos;
+	public AlmacenMonedas almacenMonedas;
 	public Tarjeta tarjeta;
 	
 	@Override
@@ -118,6 +120,7 @@ public class BomberGame extends SimpleBaseGameActivity {
 		databaseHandler = new DatabaseHandler(this);		
 		almacenEnemigos= new AlmacenEnemigos(this);
 		tarjeta= new Tarjeta(this);
+		almacenMonedas=new AlmacenMonedas(this);
 		// esto pal final del metodo
 		inicializaPrimeraVez();
 	}

@@ -8,14 +8,14 @@ import xnetcom.bomber.enemigos.EnemigoMoco;
 import xnetcom.bomber.enemigos.EnemigoMoneda;
 import android.util.Log;
 
-public class SpritePoolMoneda extends GenericPool<EnemigoMoneda> {
+public class SpritePoolEnemigoMoneda extends GenericPool<EnemigoMoneda> {
 
     BomberGame context;
 
     // ===========================================================
     // Constructors
     // ===========================================================
-    public SpritePoolMoneda(BomberGame context) {
+    public SpritePoolEnemigoMoneda(BomberGame context) {
         this.context=context;
     }
 

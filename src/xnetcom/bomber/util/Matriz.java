@@ -25,13 +25,13 @@ public class Matriz{
 		public Bomba bomba;
 		public TrozoPared trozoPared;	
 		
-		public void explota(){
+		public void explota(int secuencia){			
 //			tipoCasilla=0;
 			if (bomba!=null){
 				bomba.detonarConDelay();
 			}
 			if (trozoPared!=null){
-				trozoPared.explota();
+				trozoPared.explota(secuencia);
 			}
 			
 		}
@@ -67,10 +67,10 @@ public class Matriz{
 
 	
 	
-	public synchronized void explota(ArrayList<Coordenadas> coordenadas) {
+	public synchronized void explota(ArrayList<Coordenadas> coordenadas, int secuencia) {		
 		synchronized (matriz) {
 			for ( Coordenadas coordenada : coordenadas) {
-				matriz[coordenada.getFila()][coordenada.getColumna()].explota();	
+				matriz[coordenada.getFila()][coordenada.getColumna()].explota(secuencia);	
 			}
 		}
 		

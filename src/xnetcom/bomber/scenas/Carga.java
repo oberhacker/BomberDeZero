@@ -85,6 +85,8 @@ public class Carga {
 							context.almacenEnemigos.carga();							
 							setPorcentaje(90);
 							context.tarjeta.carga();
+							setPorcentaje(95);
+							context.almacenMonedas.carga();							
 							setPorcentaje(100);
 						} catch (Exception e) {
 							// TODO Auto-generated catch block

@@ -107,7 +107,7 @@ public class EnemigoGloboAzul extends EnemigoBase {
 	@Override
 	public void animarMuerte() {
 		int tiempo = 120;
-		spritePrincipal.animate(new long[] { tiempo, tiempo, tiempo, tiempo, tiempo, tiempo, tiempo}, new int[] { 12, 13, 14, 14, 16, 17, 18  }, 0, new ListenerMorir());
+		spritePrincipal.animate(new long[] { tiempo, tiempo, tiempo, tiempo, tiempo, tiempo, tiempo, tiempo}, new int[] { 12, 13, 14, 14, 16, 17, 18 ,25 }, 0, new ListenerMorir());
 
 	}
 

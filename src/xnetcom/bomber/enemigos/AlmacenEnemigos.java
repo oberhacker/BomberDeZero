@@ -21,7 +21,7 @@ import xnetcom.bomber.util.SpritePoolGotaNaranja;
 import xnetcom.bomber.util.SpritePoolGotaRoja;
 import xnetcom.bomber.util.SpritePoolMoco;
 import xnetcom.bomber.util.SpritePoolMocoRojo;
-import xnetcom.bomber.util.SpritePoolMoneda;
+import xnetcom.bomber.util.SpritePoolEnemigoMoneda;
 import xnetcom.bomber.util.SpritePoolMonedaMarron;
 
 public class AlmacenEnemigos {
@@ -59,7 +59,7 @@ public class AlmacenEnemigos {
 	public SpritePoolGloboAzul spritePoolGloboAzul;
 	
 	public SpriteGroup groupMoneda;	
-	public SpritePoolMoneda spritePoolMoneda;
+	public SpritePoolEnemigoMoneda spritePoolMoneda;
 	
 	public SpriteGroup groupMonedaMarron;	
 	public SpritePoolMonedaMarron spritePoolMonedaMarron;
@@ -108,7 +108,7 @@ public class AlmacenEnemigos {
 		spritePoolGloboAzul= new SpritePoolGloboAzul(context);
 		spritePoolFantasma=new SpritePoolFantasma(context);
 		spritePoolMoco= new SpritePoolMoco(context);
-		spritePoolMoneda= new SpritePoolMoneda(context);
+		spritePoolMoneda= new SpritePoolEnemigoMoneda(context);
 		spritePoolGotaAzul= new SpritePoolGotaAzul(context);
 		spritePoolGotaNaranja= new SpritePoolGotaNaranja(context);
 		spritePoolMocoRojo= new SpritePoolMocoRojo(context);

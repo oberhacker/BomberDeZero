@@ -384,9 +384,10 @@ public class Bomba {
 		// detonamos las demas bombas
 				
 		context.almacenBombas.bombasPlantadas.decrementAndGet();
-		context.escenaJuego.matriz.explota(coordenadas);
+		context.escenaJuego.matriz.explota(coordenadas,secuencia);
 		context.almacenEnemigos.mataEnemigos(coordenadas);
 		context.gameManager.matarPorCoordenadas(coordenadas);
+		context.almacenMonedas.explotarMonedas(coordenadas,secuencia);
 		
 	}	
 	

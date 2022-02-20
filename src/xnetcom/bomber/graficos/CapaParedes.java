@@ -269,11 +269,12 @@ public class CapaParedes {
 			this.verdadera=verdadera;
 		}
 		
-		public void explota(){
+		public void explota(int secuencia){			
 			context.escenaJuego.matriz.setValor(Matriz.NADA, coodenadas.getFila(), coodenadas.getColumna(), null, null);
 			
 //			trozoArriba.detachSelf();
 //			trozoAbajo.detachSelf();
+			context.almacenMonedas.revelaMoneda(coodenadas,secuencia);			
 			
 			spritePoolAbajo.recyclePoolItem(trozoAbajo);
 			spritePoolArriba.recyclePoolItem(trozoArriba);

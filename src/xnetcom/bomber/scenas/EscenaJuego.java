@@ -22,9 +22,11 @@ import android.util.Log;
 import xnetcom.bomber.BomberGame;
 import xnetcom.bomber.enemigos.AlmacenEnemigos;
 import xnetcom.bomber.enemigos.AlmacenEnemigos.TipoEnemigo;
+import xnetcom.bomber.entidades.AlmacenMonedas.TipoMoneda;
 import xnetcom.bomber.graficos.HudBomber;
 import xnetcom.bomber.sql.DatosMapa;
 import xnetcom.bomber.util.Constantes;
+import xnetcom.bomber.util.Coordenadas;
 import xnetcom.bomber.util.Matriz;
 
 public class EscenaJuego {
@@ -166,29 +168,44 @@ public class EscenaJuego {
 								datosMapa.setEnemigo_gotaRoja(datosMapa.getEnemigo_gotaRoja()+1);
 								
 							} else if (pTMXTileProperties.containsTMXProperty("moneda", "bomba")) {
+								context.almacenMonedas.creaMoneda(TipoMoneda.MBOMBA, new Coordenadas(pTMXTile.getTileColumn(), pTMXTile.getTileRow()));
 								datosMapa.setM_bomba(datosMapa.getM_bomba()+1);
+								
 							} else if (pTMXTileProperties.containsTMXProperty("moneda", "corazon")) {
+								context.almacenMonedas.creaMoneda(TipoMoneda.MCORAZON, new Coordenadas(pTMXTile.getTileColumn(), pTMXTile.getTileRow()));
 								datosMapa.setM_bomba(datosMapa.getM_corazon()+1);
+								
 							} else if (pTMXTileProperties.containsTMXProperty("moneda", "correr")) {
+								context.almacenMonedas.creaMoneda(TipoMoneda.MVELOCIDAD, new Coordenadas(pTMXTile.getTileColumn(), pTMXTile.getTileRow()));
 								datosMapa.setM_bomba(datosMapa.getM_correr()+1);
+								
 							} else if (pTMXTileProperties.containsTMXProperty("moneda", "detonador")) {
+								context.almacenMonedas.creaMoneda(TipoMoneda.MDETONADOR, new Coordenadas(pTMXTile.getTileColumn(), pTMXTile.getTileRow()));
 								datosMapa.setM_bomba(datosMapa.getM_detonador()+1);
+								
 							} else if (pTMXTileProperties.containsTMXProperty("moneda", "fantasma")) {
+								context.almacenMonedas.creaMoneda(TipoMoneda.MFANTASMA, new Coordenadas(pTMXTile.getTileColumn(), pTMXTile.getTileRow()));
 								datosMapa.setM_bomba(datosMapa.getM_fantasma()+1);
+								
 							} else if (pTMXTileProperties.containsTMXProperty("moneda", "fuerza")) {
+								context.almacenMonedas.creaMoneda(TipoMoneda.MFUERZA, new Coordenadas(pTMXTile.getTileColumn(), pTMXTile.getTileRow()));
 								datosMapa.setM_bomba(datosMapa.getM_fuerza()+1);
+								
 							} else if (pTMXTileProperties.containsTMXProperty("moneda", "potenciador")) {
+								context.almacenMonedas.creaMoneda(TipoMoneda.MEXPLOSION, new Coordenadas(pTMXTile.getTileColumn(), pTMXTile.getTileRow()));
 								datosMapa.setM_bomba(datosMapa.getM_potenciador()+1);
 							}							
 						}
 					});
 			
 			datosMapa= new DatosMapa();				
+			context.almacenMonedas.reiniciar();
 			datosMapa.setNumeroMapa(numMap);			
 			String nombreMapa="tmx/mapa0.tmx";
 			nombreMapa=nombreMapa.replace("0", numMap+"");			
 			this.mTMXTiledMap = tmxLoader.loadFromAsset(nombreMapa);			
-			context.gameManager.iniciaGuardaMapas(numMap);
+			context.gameManager.iniciaGuardaMapas(numMap);			
+			context.almacenMonedas.barajeaMonedas();
 			
 //			this.mTMXTiledMap.setOffsetCenter(0, 0);
 //			mTMXTiledMap.setScaleCenter(0, 0);

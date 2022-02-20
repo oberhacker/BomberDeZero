@@ -285,6 +285,7 @@ public class BomberMan {
 
 	public void cambiaPosicion() {
 		
+		cogerMoneda();
 		
 		if (estaMovientoSinLimite()) {
 			switch (playerDirection) {
@@ -318,6 +319,11 @@ public class BomberMan {
 			}
 		}
 
+	}
+
+	private void cogerMoneda() {
+		context.almacenMonedas.cogerMoneda(new Coordenadas(columna, fila));
+		
 	}
 
 	public void setFila(int fila) {

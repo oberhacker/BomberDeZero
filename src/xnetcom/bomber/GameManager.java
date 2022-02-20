@@ -6,6 +6,7 @@ import org.andengine.engine.handler.IUpdateHandler;
 
 import android.util.Log;
 import xnetcom.bomber.enemigos.EnemigoBase;
+import xnetcom.bomber.entidades.AlmacenMonedas.TipoMoneda;
 import xnetcom.bomber.sql.DatabaseHandler;
 import xnetcom.bomber.sql.DatosMapa;
 import xnetcom.bomber.util.Constantes;
@@ -60,7 +61,22 @@ public class GameManager {
 	
 	public void eligePuerta(){
 		context.escenaJuego.spritePuerta.setVisible(false);
-		int seleccion=Util.tomaDecision(1, context.capaParedes.listaMuros.size()-1);
+
+		boolean elegido=false;
+		int seleccion;
+		do{
+			seleccion=Util.tomaDecision(1, context.capaParedes.listaMuros.size()-1);
+			ArrayList<Integer> posicionesMonedas = context.almacenMonedas.posiciones;
+			for (Integer integer : posicionesMonedas) {				
+				if(integer.equals(Integer.valueOf(seleccion))){	
+					elegido=false;
+					break;					
+				}else{
+					elegido=true;
+				}
+			}
+			
+		}while (!elegido);		
 		coodenadasPuerta = context.capaParedes.listaMuros.get(seleccion).coodenadas;		
 	}
 	
@@ -170,6 +186,7 @@ public class GameManager {
 				context.almacenEnemigos.eliminaTodosEnemigos();		
 				context.almacenEnemigos.reiniciaEnemigos();
 				context.capaParedes.restauraInicial();
+				context.almacenMonedas.barajeaMonedas();
 				eligePuerta();
 			}});
 	}
@@ -202,5 +219,61 @@ public class GameManager {
 			context.databaseHandler.addMapa(mapa);
 		}		
 	}
+
+
+	public void cogerMoneda(TipoMoneda tipoMonena) {		
+		boostersCogidos++;
+		switch (tipoMonena) {
+		case MBOMBA:
+			cogeMonedaBomba();
+			break;
+		case MCORAZON:
+			cogeMonedaCorazon();
+			break;
+		case MDETONADOR:
+			cogeMonedaDetonador();
+			break;
+		case MEXPLOSION:
+			cogeMonedaPotenciador();
+			break;
+		case MFANTASMA:
+			cogeMonedaFantasma();
+			break;
+		case MFUERZA:
+			cogeMonedaFuerza();
+			break;
+		case MVELOCIDAD:
+			cogeMonedaCorrer();
+			break;		
+			
+		default:
+			break;
+		}
+				
+	}
+	
+	
+	public void cogeMonedaCorazon(){
+		
+	}	
+	public void cogeMonedaDetonador(){
+		
+	}
+	public void cogeMonedaBomba(){
+		
+	}
+	public void cogeMonedaPotenciador(){
+		
+	}
+	public void cogeMonedaFantasma(){
+		
+	}
+	public void cogeMonedaFuerza(){
+		
+	}
+	public void cogeMonedaCorrer(){
+		
+	}
+	
 
 }
