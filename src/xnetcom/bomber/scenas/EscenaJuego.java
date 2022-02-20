@@ -173,27 +173,27 @@ public class EscenaJuego {
 								
 							} else if (pTMXTileProperties.containsTMXProperty("moneda", "corazon")) {
 								context.almacenMonedas.creaMoneda(TipoMoneda.MCORAZON, new Coordenadas(pTMXTile.getTileColumn(), pTMXTile.getTileRow()));
-								datosMapa.setM_bomba(datosMapa.getM_corazon()+1);
+								datosMapa.setM_corazon(datosMapa.getM_corazon()+1);
 								
 							} else if (pTMXTileProperties.containsTMXProperty("moneda", "correr")) {
 								context.almacenMonedas.creaMoneda(TipoMoneda.MVELOCIDAD, new Coordenadas(pTMXTile.getTileColumn(), pTMXTile.getTileRow()));
-								datosMapa.setM_bomba(datosMapa.getM_correr()+1);
+								datosMapa.setM_correr(datosMapa.getM_correr()+1);
 								
 							} else if (pTMXTileProperties.containsTMXProperty("moneda", "detonador")) {
 								context.almacenMonedas.creaMoneda(TipoMoneda.MDETONADOR, new Coordenadas(pTMXTile.getTileColumn(), pTMXTile.getTileRow()));
-								datosMapa.setM_bomba(datosMapa.getM_detonador()+1);
+								datosMapa.setM_detonador(datosMapa.getM_detonador()+1);
 								
 							} else if (pTMXTileProperties.containsTMXProperty("moneda", "fantasma")) {
 								context.almacenMonedas.creaMoneda(TipoMoneda.MFANTASMA, new Coordenadas(pTMXTile.getTileColumn(), pTMXTile.getTileRow()));
-								datosMapa.setM_bomba(datosMapa.getM_fantasma()+1);
+								datosMapa.setM_fantasma(datosMapa.getM_fantasma()+1);
 								
 							} else if (pTMXTileProperties.containsTMXProperty("moneda", "fuerza")) {
 								context.almacenMonedas.creaMoneda(TipoMoneda.MFUERZA, new Coordenadas(pTMXTile.getTileColumn(), pTMXTile.getTileRow()));
-								datosMapa.setM_bomba(datosMapa.getM_fuerza()+1);
+								datosMapa.setM_fuerza(datosMapa.getM_fuerza()+1);
 								
 							} else if (pTMXTileProperties.containsTMXProperty("moneda", "potenciador")) {
 								context.almacenMonedas.creaMoneda(TipoMoneda.MEXPLOSION, new Coordenadas(pTMXTile.getTileColumn(), pTMXTile.getTileRow()));
-								datosMapa.setM_bomba(datosMapa.getM_potenciador()+1);
+								datosMapa.setM_potenciador(datosMapa.getM_potenciador()+1);
 							}							
 						}
 					});
