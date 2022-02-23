@@ -259,7 +259,10 @@ public class GameManager {
 			mapa.setEstrellas(estrellas);
 			context.databaseHandler.actualizaEstrellasMapa(mapa);
 		}
-		desbloqueaSiguienteMapa(numMap+1);		
+		if ((numMap+1)<=Constantes.ULTIMO_MAPA){
+			desbloqueaSiguienteMapa(numMap+1);	
+		}
+			
 	}
 	
 	

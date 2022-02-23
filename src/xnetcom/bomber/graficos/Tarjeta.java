@@ -79,12 +79,13 @@ public class Tarjeta {
 		sprNext = new TiledSprite(0, 0, next_TR, context.getVertexBufferObjectManager()){
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				if (pSceneTouchEvent.getAction() == 0 ){		
-					context.loading.cargaMapa(2);					
+				if (pSceneTouchEvent.getAction() == 0 && getCurrentTileIndex()==0){		
+					context.loading.cargaMapa(context.escenaJuego.datosMapa.getNumeroMapa()+1);					
 				}
 				return false;
 			}
 		};
+		
 		sprCleared = new Sprite(0, 0, cleared_TR, context.getVertexBufferObjectManager());
 		sprFailed = new Sprite(0, 0, failed_TR, context.getVertexBufferObjectManager());
 		sprStar1 = new AnimatedSprite(0, 0, star_TR, context.getVertexBufferObjectManager());
@@ -153,8 +154,8 @@ public class Tarjeta {
 		new Thread() {
 			public void run() {				
 				try {
-//					sprNext.setCurrentTileIndex(0);
-//					sprRetry.setCurrentTileIndex(0);
+					sprNext.setCurrentTileIndex(0);
+					sprRetry.setCurrentTileIndex(0);
 					sprTarjeta.setVisible(true);
 					switch (estrellas) {
 					case 1:
@@ -185,6 +186,11 @@ public class Tarjeta {
 						sprCleared.setVisible(false);
 						break;
 					}					
+					
+					 if (context.escenaJuego.datosMapa.getNumeroMapa()==Constantes.ULTIMO_MAPA){
+						sprNext.setCurrentTileIndex(1);
+					 }
+					
 					
 				} catch (Exception e) {
 					Log.e("Errrorrrrrrrrrrrrrrr", "", e);

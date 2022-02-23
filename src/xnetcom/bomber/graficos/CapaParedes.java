@@ -93,8 +93,8 @@ public class CapaParedes {
 		}	
 		itr= almacenExplosiones.iterator();
 
-		BitmapTextureAtlas btaParedAbajo = new BitmapTextureAtlas(context.getTextureManager(), 1024, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-		BitmapTextureAtlas btaParedArriba = new BitmapTextureAtlas(context.getTextureManager(), 1024, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		BitmapTextureAtlas btaParedAbajo = new BitmapTextureAtlas(context.getTextureManager(), 1024, 256, TextureOptions.DEFAULT);
+		BitmapTextureAtlas btaParedArriba = new BitmapTextureAtlas(context.getTextureManager(), 1024, 256, TextureOptions.DEFAULT);
 		TiledTextureRegion textureArriba = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(btaParedArriba, context, "gfx/muroswais74_bigV8_arriba.png", 0, 0, 4, 1);
 		TiledTextureRegion textureAbajo = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(btaParedAbajo, context, "gfx/muroswais74_bigV8_abajo.png", 0, 0, 4, 1);
 		btaParedAbajo.load();
