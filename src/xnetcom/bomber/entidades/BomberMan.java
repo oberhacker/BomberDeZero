@@ -7,6 +7,7 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.physics.PhysicsHandler;
 import org.andengine.entity.IEntity;
+import org.andengine.entity.modifier.DelayModifier;
 import org.andengine.entity.modifier.IEntityModifier.IEntityModifierListener;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.primitive.Rectangle;
@@ -85,15 +86,13 @@ public class BomberMan {
 		return baseTileRectangle;
 	}
 
-	
-	public void reinicia(){		
+	public void reinicia() {
 		detenerPararAnimacion();
 		baseTileRectangle.setPosition(getXinicial(), getYinicial());
 		bomberAbajo.setCurrentTileIndex(0);
-		bomberAbajo.setCurrentTileIndex(0);		
+		bomberAbajo.setCurrentTileIndex(0);
 		setnoMuerto();
 	}
-	
 
 	float FACTORPEQUEO = 0.90f;
 
@@ -110,17 +109,16 @@ public class BomberMan {
 		bomberArriba = new AnimatedSprite(0, 0, mBombermanTextureRegionAniA, context.getVertexBufferObjectManager());
 		bomberArriba.setOffsetCenter(0, 0);
 		bomberArriba.setScaleCenter(0, 0);
-		bomberArriba.setScaleY(FACTORPEQUEO*FACTOR_ACHATADO);
+		bomberArriba.setScaleY(FACTORPEQUEO * FACTOR_ACHATADO);
 		bomberArriba.setScaleX(FACTORPEQUEO);
-		
-		
+
 		bomberAbajo = new AnimatedSprite(0, 0, mBombermanTextureRegionAniB, context.getVertexBufferObjectManager()) {
 			@Override
 			public void setCurrentTileIndex(int pTileIndex) {
 				bomberArriba.setCurrentTileIndex(pTileIndex);
 				super.setCurrentTileIndex(pTileIndex);
 			}
-			
+
 			@Override
 			protected void onManagedDraw(GLState GLState, Camera pCamera) {
 				super.onManagedDraw(GLState, pCamera);
@@ -128,10 +126,10 @@ public class BomberMan {
 		};
 		bomberAbajo.setOffsetCenter(0, 0);
 		bomberAbajo.setScaleCenter(0, 0);
-		bomberAbajo.setScaleY(FACTORPEQUEO*FACTOR_ACHATADO);
+		bomberAbajo.setScaleY(FACTORPEQUEO * FACTOR_ACHATADO);
 		bomberAbajo.setScaleX(FACTORPEQUEO);
-	
-//		bomberAbajo.attachChild(bomberAbajo);
+
+		// bomberAbajo.attachChild(bomberAbajo);
 
 		// ajustamos el personaje dento de su cuadro
 		bomberAbajo.setX(bomberAbajo.getX() - 10);
@@ -141,17 +139,16 @@ public class BomberMan {
 
 	}
 
-	
-	
-	public float getXinicial(){
+	public float getXinicial() {
 		return (2 * Constantes.TILE_TAM * Constantes.FARTOR_FORMA);
 	}
-	public float getYinicial(){
+
+	public float getYinicial() {
 		return (context.escenaJuego.mTMXTiledMap.getHeight() - 3 * Constantes.TILE_TAM);
 	}
-	
-	
+
 	IUpdateHandler updater;
+
 	public void onCreateScene(Scene scene) {
 
 		currentTileRectangle = new Rectangle(0, 0, context.escenaJuego.mTMXTiledMap.getTileWidth() * Constantes.FARTOR_FORMA, context.escenaJuego.mTMXTiledMap.getTileHeight(),
@@ -185,12 +182,12 @@ public class BomberMan {
 		baseTileRectangle.setZIndex(Constantes.ZINDEX_BOMBERMAN_ABAJO - 1);
 
 		baseTileRectangle.setPosition(getXinicial(), getYinicial());
-		
-		colidesTileRectangle= new Rectangle(0, 0, Constantes.TILE_WIDTH-20, Constantes.TILE_HEIGHT-20,	context.getVertexBufferObjectManager());	
+
+		colidesTileRectangle = new Rectangle(0, 0, Constantes.TILE_WIDTH - 20, Constantes.TILE_HEIGHT - 20, context.getVertexBufferObjectManager());
 		colidesTileRectangle.setColor(0, 100, 50);
 		colidesTileRectangle.setOffsetCenter(0, 0);
 		colidesTileRectangle.setScaleCenter(0, 0);
-		colidesTileRectangle.setPosition(10,10);
+		colidesTileRectangle.setPosition(10, 10);
 		baseTileRectangle.attachChild(colidesTileRectangle);
 		if (!Constantes.DEBUG_BASE_RECTANGLE_VISIBLE) {
 			colidesTileRectangle.setAlpha(0f);
@@ -200,39 +197,36 @@ public class BomberMan {
 		scene.attachChild(bomberArriba);
 		scene.attachChild(baseTileRectangle);
 
-		if (updater==null){
-			 updater=new IUpdateHandler() {
-					@Override
-					public void onUpdate(float pSecondsElapsed) {
-						updater();
-					}
+		if (updater == null) {
+			updater = new IUpdateHandler() {
+				@Override
+				public void onUpdate(float pSecondsElapsed) {
+					updater();
+				}
 
-					@Override
-					public void reset() {
+				@Override
+				public void reset() {
 
-					}
-				};
-				scene.registerUpdateHandler(updater);
-		}	
+				}
+			};
+			scene.registerUpdateHandler(updater);
+		}
 	}
 
 	int innerColumna = 0;
 	int innerFila = 0;
 
 	public void updater() {
-		
-		
-		//////////////
-		//context.escenaJuego.hud.debugText.setText("Hijos "+context.escenaJuego.scene.getChildCount());
-		
-		bomberArriba.setX(baseTileRectangle.getX()- 10);
+
+		// ////////////
+		// context.escenaJuego.hud.debugText.setText("Hijos "+context.escenaJuego.scene.getChildCount());
+
+		bomberArriba.setX(baseTileRectangle.getX() - 10);
 		bomberArriba.setY(baseTileRectangle.getY());
 		final float[] playerFootCordinates = getSprite().convertLocalCoordinatesToSceneCoordinates(BomberMan.PIES_X, BomberMan.PIES_Y);
 		TMXLayer tmxLayer = context.escenaJuego.mTMXTiledMap.getTMXLayers().get(1);
 		TMXTile tmxTile = tmxLayer.getTMXTileAt(playerFootCordinates[Constants.VERTEX_INDEX_X], playerFootCordinates[Constants.VERTEX_INDEX_Y]);
 
-
-		
 		if (tmxTile != null) {
 			if (innerColumna != tmxTile.getTileColumn()) {
 				innerColumna = tmxTile.getTileColumn();
@@ -245,7 +239,7 @@ public class BomberMan {
 				setFila(tmxTile.getTileRow());
 				currentTileRectangle.setPosition(tmxLayer.getTileX(tmxTile.getTileColumn()) * Constantes.FARTOR_FORMA, tmxLayer.getTileY(tmxTile.getTileRow()));
 				cambiaPosicion();
-			}			
+			}
 		}
 	}
 
@@ -284,33 +278,33 @@ public class BomberMan {
 	}
 
 	public void cambiaPosicion() {
-		
+
 		cogerMoneda();
-		
+
 		if (estaMovientoSinLimite()) {
 			switch (playerDirection) {
 
 			case DOWN:
-				if (isLimiteAbajo()){
+				if (isLimiteAbajo()) {
 					detener();
 					centrar(PlayerDirection.NONE);
 				}
 				break;
 			case UP:
-				if (isLimiteArriba()){
+				if (isLimiteArriba()) {
 					detener();
 					centrar(PlayerDirection.NONE);
 				}
 				break;
 			case RIGHT:
-				if (isLimiteDerecha()){
+				if (isLimiteDerecha()) {
 					detener();
 					centrar(PlayerDirection.NONE);
 				}
 				break;
 
 			case LEFT:
-				if (isLimiteIzquierda()){
+				if (isLimiteIzquierda()) {
 					detener();
 					centrar(PlayerDirection.NONE);
 				}
@@ -323,7 +317,7 @@ public class BomberMan {
 
 	private void cogerMoneda() {
 		context.almacenMonedas.cogerMoneda(new Coordenadas(columna, fila));
-		
+
 	}
 
 	public void setFila(int fila) {
@@ -430,7 +424,7 @@ public class BomberMan {
 				animarIzquierda();
 			} else if (xto > x) {
 				animarDerecha();
-			} else if (yto < y) {				
+			} else if (yto < y) {
 				animarAbajo();
 			} else if (yto > y) {
 				animarArriba();
@@ -512,7 +506,7 @@ public class BomberMan {
 	}
 
 	public void moverArriba() {
-		if(isMuerto()){
+		if (isMuerto()) {
 			return;
 		}
 		context.soundManager.sonarPasos();
@@ -530,11 +524,11 @@ public class BomberMan {
 			switch (esquinado) {
 			case MUY_ABAJO:
 			case CENTRO:// no movemos solo animamos
-				if (currentTileRectangle.getY()!=baseTileRectangle.getY()){
+				if (currentTileRectangle.getY() != baseTileRectangle.getY()) {
 					centrar(PlayerDirection.NONE);
-				}else{
+				} else {
 					animarArriba();
-				}	
+				}
 				break;
 			case MUY_DERECHA:// no movemos solo animamos
 				// centramos a la derecha
@@ -559,7 +553,7 @@ public class BomberMan {
 	}
 
 	public void moverAbajo() {
-		if(isMuerto()){
+		if (isMuerto()) {
 			return;
 		}
 		context.soundManager.sonarPasos();
@@ -577,11 +571,11 @@ public class BomberMan {
 			switch (esquinado) {
 			case MUY_ARRIBA:
 			case CENTRO:// no movemos solo animamos
-				if (currentTileRectangle.getY()!=baseTileRectangle.getY()){
+				if (currentTileRectangle.getY() != baseTileRectangle.getY()) {
 					centrar(PlayerDirection.NONE);
-				}else{
+				} else {
 					animarAbajo();
-				}				
+				}
 				break;
 			case MUY_DERECHA:// no movemos solo animamos
 				// centramos a la derecha
@@ -608,7 +602,7 @@ public class BomberMan {
 	}
 
 	public void moverDerecha() {
-		if(isMuerto()){
+		if (isMuerto()) {
 			return;
 		}
 		context.soundManager.sonarPasos();
@@ -626,11 +620,11 @@ public class BomberMan {
 			switch (esquinado) {
 			case MUY_IZQUIERDA:
 			case CENTRO:// no movemos solo animamos
-				if (currentTileRectangle.getX()!=baseTileRectangle.getX()){
+				if (currentTileRectangle.getX() != baseTileRectangle.getX()) {
 					centrar(PlayerDirection.NONE);
-				}else{
+				} else {
 					animarDerecha();
-				}				
+				}
 				break;
 			case MUY_ARRIBA:// no movemos solo animamos
 				// centramos a la derecha
@@ -655,7 +649,7 @@ public class BomberMan {
 	}
 
 	public void moverIzquierda() {
-		if(isMuerto()){
+		if (isMuerto()) {
 			return;
 		}
 		context.soundManager.sonarPasos();
@@ -674,9 +668,9 @@ public class BomberMan {
 			switch (esquinado) {
 			case MUY_DERECHA:
 			case CENTRO:// no movemos solo animamos
-				if (currentTileRectangle.getX()!=baseTileRectangle.getX()){
+				if (currentTileRectangle.getX() != baseTileRectangle.getX()) {
 					centrar(PlayerDirection.NONE);
-				}else{
+				} else {
 					animarIzquierda();
 				}
 				break;
@@ -711,23 +705,21 @@ public class BomberMan {
 		baseTileRectangle.clearEntityModifiers();
 	}
 
-	
-	public void pausa(){
+	public void pausa() {
 		baseTileRectangle.setIgnoreUpdate(true);
 		bomberAbajo.setIgnoreUpdate(true);
 	}
-	
-	public void play(){
+
+	public void play() {
 		baseTileRectangle.setIgnoreUpdate(false);
 		bomberAbajo.setIgnoreUpdate(false);
 	}
-	
+
 	public void detenerPararAnimacion() {
 		stopAnimation();
 		detener();
 		context.soundManager.pararPasos();
 	}
-
 
 	// centra vertical cuando queremos movernos en horizontal dentro de mismo
 	// cuadro
@@ -787,73 +779,66 @@ public class BomberMan {
 			muerto = false;
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	int [] array;
+
+	int[] array;
+
 	public boolean morir(boolean fuego) {
-		
-		if (isMuerto()){
-			return false;		
+
+		if (isMuerto()) {
+			return false;
 		}
 		setMuerto();
 		context.gameManager.muertoVeces++;
-		
+
 		Log.d("MORIR", "MORIR");
-		
-		int currentTile= bomberAbajo.getCurrentTileIndex();
-		
-		array= new int[]{48,49,48,49};
-		if (fuego){
-			if (0<=currentTile && currentTile<=11){
-				////System.out.println("0-11");
-				array = new int[]{48,49,48,49};
+
+		int currentTile = bomberAbajo.getCurrentTileIndex();
+
+		array = new int[] { 48, 49, 48, 49 };
+		if (fuego) {
+			if (0 <= currentTile && currentTile <= 11) {
+				// //System.out.println("0-11");
+				array = new int[] { 48, 49, 48, 49 };
 			}
-			if (12<=currentTile && currentTile<=23){
-				////System.out.println("12- 23");
-				array = new int[]{50,51,50, 51};
-			}			
-			if (24<=currentTile && currentTile<=35){
-				////System.out.println("2 -35");
-				array = new int[]{52,53,52, 53};
+			if (12 <= currentTile && currentTile <= 23) {
+				// //System.out.println("12- 23");
+				array = new int[] { 50, 51, 50, 51 };
 			}
-			if (36<=currentTile && currentTile<=47){
-				////System.out.println("36-47");
-				array = new int[]{54,55,54, 55};
+			if (24 <= currentTile && currentTile <= 35) {
+				// //System.out.println("2 -35");
+				array = new int[] { 52, 53, 52, 53 };
 			}
-		
-		}else {
-			if (0<=currentTile && currentTile<=11){
-				////System.out.println("0-11");
-				array = new int[]{11,56,11, 56};
+			if (36 <= currentTile && currentTile <= 47) {
+				// //System.out.println("36-47");
+				array = new int[] { 54, 55, 54, 55 };
 			}
-			if (12<=currentTile && currentTile<=23){
-				////System.out.println("12- 23");
-				array = new int[]{23,23,23, 23};
+
+		} else {
+			if (0 <= currentTile && currentTile <= 11) {
+				// //System.out.println("0-11");
+				array = new int[] { 11, 56, 11, 56 };
 			}
-			if (24<=currentTile && currentTile<=35){
-				////System.out.println("2 -35");
-				array = new int[]{24,57,24, 57};
+			if (12 <= currentTile && currentTile <= 23) {
+				// //System.out.println("12- 23");
+				array = new int[] { 23, 23, 23, 23 };
 			}
-			if (36<=currentTile && currentTile<=47){
-				////System.out.println("36-47");
-				array = new int[]{47,58,47, 58};
+			if (24 <= currentTile && currentTile <= 35) {
+				// //System.out.println("2 -35");
+				array = new int[] { 24, 57, 24, 57 };
 			}
-			
-		}		
-		
-		
+			if (36 <= currentTile && currentTile <= 47) {
+				// //System.out.println("36-47");
+				array = new int[] { 47, 58, 47, 58 };
+			}
+
+		}
+
 		// bomber.stopAnimation();
 		detenerPararAnimacion();
 		final long tiempo = 500;
 		Log.d("INICIO ANIMACION", "INICIO ANIMACION");
-		
-		new Thread(){
+
+		new Thread() {
 			public void run() {
 				try {
 					sleep(2500);
@@ -861,10 +846,10 @@ public class BomberMan {
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}				
+				}
 
 			};
-		}.start();	
+		}.start();
 
 		bomberAbajo.animate(new long[] { tiempo, tiempo, tiempo, tiempo }, array, 0, new IAnimationListener() {
 
@@ -889,7 +874,7 @@ public class BomberMan {
 			@Override
 			public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
 				Log.d("onAnimationFinished", "onAnimationFinished");
-//				context.gameManager.reiniciarBomberMan();
+				// context.gameManager.reiniciarBomberMan();
 
 			}
 		});
@@ -898,40 +883,54 @@ public class BomberMan {
 	}
 
 	public boolean matarPorCoordenadas(ArrayList<Coordenadas> coordenadas) {
-		if (Constantes.DEBUG_IMMORTAL){
+		if (Constantes.DEBUG_IMMORTAL) {
 			return false;
 		}
 		for (Coordenadas coordenada : coordenadas) {
-			if(coordenada.getColumna()==getColumna() && coordenada.getFila()==getFila()){
-				if (isMuerto()){
+			if (coordenada.getColumna() == getColumna() && coordenada.getFila() == getFila()) {
+				if (isMuerto()) {
 					return false;
-				}else{
+				} else {
 					morir(true);
 					return true;
 				}
 
 			}
 		}
-		return false;			
+		return false;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
+	int boostersFantasma=0;
+	public void boosterFantasma() {
+		if (!fantasma){
+			fantasma = true;
+			boostersFantasma++;
+			bomberAbajo.setAlpha(0.5f);
+			bomberArriba.setAlpha(0.5f);
+			new Thread() {
+				public void run() {
+					try {
+
+						do{
+							boostersFantasma--;
+							sleep(5000);
+						}while(boostersFantasma>0);						
+						fantasma=false;		
+						bomberAbajo.setAlpha(1f);
+						bomberArriba.setAlpha(1f);
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+				};
+			}.start();
+		}else{	
+			boostersFantasma++;			
+		}
+		
+		
+
+
+	}
 }

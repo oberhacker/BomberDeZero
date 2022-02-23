@@ -316,19 +316,19 @@ public class GameManager {
 	}	
 	
 	public void cogeMonedaDetonador(){
-		
+		this.detonador=true;		
 	}
 	
 	public void cogeMonedaBomba(){
-		
+		this.bombaNum++;		
 	}
 	
 	public void cogeMonedaPotenciador(){
-		
+		this.bombaTam++;
 	}
 	
 	public void cogeMonedaFantasma(){
-		
+		context.bomberman.boosterFantasma();
 	}
 	
 	public void cogeMonedaFuerza(){

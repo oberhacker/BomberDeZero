@@ -1,5 +1,8 @@
 package xnetcom.bomber.util;
 
+import org.andengine.entity.IEntity;
+import org.andengine.util.modifier.IModifier.IModifierListener;
+
 public class Constantes {
 	
 	
@@ -63,6 +66,7 @@ public class Constantes {
 	public static final String INICIO_DETONADOR = "false";		
 	public static final int  INICIO_VIDAS=5;
 	public static final int ULTIMO_MAPA = 45;
+	public static final float TIEMPO_FANTASMA = 10;
 	
 	
 	public static int TOTAL_MAPAS=45;

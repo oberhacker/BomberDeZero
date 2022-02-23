@@ -48,8 +48,7 @@ public class AlmacenBombas {
 	}
 
 	public void carga() {
-		
-		
+				
 		
 		this.bombaBTA = new BitmapTextureAtlas(context.getTextureManager(), 512, 256, TextureOptions.DEFAULT);
 //		BitmapTextureAtlasTextureRegionFactory.createFromSource(bombaBTA, new TransparentBitmapTextureAtlasSource(512, 256), 0, 0);
