@@ -1,8 +1,10 @@
 package xnetcom.bomber.graficos;
 
+import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.sprite.TiledSprite;
+import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -65,8 +67,24 @@ public class Tarjeta {
 		
 		sprTarjeta = new Sprite(0,0, tarjeta_TR, context.getVertexBufferObjectManager());		
 		sprRetry = new TiledSprite(0, 0, retry_TR, context.getVertexBufferObjectManager());
-		sprTomenu = new Sprite(0, 0, tomenu_TR, context.getVertexBufferObjectManager());
-		sprNext = new TiledSprite(0, 0, next_TR, context.getVertexBufferObjectManager());
+		sprTomenu = new Sprite(0, 0, tomenu_TR, context.getVertexBufferObjectManager()){
+			@Override
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.getAction() == 0 ){					
+					context.menuMapas.verMenuMapas();
+				}
+				return false;
+			}
+		};
+		sprNext = new TiledSprite(0, 0, next_TR, context.getVertexBufferObjectManager()){
+			@Override
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.getAction() == 0 ){		
+					context.loading.cargaMapa(2);					
+				}
+				return false;
+			}
+		};
 		sprCleared = new Sprite(0, 0, cleared_TR, context.getVertexBufferObjectManager());
 		sprFailed = new Sprite(0, 0, failed_TR, context.getVertexBufferObjectManager());
 		sprStar1 = new AnimatedSprite(0, 0, star_TR, context.getVertexBufferObjectManager());
@@ -119,6 +137,9 @@ public class Tarjeta {
 	public void attachScene(){		
 		sprTarjeta.setVisible(false);
 		if (!sprTarjeta.hasParent()){
+			context.escenaJuego.hud.hud.registerTouchArea(sprTomenu);
+			context.escenaJuego.hud.hud.registerTouchArea(sprNext);
+			
 			context.escenaJuego.hud.hud.attachChild(sprTarjeta);
 		}
 				
@@ -130,8 +151,10 @@ public class Tarjeta {
 
 		reiniciaTarjeta();
 		new Thread() {
-			public void run() {
+			public void run() {				
 				try {
+//					sprNext.setCurrentTileIndex(0);
+//					sprRetry.setCurrentTileIndex(0);
 					sprTarjeta.setVisible(true);
 					switch (estrellas) {
 					case 1:
@@ -156,6 +179,8 @@ public class Tarjeta {
 						sprStar3.animate(50,false);	
 						break;
 					default:
+						sprNext.setCurrentTileIndex(1);
+						sprRetry.setCurrentTileIndex(1);
 						sprFailed.setVisible(true);
 						sprCleared.setVisible(false);
 						break;

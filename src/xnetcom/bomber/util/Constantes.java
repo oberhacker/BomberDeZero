@@ -41,7 +41,10 @@ public class Constantes {
 	
 	public static final int FONT_BOMBA_MAPA = 60;
 	public static final int ZINDEX_MUROFRAGMENTOS = 900;
-	public static final int ZINDEX_ENEMIGOS = 199;	
+	public static final int ZINDEX_ENEMIGOS = 199;
+	
+
+	
 	
 	
 	public static float TIEMPO_POR_CUADRADO=0.40f;
@@ -55,9 +58,10 @@ public class Constantes {
 	public static int MAXIMOBOMBAS=9;
 	public static int MAXIMOEXPLOSION=4;
 	
-	
-	
-	public static int  INICIO_VIDAS=5;
+	public static final int INICIO_BOMBAS = 1;
+	public static final int INICIO_EXPLOSION = 1;
+	public static final String INICIO_DETONADOR = "false";		
+	public static final int  INICIO_VIDAS=5;
 	
 	
 	public static int TOTAL_MAPAS=45;

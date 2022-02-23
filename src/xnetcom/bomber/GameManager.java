@@ -7,6 +7,7 @@ import org.andengine.engine.handler.IUpdateHandler;
 import android.util.Log;
 import xnetcom.bomber.enemigos.EnemigoBase;
 import xnetcom.bomber.entidades.AlmacenMonedas.TipoMoneda;
+import xnetcom.bomber.preferencias.Preferencias;
 import xnetcom.bomber.sql.DatabaseHandler;
 import xnetcom.bomber.sql.DatosMapa;
 import xnetcom.bomber.util.Constantes;
@@ -17,10 +18,13 @@ public class GameManager {
 
 	public int bombaTam = 4;
 	public int bombaNum = 5;
-	public boolean detonador =true;
+	public Boolean detonador =true;
+	public int vidas=0;
+	
 	
 	public int muertoVeces=0;
 	public int boostersCogidos=0;
+	public int boostersExplotados=0;
 
 	BomberGame context;
 
@@ -28,13 +32,35 @@ public class GameManager {
 		this.context = context;
 	}
 
-	boolean ganado=false;
+	
+	public void cargaDatos(){
+		this.vidas=Preferencias.leerPreferenciasInt("vidas");
+		if (vidas==0){
+			vidas=1;
+			Preferencias.guardarPrefenrenciasInt("vidas", vidas);
+		}
+		this.detonador=Boolean.valueOf(Preferencias.leerPreferenciasString("detonador"));	
+		this.bombaNum=Preferencias.leerPreferenciasInt("bombas");
+		this.bombaTam=Preferencias.leerPreferenciasInt("explosion");		
+	}
+	
+	public void guardarDatos(){
+		Preferencias.guardarPrefenrenciasInt("vidas", vidas);
+		Preferencias.guardarPrefenrenciasInt("bombas", bombaNum);
+		Preferencias.guardarPrefenrenciasInt("explosion", bombaTam);
+		Preferencias.guardarPrefenrenciasString("detonador", detonador.toString());
+	}
+	
+	
+	
+	boolean partidaTerminada=false;
 	IUpdateHandler updater;
 	public void inicia() {
 		play();
 		muertoVeces=0;
 		boostersCogidos=0;
-		ganado=false;
+		boostersExplotados=0;
+		partidaTerminada=false;
 		eligePuerta();
 		
 		if (updater==null){
@@ -109,20 +135,28 @@ public class GameManager {
 	}
 	
 	
-	public void ganarPartida(){
-		if (!ganado){
-			ganado=true;
+	public void terminaPartida(boolean ganado){
+		if (!partidaTerminada){
+			partidaTerminada=true;
 			Log.d("GANAR", "GANAR");
 			pausa();
 			
 			int estrellas=1;
-			if (muertoVeces==0){
-				estrellas++;
-			}
-			if (boostersCogidos==context.escenaJuego.datosMapa.getBoosterTotales()){
-				estrellas++;
-			}					
-			guardaEstrellas(estrellas, context.escenaJuego.datosMapa.getNumeroMapa());			
+			if (ganado){				
+				if (muertoVeces==0){
+					estrellas++;
+				}
+				if (boostersCogidos==context.escenaJuego.datosMapa.getBoosterTotales()){
+					estrellas++;
+				}					
+				guardaEstrellas(estrellas, context.escenaJuego.datosMapa.getNumeroMapa());	
+			}else{
+				estrellas=0;				
+				this.detonador=false;
+				this.bombaNum=Constantes.INICIO_BOMBAS;
+				this.bombaTam=Constantes.INICIO_EXPLOSION;	
+				guardarDatos();				
+			}		
 			context.tarjeta.muestraTarjeta(estrellas);
 		}		
 	}
@@ -132,7 +166,7 @@ public class GameManager {
 		if (context.escenaJuego.spritePuerta.isVisible()){
 			if (context.bomberman.getColumna()==coodenadasPuerta.getColumna() && context.bomberman.getFila()==coodenadasPuerta.getFila()){
 				if (context.almacenEnemigos.almacen.isEmpty()){
-					ganarPartida();
+					terminaPartida(true);
 				}
 			}
 		}
@@ -142,6 +176,7 @@ public class GameManager {
 	public void updater() {	
 		checkpuerta();
 		context.escenaJuego.hud.debugText.setText(context.almacenEnemigos.almacen.size() + "  ymax"+context.miengine.getCamaraJuego().getYMax() );
+		
 		
 		// comprobamos matar a bomberman
 		synchronized (context.almacenEnemigos.almacen) {
@@ -164,9 +199,15 @@ public class GameManager {
 
 	}
 
+
+
+
 	public void matarBomberman(boolean fuego) {
-		context.bomberman.morir(fuego);
-		context.almacenEnemigos.pararTodosEnemigo();
+		if (context.bomberman.morir(fuego)){
+			context.almacenEnemigos.pararTodosEnemigo();
+			vidas--;
+			guardarDatos();
+		}		
 	}
 
 	
@@ -175,19 +216,27 @@ public class GameManager {
 		boolean matado = context.bomberman.matarPorCoordenadas(coordenadas);
 		if (matado) {
 			context.almacenEnemigos.pararTodosEnemigo();
+			vidas--;
+			guardarDatos();
 		}
 	}
 
 	public void reiniciarPartida() {
 		context.runOnUpdateThread(new Runnable() {
 			public void run() {
-				context.bomberman.reinicia();
-				context.almacenBombas.reinicia();
-				context.almacenEnemigos.eliminaTodosEnemigos();		
-				context.almacenEnemigos.reiniciaEnemigos();
-				context.capaParedes.restauraInicial();
-				context.almacenMonedas.barajeaMonedas();
-				eligePuerta();
+				if (context.gameManager.vidas==0){
+					pausa();
+					terminaPartida(false);
+				}else{
+					context.bomberman.reinicia();
+					context.almacenBombas.reinicia();
+					context.almacenEnemigos.eliminaTodosEnemigos();		
+					context.almacenEnemigos.reiniciaEnemigos();
+					context.capaParedes.restauraInicial();
+					context.almacenMonedas.barajeaMonedas();
+					eligePuerta();
+				}
+
 			}});
 	}
 	
@@ -221,7 +270,7 @@ public class GameManager {
 	}
 
 
-	public void cogerMoneda(TipoMoneda tipoMonena) {		
+	public void cogerMoneda(TipoMoneda tipoMonena) {			
 		boostersCogidos++;
 		switch (tipoMonena) {
 		case MBOMBA:
@@ -249,28 +298,36 @@ public class GameManager {
 		default:
 			break;
 		}
+		
+		guardarDatos();
 				
 	}
 	
 	
 	public void cogeMonedaCorazon(){
-		
+		vidas++;		
 	}	
+	
 	public void cogeMonedaDetonador(){
 		
 	}
+	
 	public void cogeMonedaBomba(){
 		
 	}
+	
 	public void cogeMonedaPotenciador(){
 		
 	}
+	
 	public void cogeMonedaFantasma(){
 		
 	}
+	
 	public void cogeMonedaFuerza(){
 		
 	}
+	
 	public void cogeMonedaCorrer(){
 		
 	}

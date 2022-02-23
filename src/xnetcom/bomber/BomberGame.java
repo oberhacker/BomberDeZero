@@ -23,6 +23,7 @@ import xnetcom.bomber.preferencias.Preferencias;
 import xnetcom.bomber.scenas.Carga;
 import xnetcom.bomber.scenas.EscenaJuego;
 import xnetcom.bomber.scenas.Inicio;
+import xnetcom.bomber.scenas.Loading;
 import xnetcom.bomber.scenas.MenuMapas;
 import xnetcom.bomber.sql.DatabaseHandler;
 import xnetcom.bomber.sql.DatosMapa;
@@ -45,9 +46,8 @@ public class BomberGame extends SimpleBaseGameActivity {
 	// Constants
 	// ===========================================================
 
-	public  int CAMERA_WIDTH = 1280;
-	public  int CAMERA_HEIGHT = 720;
-
+	public int CAMERA_WIDTH = 1280;
+	public int CAMERA_HEIGHT = 720;
 
 	// ===========================================================
 	// Fields
@@ -72,14 +72,17 @@ public class BomberGame extends SimpleBaseGameActivity {
 	public DatabaseHandler basedatos;
 	public ParserTMX parser;
 	public DatabaseHandler databaseHandler;
-	
+
 	public AlmacenEnemigos almacenEnemigos;
 	public AlmacenMonedas almacenMonedas;
 	public Tarjeta tarjeta;
-	
+	public Loading loading;
+
 	@Override
 	public EngineOptions onCreateEngineOptions() {
-//		Toast.makeText(this, "The tile the player is walking on will be highlighted.", Toast.LENGTH_LONG).show();
+		// Toast.makeText(this,
+		// "The tile the player is walking on will be highlighted.",
+		// Toast.LENGTH_LONG).show();
 		DetectorRatio();
 		this.camaraJuego = new SmoothCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT, 1000f, 1000f, 1);
 		this.camaraJuego.setBoundsEnabled(false);
@@ -93,8 +96,7 @@ public class BomberGame extends SimpleBaseGameActivity {
 
 		miengine = new MiEngine(engineOptions, this.camaraNormal);
 		miengine.setCamaraNormal();
-		
-			
+
 		return engineOptions;
 	}
 
@@ -105,28 +107,27 @@ public class BomberGame extends SimpleBaseGameActivity {
 
 	@Override
 	public void onCreateResources() throws IOException {
-		menuMapas= new MenuMapas(this);		
-		gameManager=new GameManager(this);
+		menuMapas = new MenuMapas(this);
+		gameManager = new GameManager(this);
 		escenaInicio = new Inicio(this);
 		escenaCarga = new Carga(this);
 		escenaJuego = new EscenaJuego(this);
-		soundManager= new SoundManager(this);
-		bomberman=new BomberMan(this);
-		almacenBombas= new AlmacenBombas(this);
-		capaParedes= new CapaParedes(this);
-		Preferencias.inicia(this);	
-		basedatos= new DatabaseHandler(this);
+		soundManager = new SoundManager(this);
+		bomberman = new BomberMan(this);
+		almacenBombas = new AlmacenBombas(this);
+		capaParedes = new CapaParedes(this);
+		Preferencias.inicia(this);
+		basedatos = new DatabaseHandler(this);
 		parser = new ParserTMX(this);
-		databaseHandler = new DatabaseHandler(this);		
-		almacenEnemigos= new AlmacenEnemigos(this);
-		tarjeta= new Tarjeta(this);
-		almacenMonedas=new AlmacenMonedas(this);
+		databaseHandler = new DatabaseHandler(this);
+		almacenEnemigos = new AlmacenEnemigos(this);
+		tarjeta = new Tarjeta(this);
+		almacenMonedas = new AlmacenMonedas(this);
+		loading= new Loading(this);
 		// esto pal final del metodo
 		inicializaPrimeraVez();
 	}
 
-	
-	
 	public void inicializaPrimeraVez() {
 
 		if (Preferencias.leerPreferenciasString("primeravez") == null) {
@@ -136,8 +137,9 @@ public class BomberGame extends SimpleBaseGameActivity {
 			Preferencias.guardarPrefenrenciasString("sonido", "true");
 
 			Preferencias.guardarPrefenrenciasInt("vidas", Constantes.INICIO_VIDAS);
-			Preferencias.guardarPrefenrenciasInt("numBombas", 1);
-			Preferencias.guardarPrefenrenciasInt("tamExplosion", 1);
+			Preferencias.guardarPrefenrenciasInt("bombas", Constantes.INICIO_BOMBAS);
+			Preferencias.guardarPrefenrenciasInt("explosion", Constantes.INICIO_EXPLOSION);
+			Preferencias.guardarPrefenrenciasString("detonador", Constantes.INICIO_DETONADOR);
 
 			DatosMapa mapa = new DatosMapa();
 			mapa.setEnemigo_fantasma(0);
@@ -159,36 +161,11 @@ public class BomberGame extends SimpleBaseGameActivity {
 			mapa.setM_fuerza(0);
 			mapa.setM_potenciador(0);
 			mapa.setNumeroMapa(1);
-			databaseHandler.addMapa(mapa);			
-	
-		}else{
-			DatosMapa mapa = new DatosMapa();
-			mapa.setEnemigo_fantasma(1);
-			mapa.setEnemigo_globo(1);
-			mapa.setEnemigo_globoAzul(1);
-			mapa.setEnemigo_gota(1);
-			mapa.setEnemigo_gotaNaranja(0);
-			mapa.setEnemigo_gotaRoja(0);
-			mapa.setEnemigo_moco(0);
-			mapa.setEnemigo_mocoRojo(0);
-			mapa.setEnemigo_moneda(0);
-			mapa.setEnemigo_monedaMarron(0);
-			mapa.setEstrellas(0);
-			mapa.setM_bomba(0);
-			mapa.setM_corazon(1);
-			mapa.setM_correr(0);
-			mapa.setM_detonador(0);
-			mapa.setM_fantasma(0);
-			mapa.setM_fuerza(0);
-			mapa.setM_potenciador(0);
-			mapa.setNumeroMapa(7000);
-			databaseHandler.addMapa(mapa);	
-			
-			DatosMapa mapa7000 = databaseHandler.getMapa(7000);
+			databaseHandler.addMapa(mapa);
+
 		}
 	}
-	
-	
+
 	@Override
 	public Scene onCreateScene() {
 		this.mEngine.registerUpdateHandler(new FPSLogger());
@@ -227,18 +204,17 @@ public class BomberGame extends SimpleBaseGameActivity {
 				public void run() {
 					vibrator.vibrate(milisegundos);
 				}
-			});			
+			});
 		}
 	}
 
 	public void setVibrar(boolean vibrar) {
 		this.vibrar = vibrar;
 	}
-	
+
 	public MiEngine getMiEngine() {
 		return (MiEngine) this.mEngine;
 	}
-	
 
 	// ===========================================================
 	// Inner and Anonymous Classes

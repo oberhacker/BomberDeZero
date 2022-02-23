@@ -796,10 +796,10 @@ public class BomberMan {
 	
 	
 	int [] array;
-	public void morir(boolean fuego) {
+	public boolean morir(boolean fuego) {
 		
 		if (isMuerto()){
-			return;		
+			return false;		
 		}
 		setMuerto();
 		context.gameManager.muertoVeces++;
@@ -894,6 +894,7 @@ public class BomberMan {
 			}
 		});
 
+		return true;
 	}
 
 	public boolean matarPorCoordenadas(ArrayList<Coordenadas> coordenadas) {

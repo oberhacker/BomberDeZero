@@ -60,18 +60,21 @@ public class Carga {
 					@Override
 					public void onPreExecute() {
 						setPorcentaje(10);
-						try {
-							Thread.sleep(200);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+//						try {
+//							Thread.sleep(200);
+//						} catch (InterruptedException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
 
 					}
 
 					@Override
 					public Void doInBackground(final Void... params) {
 						try {
+							setPorcentaje(0);							
+							context.loading.load();
+							setPorcentaje(10);	
 							context.escenaInicio.carga();
 							setPorcentaje(30);
 							context.soundManager.carga();

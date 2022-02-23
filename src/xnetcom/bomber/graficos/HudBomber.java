@@ -7,6 +7,8 @@ import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl.IOnScreenControlListener;
 import org.andengine.engine.camera.hud.controls.DigitalOnScreenControl;
 import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.sprite.TiledSprite;
@@ -31,7 +33,6 @@ public class HudBomber {
 	private static final int VIBRAR_BOTON = 50;
 	public BomberGame context;
 
-
 	public HUD hud;
 
 	public HudBomber(BomberGame context) {
@@ -44,6 +45,7 @@ public class HudBomber {
 	public AssetBitmapTexture mOnScreenControlKnobTexture;
 	public TextureRegion mOnScreenControlKnobTextureRegion;
 
+	public TiledSprite spr_detonador;
 	TextureRegion btn_1_TR;
 	TextureRegion btn_2_TR;
 
@@ -52,7 +54,7 @@ public class HudBomber {
 	Sprite pause;
 	Sprite menu;
 	public Text debugText;
-	
+
 	public DigitalOnScreenControl mDigitalOnScreenControl;
 	private TextureRegion hudTR;
 	private TiledTextureRegion iconosHUDTR;
@@ -64,11 +66,11 @@ public class HudBomber {
 	private Text ct_monedas;
 
 	private void screenControl(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
-		if (context.gameManager.pausa){
+		if (context.gameManager.pausa) {
 			return;
-		}		
+		}
 		if (context.bomberman != null) {
-			
+
 			if (pValueX > 0) {
 				// derecha
 				context.vibrar(20);
@@ -92,33 +94,28 @@ public class HudBomber {
 		}
 	}
 
-	public void carga() throws IOException {		
-		
+	public void carga() throws IOException {
+
 		BitmapTextureAtlas pause_BTA = new BitmapTextureAtlas(context.getTextureManager(), 128, 128, TextureOptions.BILINEAR);
 		TextureRegion pause_BTA_TR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(pause_BTA, context, "gfx/pause.png", 0, 0);
 		pause_BTA.load();
-		
+
 		BitmapTextureAtlas menu_BTA = new BitmapTextureAtlas(context.getTextureManager(), 128, 128, TextureOptions.BILINEAR);
 		TextureRegion menu_BTA_TR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menu_BTA, context, "gfx/menu_btn.png", 0, 0);
 		menu_BTA.load();
-		
-		
-		
-		BitmapTextureAtlas iconosHUD = new BitmapTextureAtlas(context.getTextureManager(),256, 32, TextureOptions.BILINEAR);	
+
+		BitmapTextureAtlas iconosHUD = new BitmapTextureAtlas(context.getTextureManager(), 256, 32, TextureOptions.BILINEAR);
 		iconosHUD.load();
-		this.iconosHUDTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(iconosHUD, context, "gfx/iconosHUD.png",0,0,6,1);		
-		
-		
-		BitmapTextureAtlas hudBitmapTextureAtlas = new BitmapTextureAtlas(context.getTextureManager(),1024, 128, TextureOptions.BILINEAR);	
+		this.iconosHUDTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(iconosHUD, context, "gfx/iconosHUD.png", 0, 0, 6, 1);
+
+		BitmapTextureAtlas hudBitmapTextureAtlas = new BitmapTextureAtlas(context.getTextureManager(), 1024, 128, TextureOptions.BILINEAR);
 		hudBitmapTextureAtlas.load();
-		this.hudTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(hudBitmapTextureAtlas, context, "gfx/Hud_Marcador.png",0,0);
-		
-		
-		this.mFontDigital = FontFactory.createFromAsset(context.getFontManager(), context.getTextureManager(), 256, 256, TextureOptions.BILINEAR, context.getAssets(),"DigitaldreamFat.ttf", 30, true, android.graphics.Color.BLACK);
+		this.hudTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(hudBitmapTextureAtlas, context, "gfx/Hud_Marcador.png", 0, 0);
+
+		this.mFontDigital = FontFactory.createFromAsset(context.getFontManager(), context.getTextureManager(), 256, 256, TextureOptions.BILINEAR, context.getAssets(), "DigitaldreamFat.ttf", 30, true,
+				android.graphics.Color.BLACK);
 		mFontDigital.load();
-		
-		
-		
+
 		Font mFont = FontFactory.create(context.getFontManager(), context.getTextureManager(), 256, 256, TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 48);
 		mFont.load();
 		debugText = new Text(300, 600, mFont, "Seconds elapsed:", "Seconds elapsed: XXXXXX".length(), context.getVertexBufferObjectManager());
@@ -154,19 +151,20 @@ public class HudBomber {
 						}
 
 					}
-				}){
+				}) {
 			// ajustamos la sensibilidad
 			@Override
-			protected void onUpdateControlKnob(final float pRelativeX, final float pRelativeY) {				
-				float sensibilidad=0.1f;
-				// cuanto pRelativeX > 0.2 mayor sea el numero menos sensible sera
+			protected void onUpdateControlKnob(final float pRelativeX, final float pRelativeY) {
+				float sensibilidad = 0.1f;
+				// cuanto pRelativeX > 0.2 mayor sea el numero menos sensible
+				// sera
 				if (pRelativeX == 0 && pRelativeY == 0) {
 					super.onUpdateControlKnob(0, 0);
 				}
-				//System.out.println("pRelativeX"+pRelativeX);
+				// System.out.println("pRelativeX"+pRelativeX);
 
 				if (Math.abs(pRelativeX) > Math.abs(pRelativeY)) {
-					
+
 					if (pRelativeX > sensibilidad) {
 						super.onUpdateControlKnob(0.5f, 0);
 					} else if (pRelativeX < -sensibilidad) {
@@ -200,8 +198,7 @@ public class HudBomber {
 		btn_1.setScale(0.6f);
 		btn_1.setScaleCenter(0, 0);
 		btn_1.setAlpha(0.5f);
-		
-		
+
 		btn_2 = new Sprite(0, 0, btn_2_TR, context.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
@@ -216,9 +213,7 @@ public class HudBomber {
 		btn_2.setScale(0.6f);
 		btn_2.setScaleCenter(0, 0);
 		btn_2.setAlpha(0.5f);
-		
-		
-		
+
 		menu = new Sprite(0, 0, menu_BTA_TR, context.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
@@ -228,12 +223,12 @@ public class HudBomber {
 
 				return true;
 			}
-		};		
-		
+		};
+
 		menu.setOffsetCenter(0, 0);
-		menu.setPosition(30, context.CAMERA_HEIGHT-100);
+		menu.setPosition(30, context.CAMERA_HEIGHT - 100);
 		menu.setAlpha(0.7f);
-		
+
 		pause = new Sprite(0, 0, pause_BTA_TR, context.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
@@ -243,56 +238,45 @@ public class HudBomber {
 
 				return true;
 			}
-		};		
+		};
 		pause.setOffsetCenter(0, 0);
-		pause.setPosition(context.CAMERA_WIDTH-120, context.CAMERA_HEIGHT-100);
+		pause.setPosition(context.CAMERA_WIDTH - 120, context.CAMERA_HEIGHT - 100);
 		pause.setAlpha(0.7f);
-		
-		
+
 		controlBase.setAlpha(0.5f);
 		controlBase.setOffsetCenter(0, 0);
 		this.mDigitalOnScreenControl.getControlKnob().setScale(1.25f);
 		this.mDigitalOnScreenControl.setScale(2f);
-		
-		
-		
+
 		// preparamos el marcador
-		
-		
-		
-		
-		
-		
-		
+
 	}
 
-	
-	public void toMenu(){
+	public void toMenu() {
 		context.menuMapas.verMenuMapas();
 	}
-	
-	public Sprite creaMarcador(){
-		Sprite marcador= new Sprite(0, 0, hudTR, context.getVertexBufferObjectManager());
-		
-		TiledSprite spr_detonador = new TiledSprite(0, 0, iconosHUDTR,context.getVertexBufferObjectManager());
-		TiledSprite spr_vidas = new TiledSprite(0,0, iconosHUDTR,context.getVertexBufferObjectManager());
-		TiledSprite spr_bombas = new TiledSprite(0, 0, iconosHUDTR,context.getVertexBufferObjectManager());
-		TiledSprite spr_explosion = new TiledSprite(0, 0, iconosHUDTR,context.getVertexBufferObjectManager());
-		TiledSprite spr_monedas = new TiledSprite(0, 0, iconosHUDTR,context.getVertexBufferObjectManager());
-		
+
+	public Sprite creaMarcador() {
+		Sprite marcador = new Sprite(0, 0, hudTR, context.getVertexBufferObjectManager());
+
+		spr_detonador = new TiledSprite(0, 0, iconosHUDTR, context.getVertexBufferObjectManager());
+		TiledSprite spr_vidas = new TiledSprite(0, 0, iconosHUDTR, context.getVertexBufferObjectManager());
+		TiledSprite spr_bombas = new TiledSprite(0, 0, iconosHUDTR, context.getVertexBufferObjectManager());
+		TiledSprite spr_explosion = new TiledSprite(0, 0, iconosHUDTR, context.getVertexBufferObjectManager());
+		TiledSprite spr_monedas = new TiledSprite(0, 0, iconosHUDTR, context.getVertexBufferObjectManager());
+
 		spr_detonador.setCurrentTileIndex(0);
 		spr_vidas.setCurrentTileIndex(1);
 		spr_bombas.setCurrentTileIndex(2);
 		spr_explosion.setCurrentTileIndex(3);
 		spr_monedas.setCurrentTileIndex(4);
-		
-		
-		ct_tiempo = new Text(0, 0, mFontDigital,"TIME 3:30",context.getVertexBufferObjectManager());
-		ct_vidas = new Text(0, 0, mFontDigital, ":99",context.getVertexBufferObjectManager());
-		ct_bombas = new Text(0, 0, mFontDigital, ":10",context.getVertexBufferObjectManager());
-		ct_explosion = new Text(0, 0, mFontDigital, ":4",context.getVertexBufferObjectManager());
-		ct_monedas = new Text(0, 0, mFontDigital, ":10",context.getVertexBufferObjectManager());
-		
+
+		ct_tiempo = new Text(0, 0, mFontDigital, "TIME 3:30", context.getVertexBufferObjectManager());
+		ct_vidas = new Text(0, 0, mFontDigital, ":99", context.getVertexBufferObjectManager());
+		ct_bombas = new Text(0, 0, mFontDigital, ":10", context.getVertexBufferObjectManager());
+		ct_explosion = new Text(0, 0, mFontDigital, ":4", context.getVertexBufferObjectManager());
+		ct_monedas = new Text(0, 0, mFontDigital, ":10", context.getVertexBufferObjectManager());
+
 		spr_detonador.setOffsetCenter(0, 0);
 		spr_vidas.setOffsetCenter(0, 0);
 		spr_bombas.setOffsetCenter(0, 0);
@@ -301,131 +285,144 @@ public class HudBomber {
 		ct_tiempo.setOffsetCenter(0, 0);
 		ct_vidas.setOffsetCenter(0, 0);
 		ct_bombas.setOffsetCenter(0, 0);
-		ct_explosion.setOffsetCenter(0, 0);	
-		ct_monedas.setOffsetCenter(0, 0);	
-		
+		ct_explosion.setOffsetCenter(0, 0);
+		ct_monedas.setOffsetCenter(0, 0);
+
 		ct_tiempo.setX(20);
 		ct_tiempo.setY(7);
 		marcador.attachChild(ct_tiempo);
-		
+
 		spr_vidas.setX(270);
 		spr_vidas.setY(8);
 		marcador.attachChild(spr_vidas);
-		
+
 		ct_vidas.setX(300);
 		ct_vidas.setY(7);
 		marcador.attachChild(ct_vidas);
-		
-		spr_detonador.setX(393+5);
+
+		spr_detonador.setX(393 + 5);
 		spr_detonador.setY(8);
 		marcador.attachChild(spr_detonador);
-		
-		spr_bombas.setX(440+5);
+
+		spr_bombas.setX(440 + 5);
 		spr_bombas.setY(8);
 		marcador.attachChild(spr_bombas);
-		
-		ct_bombas.setX(465+8);
+
+		ct_bombas.setX(465 + 8);
 		ct_bombas.setY(7);
 		marcador.attachChild(ct_bombas);
-		
-		spr_explosion.setX(555+5+5);
+
+		spr_explosion.setX(555 + 5 + 5);
 		spr_explosion.setY(8);
 		marcador.attachChild(spr_explosion);
-		
-		ct_explosion.setX(582+5+8);
+
+		ct_explosion.setX(582 + 5 + 8);
 		ct_explosion.setY(7);
 		marcador.attachChild(ct_explosion);
-		
+
 		spr_monedas.setX(665);
 		spr_monedas.setY(8);
-		marcador.attachChild(spr_monedas);		
-		
+		marcador.attachChild(spr_monedas);
+
 		ct_monedas.setX(700);
 		ct_monedas.setY(7);
 		marcador.attachChild(ct_monedas);
-		
-//		marcador.setScaleY(1.3f);
+
+		// marcador.setScaleY(1.3f);
 		marcador.setOffsetCenterY(0);
-		marcador.setPosition(context.CAMERA_WIDTH/2, context.CAMERA_HEIGHT-marcador.getHeightScaled());
-		
+		marcador.setPosition(context.CAMERA_WIDTH / 2, context.CAMERA_HEIGHT - marcador.getHeightScaled());
+
 		return marcador;
 	}
-	
-	
-	boolean pausa=false;
-	public void pause(){		
-		if (pausa){
+
+	boolean pausa = false;
+
+	public void pause() {
+		if (pausa) {
 			context.gameManager.play();
-			pausa=false;
-		}else{
+			pausa = false;
+		} else {
 			context.gameManager.pausa();
-			pausa=true;
+			pausa = true;
 		}
-		
+
 	}
-	
 
 	public void apretarBotonPlantabomba() {
-		if (context.gameManager.pausa){
+		if (context.gameManager.pausa) {
 			return;
 		}
 		context.vibrar(VIBRAR_BOTON);
-		context.almacenBombas.plantaBomba();		
+		context.almacenBombas.plantaBomba();
 		System.out.println("APRETADOOOOOOO");
 
 	}
 
-
 	public void apretarBotonExplosion() {
-		if (context.gameManager.pausa){
+		if (context.gameManager.pausa) {
 			return;
 		}
 		context.vibrar(VIBRAR_BOTON);
 		context.almacenBombas.detonarBomba();
 		System.out.println("APRETADOOOOOOO");
 	}
-	
-	public void recolocaElementos(){
-		btn_1.setPosition((context.CAMERA_WIDTH - 30)-btn_1.getWidthScaled(), 10);
-		btn_2.setPosition((context.CAMERA_WIDTH - 30)-(30+btn_2.getWidthScaled()*2), 10);
+
+	public void recolocaElementos() {
+		btn_1.setPosition((context.CAMERA_WIDTH - 30) - btn_1.getWidthScaled(), 10);
+		btn_2.setPosition((context.CAMERA_WIDTH - 30) - (30 + btn_2.getWidthScaled() * 2), 10);
 	}
 
-	IUpdateHandler updater;
+	TimerHandler timer;
+
 	public void attachScena(Scene scene) {
-		scene.setChildScene(this.mDigitalOnScreenControl);	
-		
+		scene.setChildScene(this.mDigitalOnScreenControl);
+
 		hud.attachChild(menu);
 		hud.attachChild(pause);
 		hud.attachChild(btn_1);
 		hud.attachChild(btn_2);
-		
+
 		hud.registerTouchArea(btn_1);
 		hud.registerTouchArea(btn_2);
 		hud.registerTouchArea(pause);
 		hud.registerTouchArea(menu);
 		debugText.setVisible(Constantes.DEBUG_TEXT);
-		
+
 		hud.attachChild(debugText);
-		
-		hud.attachChild(creaMarcador());		
-		
+
+		hud.attachChild(creaMarcador());
+
 		context.getEngine().getCamera().setHUD(hud);
 		recolocaElementos();
-		
-		if (updater==null){
-			updater=new IUpdateHandler() {
-				@Override
-				public void onUpdate(float pSecondsElapsed) {				
-					
-				}
 
+		update();
+		if (timer == null) {
+			timer = new TimerHandler(1f, true, new ITimerCallback() {
 				@Override
-				public void reset() {
-
+				public void onTimePassed(final TimerHandler pTimerHandler) {
+					try {
+						update();
+					} catch (Exception e) {
+					}
 				}
-			};
-			scene.registerUpdateHandler(updater);
-		}		
+			});
+		}
+		scene.registerUpdateHandler(timer);
 	}
 
+	public void update(){
+		ct_vidas.setText(":"+context.gameManager.vidas);
+		ct_bombas.setText(":"+context.gameManager.bombaNum);
+		ct_explosion.setText(":"+context.gameManager.bombaTam);
+		if (context.gameManager.detonador){
+			spr_detonador.setCurrentTileIndex(0);
+		}else{
+			spr_detonador.setCurrentTileIndex(5);
+		}
+		int cuenta = context.escenaJuego.datosMapa.getBoosterTotales()-context.gameManager.boostersCogidos-context.gameManager.boostersExplotados;
+		ct_monedas.setText(":"+cuenta);	
+		
+	}
+	
+	
 }

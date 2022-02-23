@@ -91,8 +91,7 @@ public class EscenaJuego {
 	
 	
 	
-	public Scene onCreateScene(int numMap) {
-		
+	public Scene onCreateScene(int numMap) {		
 		boolean primeraCarga;
 		if (scene!=null){			
 			primeraCarga=false;
@@ -271,6 +270,9 @@ public class EscenaJuego {
 		capaBordeAbajo.setScaleX(Constantes.FARTOR_FORMA);
 		capaTechoPiedras.setScaleX(Constantes.FARTOR_FORMA);		
 
+		
+		context.gameManager.cargaDatos();
+		
 		
 		if (primeraCarga){
 			context.camaraJuego.setBoundsEnabled(false);
