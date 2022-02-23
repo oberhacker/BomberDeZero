@@ -93,12 +93,16 @@ public class GameManager {
 		do{
 			seleccion=Util.tomaDecision(1, context.capaParedes.listaMuros.size()-1);
 			ArrayList<Integer> posicionesMonedas = context.almacenMonedas.posiciones;
-			for (Integer integer : posicionesMonedas) {				
-				if(integer.equals(Integer.valueOf(seleccion))){	
-					elegido=false;
-					break;					
-				}else{
-					elegido=true;
+			if (posicionesMonedas.isEmpty()){
+				elegido=true;
+			}else{
+				for (Integer integer : posicionesMonedas) {				
+					if(integer.equals(Integer.valueOf(seleccion))){	
+						elegido=false;
+						break;					
+					}else{
+						elegido=true;
+					}
 				}
 			}
 			
