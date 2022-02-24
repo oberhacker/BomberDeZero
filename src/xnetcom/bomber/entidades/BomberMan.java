@@ -121,6 +121,11 @@ public class BomberMan {
 
 			@Override
 			protected void onManagedDraw(GLState GLState, Camera pCamera) {
+				try {
+					bomberArriba.setX(baseTileRectangle.getX() - 10);
+					bomberArriba.setY(baseTileRectangle.getY());
+				} catch (Exception e) {
+				}
 				super.onManagedDraw(GLState, pCamera);
 			}
 		};
@@ -221,8 +226,8 @@ public class BomberMan {
 		// ////////////
 		// context.escenaJuego.hud.debugText.setText("Hijos "+context.escenaJuego.scene.getChildCount());
 
-		bomberArriba.setX(baseTileRectangle.getX() - 10);
-		bomberArriba.setY(baseTileRectangle.getY());
+		// bomberArriba.setX(baseTileRectangle.getX() - 10);
+		// bomberArriba.setY(baseTileRectangle.getY());
 		final float[] playerFootCordinates = getSprite().convertLocalCoordinatesToSceneCoordinates(BomberMan.PIES_X, BomberMan.PIES_Y);
 		TMXLayer tmxLayer = context.escenaJuego.mTMXTiledMap.getTMXLayers().get(1);
 		TMXTile tmxTile = tmxLayer.getTMXTileAt(playerFootCordinates[Constants.VERTEX_INDEX_X], playerFootCordinates[Constants.VERTEX_INDEX_Y]);
@@ -280,6 +285,7 @@ public class BomberMan {
 	public void cambiaPosicion() {
 
 		cogerMoneda();
+		updateFantasma();
 
 		if (estaMovientoSinLimite()) {
 			switch (playerDirection) {
@@ -900,24 +906,27 @@ public class BomberMan {
 		return false;
 	}
 
-	int boostersFantasma=0;
+	int boostersFantasma = 0;
+
 	public void boosterFantasma() {
-		if (!fantasma){
+		if (!fantasma) {
 			fantasma = true;
 			boostersFantasma++;
 			bomberAbajo.setAlpha(0.5f);
 			bomberArriba.setAlpha(0.5f);
+			baseTileRectangle.setZIndex(Constantes.ZINDEX_CAPA_PAREDES_ARRIBA + 10);
+			bomberArriba.setZIndex(Constantes.ZINDEX_CAPA_PAREDES_ARRIBA + 10);
+			context.escenaJuego.scene.sortChildren();
 			new Thread() {
 				public void run() {
 					try {
 
-						do{
+						do {
 							boostersFantasma--;
-							sleep(5000);
-						}while(boostersFantasma>0);						
-						fantasma=false;		
-						bomberAbajo.setAlpha(1f);
-						bomberArriba.setAlpha(1f);
+							sleep(Constantes.TIEMPO_FANTASMA);
+							fantasmaOff();
+						} while (boostersFantasma > 0);
+
 
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -925,12 +934,38 @@ public class BomberMan {
 
 				};
 			}.start();
-		}else{	
-			boostersFantasma++;			
+		} else {
+			boostersFantasma++;
 		}
-		
-		
-
-
 	}
+	
+	public boolean fantasmaOff;
+	public void fantasmaOff(){
+		if (context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla==Matriz.PARED){
+			fantasmaOff=true;			
+		}else{
+			fantasma = false;
+			bomberAbajo.setAlpha(1f);
+			bomberArriba.setAlpha(1f);
+			baseTileRectangle.setZIndex(Constantes.ZINDEX_BOMBERMAN_ABAJO);
+			bomberArriba.setZIndex(Constantes.ZINDEX_BOMBERMAN_ARRIBA);
+			context.escenaJuego.scene.sortChildren();
+		}
+	}
+	
+	public void updateFantasma(){
+		if (fantasmaOff){
+			if (context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla!=Matriz.PARED){
+				fantasmaOff=false;
+				fantasma = false;
+				bomberAbajo.setAlpha(1f);
+				bomberArriba.setAlpha(1f);
+				baseTileRectangle.setZIndex(Constantes.ZINDEX_BOMBERMAN_ABAJO);
+				bomberArriba.setZIndex(Constantes.ZINDEX_BOMBERMAN_ARRIBA);
+				context.escenaJuego.scene.sortChildren();
+			}
+		}
+	}
+	
+	
 }

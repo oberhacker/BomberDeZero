@@ -53,8 +53,7 @@ public class AlmacenMonedas {
 		moneda.setTipoMoneda(tipo);
 		moneda.ponerEnCoodenadas(coordenadas);		
 		almacen.add(moneda);
-	}	
-	
+	}		
 	
 	public ArrayList<Integer>posiciones; 
 	public void barajeaMonedas(){	
