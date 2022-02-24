@@ -327,16 +327,17 @@ public class GameManager {
 		this.bombaTam++;
 	}
 	
+	
 	public void cogeMonedaFantasma(){
 		context.bomberman.boosterFantasma();
 	}
 	
 	public void cogeMonedaFuerza(){
-		
+		context.bomberman.boosterSayan();
 	}
 	
-	public void cogeMonedaCorrer(){
-		
+	public void cogeMonedaCorrer(){		
+		context.bomberman.boosterrapido();
 	}
 	
 

@@ -37,7 +37,10 @@ import android.util.Log;
 
 public class BomberMan {
 
+	public float tiempoPorPixxel = Constantes.TIEMPO_POR_PIXEL;
+
 	private static long[] ANIMATE_DURATION = new long[] { 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30 };
+	private static long[] ANIMATE_DURATION_RAPIDO = new long[] { 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20 };
 
 	public enum PlayerPosicion {
 		ARRIBA, ABAJO, DERECHA, IZQUIERDA, CENTRO, MUY_ARRIBA, MUY_ABAJO, MUY_DERECHA, MUY_IZQUIERDA,
@@ -48,6 +51,10 @@ public class BomberMan {
 	}
 
 	public BomberGame context;
+
+	private AnimatedSprite aura;
+
+	private TiledTextureRegion auraTR;
 
 	boolean fantasma = false;
 
@@ -65,6 +72,8 @@ public class BomberMan {
 
 	public static float VELOCIDAD_RECTO_X = 150;
 	public static float VELOCIDAD_RECTO_Y = 150;
+
+	float rapidez = 1;
 
 	public float FACTOR_ACHATADO = 0.96f;
 
@@ -98,6 +107,10 @@ public class BomberMan {
 
 	public void carga() throws IOException {
 
+		BitmapTextureAtlas auraBTA = new BitmapTextureAtlas(context.getTextureManager(), 512, 128, TextureOptions.DEFAULT);
+		this.auraTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(auraBTA, context, "gfx/AURA128.png", 0, 0, 3, 1);
+		auraBTA.load();
+
 		BitmapTextureAtlas tiledmaster90A = new BitmapTextureAtlas(context.getTextureManager(), 2048, 1024, TextureOptions.DEFAULT);
 		this.mBombermanTextureRegionAniA = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(tiledmaster90A, context, "gfx/tiledmaster(125x104)ArribaB.png", 0, 0, 12, 5);
 		tiledmaster90A.load();
@@ -124,6 +137,7 @@ public class BomberMan {
 				try {
 					bomberArriba.setX(baseTileRectangle.getX() - 10);
 					bomberArriba.setY(baseTileRectangle.getY());
+					aura.setPosition(baseTileRectangle.getX() - 6, baseTileRectangle.getY() + 8);
 				} catch (Exception e) {
 				}
 				super.onManagedDraw(GLState, pCamera);
@@ -141,6 +155,14 @@ public class BomberMan {
 
 		bomberAbajo.setZIndex(Constantes.ZINDEX_BOMBERMAN_ABAJO);
 		bomberArriba.setZIndex(Constantes.ZINDEX_BOMBERMAN_ARRIBA);
+
+		aura = new AnimatedSprite(7, -20, auraTR, context.getVertexBufferObjectManager());
+		aura.setZIndex(Constantes.ZINDEX_BOMBERMAN_ARRIBA + 1);
+		aura.setOffsetCenter(0, 0);
+		aura.setScale(0.8f);
+		aura.setScaleY(0.9f);
+		aura.animate(90, true);
+		aura.setVisible(false);
 
 	}
 
@@ -201,6 +223,7 @@ public class BomberMan {
 		scene.attachChild(currentTileRectangle);
 		scene.attachChild(bomberArriba);
 		scene.attachChild(baseTileRectangle);
+		scene.attachChild(aura);
 
 		if (updater == null) {
 			updater = new IUpdateHandler() {
@@ -469,7 +492,7 @@ public class BomberMan {
 		baseTileRectangle.clearEntityModifiers();
 
 		if (mover != 0) {
-			baseTileRectangle.registerEntityModifier(new MoveModifier(Math.abs(Constantes.TIEMPO_POR_PIXEL * mover), x, y, xto, yto, new IEntityModifierListener() {
+			baseTileRectangle.registerEntityModifier(new MoveModifier(Math.abs(tiempoPorPixxel * mover), x, y, xto, yto, new IEntityModifierListener() {
 				@Override
 				public void onModifierStarted(IModifier<IEntity> arg0, IEntity arg1) {
 					// TODO Auto-generated method stub
@@ -553,7 +576,7 @@ public class BomberMan {
 	public void moverArribaSinFin() {
 		animarArriba();
 		if (!isLimiteArriba()) {
-			physicsHandler.setVelocity(0, VELOCIDAD_RECTO_Y);
+			physicsHandler.setVelocity(0, VELOCIDAD_RECTO_Y * rapidez);
 		}
 
 	}
@@ -602,7 +625,7 @@ public class BomberMan {
 	public void moverAbajoSinFin() {
 		animarAbajo();
 		if (!isLimiteAbajo()) {
-			physicsHandler.setVelocity(0, -VELOCIDAD_RECTO_Y);
+			physicsHandler.setVelocity(0, -VELOCIDAD_RECTO_Y * rapidez);
 		}
 
 	}
@@ -649,7 +672,7 @@ public class BomberMan {
 	public void moverDerechaSinFin() {
 		animarDerecha();
 		if (!isLimiteDerecha()) {
-			physicsHandler.setVelocity(VELOCIDAD_RECTO_X, 0);
+			physicsHandler.setVelocity(VELOCIDAD_RECTO_X * rapidez, 0);
 		}
 
 	}
@@ -697,7 +720,7 @@ public class BomberMan {
 	public void moverIzquierdaSinFin() {
 		animarIzquierda();
 		if (!isLimiteIzquierda()) {
-			physicsHandler.setVelocity(-VELOCIDAD_RECTO_X, 0);
+			physicsHandler.setVelocity(-VELOCIDAD_RECTO_X * rapidez, 0);
 		}
 
 	}
@@ -744,23 +767,39 @@ public class BomberMan {
 	}
 
 	public void animarIzquierda() {
+		long[] duration = ANIMATE_DURATION;
+		if (rapido) {
+			duration = ANIMATE_DURATION_RAPIDO;
+		}
 		stopAnimation();
-		bomberAbajo.animate(ANIMATE_DURATION, 36, 47, true);
+		bomberAbajo.animate(duration, 36, 47, true);
 	}
 
 	public void animarDerecha() {
+		long[] duration = ANIMATE_DURATION;
+		if (rapido) {
+			duration = ANIMATE_DURATION_RAPIDO;
+		}
 		stopAnimation();
-		bomberAbajo.animate(ANIMATE_DURATION, 24, 35, true);
+		bomberAbajo.animate(duration, 24, 35, true);
 	}
 
 	public void animarArriba() {
+		long[] duration = ANIMATE_DURATION;
+		if (rapido) {
+			duration = ANIMATE_DURATION_RAPIDO;
+		}
 		stopAnimation();
-		bomberAbajo.animate(ANIMATE_DURATION, 12, 23, true);
+		bomberAbajo.animate(duration, 12, 23, true);
 	}
 
 	public void animarAbajo() {
+		long[] duration = ANIMATE_DURATION;
+		if (rapido) {
+			duration = ANIMATE_DURATION_RAPIDO;
+		}
 		stopAnimation();
-		bomberAbajo.animate(ANIMATE_DURATION, 0, 11, true);
+		bomberAbajo.animate(duration, 0, 11, true);
 	}
 
 	public void stopAnimation() {
@@ -889,7 +928,7 @@ public class BomberMan {
 	}
 
 	public boolean matarPorCoordenadas(ArrayList<Coordenadas> coordenadas) {
-		if (Constantes.DEBUG_IMMORTAL) {
+		if (Constantes.DEBUG_IMMORTAL || sayan) {
 			return false;
 		}
 		for (Coordenadas coordenada : coordenadas) {
@@ -924,26 +963,24 @@ public class BomberMan {
 						do {
 							boostersFantasma--;
 							sleep(Constantes.TIEMPO_FANTASMA);
-							fantasmaOff();
 						} while (boostersFantasma > 0);
-
-
+						fantasmaOff();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-
 				};
 			}.start();
 		} else {
 			boostersFantasma++;
 		}
 	}
-	
+
 	public boolean fantasmaOff;
-	public void fantasmaOff(){
-		if (context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla==Matriz.PARED){
-			fantasmaOff=true;			
-		}else{
+
+	public void fantasmaOff() {
+		if (context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla == Matriz.PARED) {
+			fantasmaOff = true;
+		} else {
 			fantasma = false;
 			bomberAbajo.setAlpha(1f);
 			bomberArriba.setAlpha(1f);
@@ -952,11 +989,11 @@ public class BomberMan {
 			context.escenaJuego.scene.sortChildren();
 		}
 	}
-	
-	public void updateFantasma(){
-		if (fantasmaOff){
-			if (context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla!=Matriz.PARED){
-				fantasmaOff=false;
+
+	public void updateFantasma() {
+		if (fantasmaOff) {
+			if (context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla != Matriz.PARED) {
+				fantasmaOff = false;
 				fantasma = false;
 				bomberAbajo.setAlpha(1f);
 				bomberArriba.setAlpha(1f);
@@ -966,6 +1003,98 @@ public class BomberMan {
 			}
 		}
 	}
-	
-	
+
+	public boolean sayan;
+	public int boosterssayan;
+
+	public void boosterSayan() {
+		if (!sayan) {
+			sayan = true;
+			boosterssayan++;
+			aura.setVisible(true);
+			new Thread() {
+				public void run() {
+					try {
+
+						do {
+							boosterssayan--;
+							sleep(Constantes.TIEMPO_FANTASMA);
+						} while (boosterssayan > 0);
+						sayanOff();
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+				};
+			}.start();
+		} else {
+			boosterssayan++;
+		}
+	}
+
+	public void sayanOff() {
+		aura.setVisible(false);
+		sayan = false;
+	}
+
+	public boolean rapido;
+	public int boostersrapido;
+
+	public void boosterrapido() {
+		if (!rapido) {
+			rapido = true;
+			rapidez = 1.6f;
+			boostersrapido++;
+			tiempoPorPixxel = Constantes.TIEMPO_POR_PIXEL * 0.6f;
+			physicsHandler.setVelocityX(physicsHandler.getVelocityX() * 1.6f);
+			physicsHandler.setVelocityY(physicsHandler.getVelocityY() * 1.6f);
+			new Thread() {
+				public void run() {
+					try {
+
+						do {
+							boostersrapido--;
+							sleep(Constantes.TIEMPO_FANTASMA);
+						} while (boostersrapido > 0);
+						rapidoOff();
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+				};
+			}.start();
+		} else {
+			boostersrapido++;
+		}
+	}
+
+	public void rapidoOff() {
+		rapido = false;
+		rapidez = 1;
+		physicsHandler.setVelocityX(physicsHandler.getVelocityX() / 1.6f);
+		physicsHandler.setVelocityY(physicsHandler.getVelocityY() / 1.6f);
+		tiempoPorPixxel = Constantes.TIEMPO_POR_PIXEL;
+		if (!isMuerto()) {
+			switch (playerDirection) {
+			case DOWN:
+				animarAbajo();
+				break;
+			case LEFT:
+				animarIzquierda();
+				break;
+			case NONE:
+				break;
+			case RIGHT:
+				animarDerecha();
+				break;
+			case UP:
+				animarArriba();
+				break;
+			}
+		}
+
+	}
+
 }
