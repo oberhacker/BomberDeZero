@@ -67,6 +67,9 @@ public class Constantes {
 	public static final int  INICIO_VIDAS=5;
 	public static final int ULTIMO_MAPA = 45;
 	public static final int TIEMPO_FANTASMA = 10000;
+	public static final float PREFERENCIAS_CONTROL_X = 20;
+	public static final float PREFERENCIAS_CONTROL_Y = 20;
+	public static final float PREFERENCIAS_CONTROL_Z = 2;
 	
 	
 	public static int TOTAL_MAPAS=45;

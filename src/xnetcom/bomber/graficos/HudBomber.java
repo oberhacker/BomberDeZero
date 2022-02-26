@@ -6,7 +6,6 @@ import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl.IOnScreenControlListener;
 import org.andengine.engine.camera.hud.controls.DigitalOnScreenControl;
-import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.scene.Scene;
@@ -25,8 +24,11 @@ import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 
 import xnetcom.bomber.BomberGame;
+import xnetcom.bomber.preferencias.Preferencias;
 import xnetcom.bomber.util.Constantes;
+import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 
 public class HudBomber {
 
@@ -54,6 +56,9 @@ public class HudBomber {
 	Sprite pause;
 	Sprite menu;
 	public Text debugText;
+	
+	Sprite marcador;
+	Sprite fondo;
 
 	public DigitalOnScreenControl mDigitalOnScreenControl;
 	private TextureRegion hudTR;
@@ -64,7 +69,19 @@ public class HudBomber {
 	private Text ct_bombas;
 	private Text ct_explosion;
 	private Text ct_monedas;
+	private Text texto1;
+	private Text texto2;
+	private Text zoomTxt;
+	private Text texto4;
+	private Text texto5;
+	private Text texto6;
 
+	
+	private Sprite cruceta_mas,cruceta_menos, restore;
+	private Sprite btn_1_mas,btn_1_menos;
+	private Sprite zoom_mas,zoom_menos;
+	private Sprite music_mas, music_menos, sound_mas,sound_menos;
+	
 	private void screenControl(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
 		if (context.gameManager.pausa) {
 			return;
@@ -95,10 +112,16 @@ public class HudBomber {
 	}
 
 	public void carga() throws IOException {
-
+		cargarPreferencias();
+		
 		BitmapTextureAtlas pause_BTA = new BitmapTextureAtlas(context.getTextureManager(), 128, 128, TextureOptions.BILINEAR);
 		TextureRegion pause_BTA_TR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(pause_BTA, context, "gfx/pause.png", 0, 0);
 		pause_BTA.load();
+		
+		BitmapTextureAtlas fondo_BTA = new BitmapTextureAtlas(context.getTextureManager(), 2048, 1024, TextureOptions.DEFAULT);
+		TextureRegion fondo_TR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(fondo_BTA, context, "gfx/menu3.jpg", 0, 0);
+		fondo_BTA.load();		
+		
 
 		BitmapTextureAtlas menu_BTA = new BitmapTextureAtlas(context.getTextureManager(), 128, 128, TextureOptions.BILINEAR);
 		TextureRegion menu_BTA_TR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menu_BTA, context, "gfx/menu_btn.png", 0, 0);
@@ -182,6 +205,26 @@ public class HudBomber {
 					}
 				}
 			}
+			
+			
+			protected boolean onHandleControlBaseTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+				
+				if (pausa) {
+					Log.d("TOUCH", "getControlBase x "+getControlBase().getX());
+					Log.d("TOUCH", "pSceneTouchEvent x "+pSceneTouchEvent.getX());
+					getControlBase().setPosition(pSceneTouchEvent.getX()/2 , pSceneTouchEvent.getY()/2);
+					refreshControlKnobPosition();
+
+				} else {
+					super.onHandleControlBaseTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+
+				}
+				return true;
+			}
+			
+			
+			
+			
 		};
 		final Sprite controlBase = this.mDigitalOnScreenControl.getControlBase();
 
@@ -217,7 +260,7 @@ public class HudBomber {
 		menu = new Sprite(0, 0, menu_BTA_TR, context.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				if (pSceneTouchEvent.getAction() == pSceneTouchEvent.ACTION_DOWN) {
+				if (pSceneTouchEvent.getAction() == pSceneTouchEvent.ACTION_DOWN && this.isVisible()) {
 					toMenu();
 				}
 
@@ -244,20 +287,111 @@ public class HudBomber {
 		pause.setAlpha(0.7f);
 
 		controlBase.setAlpha(0.5f);
-		controlBase.setOffsetCenter(0, 0);
+//		controlBase.setOffsetCenter(0, 0);
 		this.mDigitalOnScreenControl.getControlKnob().setScale(1.25f);
-		this.mDigitalOnScreenControl.setScale(2f);
+		this.mDigitalOnScreenControl.setScale(zControl);
+		
+		fondo= new Sprite(context.CAMERA_WIDTH/2, context.CAMERA_HEIGHT/2, fondo_TR, context.getVertexBufferObjectManager());
+		fondo.setVisible(false);		
+		
+//		controlBase.setPosition(xControl+controlBase.getWidthScaled()/2,yControl+controlBase.getHeightScaled()/2);
+		controlBaseSetPosition(xControl, yControl);
+		
+		
 
-		// preparamos el marcador
+		mFont = FontFactory.createFromAsset(context.getFontManager(), context.getTextureManager(), 256, 256, TextureOptions.BILINEAR, context.getAssets(), "DD.ttf", 25, true, android.graphics.Color.BLACK);//gles2
+		mFont.load();
+		
+		BitmapTextureAtlas masBTA = new BitmapTextureAtlas(context.getTextureManager(),128, 128, TextureOptions.DEFAULT);		
+		BitmapTextureAtlas menosBTA = new BitmapTextureAtlas(context.getTextureManager(),128, 128, TextureOptions.DEFAULT);		
+		masBTA.load();
+		menosBTA.load();
+		
+		TextureRegion masTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(masBTA, context, "gfx/mas07.png",0,0);
+		TextureRegion menosTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menosBTA, context, "gfx/menos07.png",0,0);	
+		
+		texto1 = new Text(0, 0, mFont, "Control size:",context.getVertexBufferObjectManager());
+		texto2 = new Text(0, 0, mFont, "Buttons size:",context.getVertexBufferObjectManager());
+		zoomTxt = new Text(10, 400, mFont, "Zoom:",context.getVertexBufferObjectManager());
+		texto4 = new Text(0, 0, mFont, " Music level:00",context.getVertexBufferObjectManager());
+		texto5 = new Text(0, 0, mFont, " Sound level:00",context.getVertexBufferObjectManager());
+		texto6 = new Text(0, 0, mFont, " Vibration: ",context.getVertexBufferObjectManager());
+				
+
+		zoomTxt.setOffsetCenter(0, 0);		
+		zoomTxt.setPosition(10, 500);
+		
+//		zoom_mas = new Sprite(200, 500, rm.getMasTR(),context.getVertexBufferObjectManager());
+		
+				
+		BitmapTextureAtlas restore_btn = new BitmapTextureAtlas(context.getTextureManager(),256, 128, TextureOptions.DEFAULT);
+		restore_btn.load();
+		TextureRegion restoreTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(restore_btn, context, "gfx/restore_btn.png",0,0);
+		restore = new Sprite(context.CAMERA_WIDTH/2, 60, restoreTR,context.getVertexBufferObjectManager()){
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent,float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if(pSceneTouchEvent.getAction()==0 && isVisible()){
+					reseteaPreferencias();
+				}
+				return false;
+			}
+		};
+		restore.setVisible(false);
+		
+	
 
 	}
+	
+	public void controlBaseSetPosition(float x, float y){
+		Sprite controlBase = this.mDigitalOnScreenControl.getControlBase();
+		controlBase.setPosition(x+controlBase.getWidthScaled()/2,y+controlBase.getHeightScaled()/2);
+	}
+	
 
+	float xControl=Constantes.PREFERENCIAS_CONTROL_X;
+	float yControl=Constantes.PREFERENCIAS_CONTROL_Y;
+	float zControl=Constantes.PREFERENCIAS_CONTROL_Z;
+	public void cargarPreferencias(){
+		float xControl = Preferencias.leerPreferenciasFloat("xControl");
+		float yControl = Preferencias.leerPreferenciasFloat("yControl");
+		float zControl = Preferencias.leerPreferenciasFloat("zControl");
+		
+		if (xControl!=-1){
+			this.xControl=xControl;
+		}
+		if (yControl!=-1){
+			this.yControl=yControl;
+		}
+		if (zControl!=-1){
+			this.zControl=zControl;
+		}		 
+	}
+	
+	public void reseteaPreferencias(){
+		xControl=Constantes.PREFERENCIAS_CONTROL_X;
+		yControl=Constantes.PREFERENCIAS_CONTROL_Y;
+		zControl=Constantes.PREFERENCIAS_CONTROL_Z;
+		Preferencias.guardarPrefenrenciasFloat("xControl", xControl);
+		Preferencias.guardarPrefenrenciasFloat("yControl", yControl);
+		Preferencias.guardarPrefenrenciasFloat("zControl", zControl);		
+		controlBaseSetPosition(xControl, yControl);
+		
+		
+	}
+	
+	public void guardarPreferencias(){
+		Sprite controlBase = this.mDigitalOnScreenControl.getControlBase();		
+		Preferencias.guardarPrefenrenciasFloat("xControl", controlBase.getX()-controlBase.getWidthScaled()/2);
+		Preferencias.guardarPrefenrenciasFloat("yControl", controlBase.getY()-controlBase.getHeightScaled()/2);
+		Preferencias.guardarPrefenrenciasFloat("zControl", zControl);
+	}
+	
+	
 	public void toMenu() {
 		context.menuMapas.verMenuMapas();
 	}
 
 	public Sprite creaMarcador() {
-		Sprite marcador = new Sprite(0, 0, hudTR, context.getVertexBufferObjectManager());
+		marcador = new Sprite(0, 0, hudTR, context.getVertexBufferObjectManager());
 
 		spr_detonador = new TiledSprite(0, 0, iconosHUDTR, context.getVertexBufferObjectManager());
 		TiledSprite spr_vidas = new TiledSprite(0, 0, iconosHUDTR, context.getVertexBufferObjectManager());
@@ -339,15 +473,34 @@ public class HudBomber {
 
 	public void pause() {
 		if (pausa) {
+			salMenuPausa();
+			guardarPreferencias();
 			context.gameManager.play();
 			pausa = false;
 		} else {
+			muestraMenuPausa();
 			context.gameManager.pausa();
 			pausa = true;
 		}
 
 	}
 
+	public void salMenuPausa(){
+		fondo.setVisible(false);		
+		marcador.setVisible(true);
+		menu.setVisible(true);
+		restore.setVisible(false);
+	}
+	
+	public void muestraMenuPausa(){
+		restore.setVisible(true);
+		fondo.setVisible(true);		
+		marcador.setVisible(false);
+		menu.setVisible(false);
+	}
+	
+	
+	
 	public void apretarBotonPlantabomba() {
 		if (context.gameManager.pausa) {
 			return;
@@ -368,21 +521,25 @@ public class HudBomber {
 	}
 
 	public void recolocaElementos() {
-		btn_1.setPosition((context.CAMERA_WIDTH - 30) - btn_1.getWidthScaled(), 10);
-		btn_2.setPosition((context.CAMERA_WIDTH - 30) - (30 + btn_2.getWidthScaled() * 2), 10);
+		btn_2.setPosition((context.CAMERA_WIDTH - 30) - btn_2.getWidthScaled(), 10);
+		btn_1.setPosition((context.CAMERA_WIDTH - 30) - (30 + btn_1.getWidthScaled() * 2), 10);
 	}
 
 	TimerHandler timer;
 
 	public void attachScena(Scene scene) {
-		scene.setChildScene(this.mDigitalOnScreenControl);
-
+		hud.attachChild(fondo);
+		hud.attachChild(restore);
 		hud.attachChild(menu);
+		hud.setChildScene(mDigitalOnScreenControl);
+		
+		hud.attachChild(zoomTxt);
 		hud.attachChild(pause);
 		hud.attachChild(btn_1);
 		hud.attachChild(btn_2);
 
 		hud.registerTouchArea(btn_1);
+		hud.registerTouchArea(restore);
 		hud.registerTouchArea(btn_2);
 		hud.registerTouchArea(pause);
 		hud.registerTouchArea(menu);
