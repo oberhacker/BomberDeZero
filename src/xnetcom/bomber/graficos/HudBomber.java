@@ -56,7 +56,7 @@ public class HudBomber {
 	Sprite pause;
 	Sprite menu;
 	public Text debugText;
-	
+
 	Sprite marcador;
 	Sprite fondo;
 
@@ -69,19 +69,19 @@ public class HudBomber {
 	private Text ct_bombas;
 	private Text ct_explosion;
 	private Text ct_monedas;
-	private Text texto1;
-	private Text texto2;
+	private Text controlSizeTxt;
+	private Text butonsSizeTxt;
 	private Text zoomTxt;
-	private Text texto4;
-	private Text texto5;
-	private Text texto6;
+	private Text musicTxt;
+	private Text soundTxt;
+	private Text vibrationTxt;
 
-	
-	private Sprite cruceta_mas,cruceta_menos, restore;
-	private Sprite btn_1_mas,btn_1_menos;
-	private Sprite zoom_mas,zoom_menos;
-	private Sprite music_mas, music_menos, sound_mas,sound_menos;
-	
+	private Sprite cruceta_mas, cruceta_menos, restore;
+	private Sprite btn_1_mas, btn_1_menos;
+	private Sprite zoom_mas, zoom_menos;
+	private Sprite music_mas, music_menos, sound_mas, sound_menos;
+	private TiledSprite ticSpr;
+
 	private void screenControl(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
 		if (context.gameManager.pausa) {
 			return;
@@ -113,15 +113,14 @@ public class HudBomber {
 
 	public void carga() throws IOException {
 		cargarPreferencias();
-		
+
 		BitmapTextureAtlas pause_BTA = new BitmapTextureAtlas(context.getTextureManager(), 128, 128, TextureOptions.BILINEAR);
 		TextureRegion pause_BTA_TR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(pause_BTA, context, "gfx/pause.png", 0, 0);
 		pause_BTA.load();
-		
+
 		BitmapTextureAtlas fondo_BTA = new BitmapTextureAtlas(context.getTextureManager(), 2048, 1024, TextureOptions.DEFAULT);
 		TextureRegion fondo_TR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(fondo_BTA, context, "gfx/menu3.jpg", 0, 0);
-		fondo_BTA.load();		
-		
+		fondo_BTA.load();
 
 		BitmapTextureAtlas menu_BTA = new BitmapTextureAtlas(context.getTextureManager(), 128, 128, TextureOptions.BILINEAR);
 		TextureRegion menu_BTA_TR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menu_BTA, context, "gfx/menu_btn.png", 0, 0);
@@ -205,14 +204,13 @@ public class HudBomber {
 					}
 				}
 			}
-			
-			
+
 			protected boolean onHandleControlBaseTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-				
+
 				if (pausa) {
-					Log.d("TOUCH", "getControlBase x "+getControlBase().getX());
-					Log.d("TOUCH", "pSceneTouchEvent x "+pSceneTouchEvent.getX());
-					getControlBase().setPosition(pSceneTouchEvent.getX()/2 , pSceneTouchEvent.getY()/2);
+					Log.d("TOUCH", "getControlBase x " + getControlBase().getX());
+					Log.d("TOUCH", "pSceneTouchEvent x " + pSceneTouchEvent.getX());
+					getControlBase().setPosition(pSceneTouchEvent.getX() / 2, pSceneTouchEvent.getY() / 2);
 					refreshControlKnobPosition();
 
 				} else {
@@ -221,10 +219,7 @@ public class HudBomber {
 				}
 				return true;
 			}
-			
-			
-			
-			
+
 		};
 		final Sprite controlBase = this.mDigitalOnScreenControl.getControlBase();
 
@@ -287,105 +282,158 @@ public class HudBomber {
 		pause.setAlpha(0.7f);
 
 		controlBase.setAlpha(0.5f);
-//		controlBase.setOffsetCenter(0, 0);
+		// controlBase.setOffsetCenter(0, 0);
 		this.mDigitalOnScreenControl.getControlKnob().setScale(1.25f);
 		this.mDigitalOnScreenControl.setScale(zControl);
-		
-		fondo= new Sprite(context.CAMERA_WIDTH/2, context.CAMERA_HEIGHT/2, fondo_TR, context.getVertexBufferObjectManager());
-		fondo.setVisible(false);		
-		
-//		controlBase.setPosition(xControl+controlBase.getWidthScaled()/2,yControl+controlBase.getHeightScaled()/2);
-		controlBaseSetPosition(xControl, yControl);
-		
-		
 
-		mFont = FontFactory.createFromAsset(context.getFontManager(), context.getTextureManager(), 256, 256, TextureOptions.BILINEAR, context.getAssets(), "DD.ttf", 25, true, android.graphics.Color.BLACK);//gles2
+		fondo = new Sprite(context.CAMERA_WIDTH / 2, context.CAMERA_HEIGHT / 2, fondo_TR, context.getVertexBufferObjectManager());
+		fondo.setVisible(false);
+
+		// controlBase.setPosition(xControl+controlBase.getWidthScaled()/2,yControl+controlBase.getHeightScaled()/2);
+		controlBaseSetPosition(xControl, yControl);
+
+		mFont = FontFactory.createFromAsset(context.getFontManager(), context.getTextureManager(), 256, 256, TextureOptions.BILINEAR, context.getAssets(), "DD.ttf", 30, true,
+				android.graphics.Color.BLACK);// gles2
 		mFont.load();
-		
-		BitmapTextureAtlas masBTA = new BitmapTextureAtlas(context.getTextureManager(),128, 128, TextureOptions.DEFAULT);		
-		BitmapTextureAtlas menosBTA = new BitmapTextureAtlas(context.getTextureManager(),128, 128, TextureOptions.DEFAULT);		
+
+		BitmapTextureAtlas masBTA = new BitmapTextureAtlas(context.getTextureManager(), 128, 128, TextureOptions.DEFAULT);
+		BitmapTextureAtlas menosBTA = new BitmapTextureAtlas(context.getTextureManager(), 128, 128, TextureOptions.DEFAULT);
 		masBTA.load();
 		menosBTA.load();
-		
-		TextureRegion masTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(masBTA, context, "gfx/mas07.png",0,0);
-		TextureRegion menosTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menosBTA, context, "gfx/menos07.png",0,0);	
-		
-		texto1 = new Text(0, 0, mFont, "Control size:",context.getVertexBufferObjectManager());
-		texto2 = new Text(0, 0, mFont, "Buttons size:",context.getVertexBufferObjectManager());
-		zoomTxt = new Text(10, 400, mFont, "Zoom:",context.getVertexBufferObjectManager());
-		texto4 = new Text(0, 0, mFont, " Music level:00",context.getVertexBufferObjectManager());
-		texto5 = new Text(0, 0, mFont, " Sound level:00",context.getVertexBufferObjectManager());
-		texto6 = new Text(0, 0, mFont, " Vibration: ",context.getVertexBufferObjectManager());
-				
 
-		zoomTxt.setOffsetCenter(0, 0);		
-		zoomTxt.setPosition(10, 500);
+		TextureRegion masTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(masBTA, context, "gfx/mas07.png", 0, 0);
+		TextureRegion menosTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menosBTA, context, "gfx/menos07.png", 0, 0);
+
+		controlSizeTxt = new Text(0, 0, mFont, "Control size:", context.getVertexBufferObjectManager());
+		butonsSizeTxt = new Text(0, 0, mFont, "Buttons size:", context.getVertexBufferObjectManager());
+		zoomTxt = new Text(0, 0, mFont, "Zoom:", context.getVertexBufferObjectManager());
+		musicTxt = new Text(0, 0, mFont, " Music level:00", context.getVertexBufferObjectManager());
+		soundTxt = new Text(0, 0, mFont, " Sound level:00", context.getVertexBufferObjectManager());
+		vibrationTxt = new Text(0, 0, mFont, " Vibration: ", context.getVertexBufferObjectManager());
+
+		zoomTxt.setOffsetCenter(0, 0);
+		zoomTxt.setPosition(20, 350);
+		zoomTxt.setVisible(false);
+		zoom_mas = new Sprite(190, 365, masTR, context.getVertexBufferObjectManager());
+		zoom_mas.setVisible(false);
+
+		zoom_menos = new Sprite(280, 365, menosTR, context.getVertexBufferObjectManager());
+		zoom_menos.setVisible(false);
+
+		butonsSizeTxt.setOffsetCenter(0, 0);
+		butonsSizeTxt.setPosition(20, 420);
+		butonsSizeTxt.setVisible(false);
+
+		btn_1_mas = new Sprite(370, 440, masTR, context.getVertexBufferObjectManager());
+		btn_1_menos = new Sprite(460, 440, menosTR, context.getVertexBufferObjectManager());
+		btn_1_mas.setVisible(false);
+		btn_1_menos.setVisible(false);
+
+		controlSizeTxt.setOffsetCenter(0, 0);
+		controlSizeTxt.setPosition(20, 495);
+		controlSizeTxt.setVisible(false);
+
+		cruceta_mas = new Sprite(370, 515, masTR, context.getVertexBufferObjectManager());
+		cruceta_menos = new Sprite(460, 515, menosTR, context.getVertexBufferObjectManager());
+
+		cruceta_mas.setVisible(false);
+		cruceta_menos.setVisible(false);
+
 		
-//		zoom_mas = new Sprite(200, 500, rm.getMasTR(),context.getVertexBufferObjectManager());
 		
-				
-		BitmapTextureAtlas restore_btn = new BitmapTextureAtlas(context.getTextureManager(),256, 128, TextureOptions.DEFAULT);
+		BitmapTextureAtlas ticBTA = new BitmapTextureAtlas(context.getTextureManager(),128, 64, TextureOptions.DEFAULT);	
+		ticBTA.load();
+		TiledTextureRegion ticTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(ticBTA, context, "gfx/tic.png",0,0,2, 1);	
+		ticSpr = new TiledSprite(0, 0, ticTR,context.getVertexBufferObjectManager());
+		ticSpr.setOffsetCenter(0, 0);
+		ticSpr.setPosition(context.CAMERA_WIDTH-90, 330);
+		ticSpr.setVisible(false);			
+		
+		vibrationTxt.setVisible(false);
+		vibrationTxt.setOffsetCenter(0, 0);
+		vibrationTxt.setPosition(context.CAMERA_WIDTH-355, 340);
+		
+
+		sound_mas = new Sprite(context.CAMERA_WIDTH-150, 440, masTR, context.getVertexBufferObjectManager());
+		sound_menos = new Sprite(context.CAMERA_WIDTH-60, 440, menosTR, context.getVertexBufferObjectManager());
+		sound_menos.setVisible(false);
+		sound_mas.setVisible(false);
+		
+		soundTxt.setVisible(false);
+		soundTxt.setOffsetCenter(0, 0);
+		soundTxt.setPosition(context.CAMERA_WIDTH-550, 420);
+		
+		
+		music_mas = new Sprite(context.CAMERA_WIDTH-150, 515, masTR, context.getVertexBufferObjectManager());
+		music_menos= new Sprite(context.CAMERA_WIDTH-60, 515, menosTR, context.getVertexBufferObjectManager());
+		music_mas.setVisible(false);
+		music_menos.setVisible(false);
+		
+		musicTxt.setPosition(context.CAMERA_WIDTH-550, 495);
+		musicTxt.setOffsetCenter(0, 0);
+		musicTxt.setVisible(false);
+		
+		
+		
+		
+		BitmapTextureAtlas restore_btn = new BitmapTextureAtlas(context.getTextureManager(), 256, 128, TextureOptions.DEFAULT);
 		restore_btn.load();
-		TextureRegion restoreTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(restore_btn, context, "gfx/restore_btn.png",0,0);
-		restore = new Sprite(context.CAMERA_WIDTH/2, 60, restoreTR,context.getVertexBufferObjectManager()){
-			public boolean onAreaTouched(TouchEvent pSceneTouchEvent,float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				if(pSceneTouchEvent.getAction()==0 && isVisible()){
+		TextureRegion restoreTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(restore_btn, context, "gfx/restore_btn.png", 0, 0);
+		restore = new Sprite(context.CAMERA_WIDTH / 2, 60, restoreTR, context.getVertexBufferObjectManager()) {
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.getAction() == 0 && isVisible()) {
 					reseteaPreferencias();
 				}
 				return false;
 			}
 		};
 		restore.setVisible(false);
-		
-	
 
 	}
-	
-	public void controlBaseSetPosition(float x, float y){
+
+	public void controlBaseSetPosition(float x, float y) {
 		Sprite controlBase = this.mDigitalOnScreenControl.getControlBase();
-		controlBase.setPosition(x+controlBase.getWidthScaled()/2,y+controlBase.getHeightScaled()/2);
+		controlBase.setPosition(x + controlBase.getWidthScaled() / 2, y + controlBase.getHeightScaled() / 2);
 	}
-	
 
-	float xControl=Constantes.PREFERENCIAS_CONTROL_X;
-	float yControl=Constantes.PREFERENCIAS_CONTROL_Y;
-	float zControl=Constantes.PREFERENCIAS_CONTROL_Z;
-	public void cargarPreferencias(){
+	float xControl = Constantes.PREFERENCIAS_CONTROL_X;
+	float yControl = Constantes.PREFERENCIAS_CONTROL_Y;
+	float zControl = Constantes.PREFERENCIAS_CONTROL_Z;
+
+	public void cargarPreferencias() {
 		float xControl = Preferencias.leerPreferenciasFloat("xControl");
 		float yControl = Preferencias.leerPreferenciasFloat("yControl");
 		float zControl = Preferencias.leerPreferenciasFloat("zControl");
-		
-		if (xControl!=-1){
-			this.xControl=xControl;
+
+		if (xControl != -1) {
+			this.xControl = xControl;
 		}
-		if (yControl!=-1){
-			this.yControl=yControl;
+		if (yControl != -1) {
+			this.yControl = yControl;
 		}
-		if (zControl!=-1){
-			this.zControl=zControl;
-		}		 
+		if (zControl != -1) {
+			this.zControl = zControl;
+		}
 	}
-	
-	public void reseteaPreferencias(){
-		xControl=Constantes.PREFERENCIAS_CONTROL_X;
-		yControl=Constantes.PREFERENCIAS_CONTROL_Y;
-		zControl=Constantes.PREFERENCIAS_CONTROL_Z;
+
+	public void reseteaPreferencias() {
+		xControl = Constantes.PREFERENCIAS_CONTROL_X;
+		yControl = Constantes.PREFERENCIAS_CONTROL_Y;
+		zControl = Constantes.PREFERENCIAS_CONTROL_Z;
 		Preferencias.guardarPrefenrenciasFloat("xControl", xControl);
 		Preferencias.guardarPrefenrenciasFloat("yControl", yControl);
-		Preferencias.guardarPrefenrenciasFloat("zControl", zControl);		
+		Preferencias.guardarPrefenrenciasFloat("zControl", zControl);
 		controlBaseSetPosition(xControl, yControl);
-		
-		
+
 	}
-	
-	public void guardarPreferencias(){
-		Sprite controlBase = this.mDigitalOnScreenControl.getControlBase();		
-		Preferencias.guardarPrefenrenciasFloat("xControl", controlBase.getX()-controlBase.getWidthScaled()/2);
-		Preferencias.guardarPrefenrenciasFloat("yControl", controlBase.getY()-controlBase.getHeightScaled()/2);
+
+	public void guardarPreferencias() {
+		Sprite controlBase = this.mDigitalOnScreenControl.getControlBase();
+		Preferencias.guardarPrefenrenciasFloat("xControl", controlBase.getX() - controlBase.getWidthScaled() / 2);
+		Preferencias.guardarPrefenrenciasFloat("yControl", controlBase.getY() - controlBase.getHeightScaled() / 2);
 		Preferencias.guardarPrefenrenciasFloat("zControl", zControl);
 	}
-	
-	
+
 	public void toMenu() {
 		context.menuMapas.verMenuMapas();
 	}
@@ -485,22 +533,54 @@ public class HudBomber {
 
 	}
 
-	public void salMenuPausa(){
-		fondo.setVisible(false);		
+	public void salMenuPausa() {
+		music_mas.setVisible(false);
+		music_menos.setVisible(false);
+		musicTxt.setVisible(false);
+		soundTxt.setVisible(false);
+		sound_mas.setVisible(false);
+		sound_menos.setVisible(false);
+		vibrationTxt.setVisible(false);
+		ticSpr.setVisible(false);
+		cruceta_mas.setVisible(false);
+		cruceta_menos.setVisible(false);
+		controlSizeTxt.setVisible(false);
+		btn_1_mas.setVisible(false);
+		btn_1_menos.setVisible(false);
+		butonsSizeTxt.setVisible(false);
+		zoom_menos.setVisible(false);
+		zoomTxt.setVisible(false);
+		zoom_mas.setVisible(false);
+		fondo.setVisible(false);
 		marcador.setVisible(true);
 		menu.setVisible(true);
 		restore.setVisible(false);
 	}
-	
-	public void muestraMenuPausa(){
+
+	public void muestraMenuPausa() {
+		music_mas.setVisible(true);
+		music_menos.setVisible(true);
+		musicTxt.setVisible(true);
+		soundTxt.setVisible(true);
+		sound_mas.setVisible(true);
+		sound_menos.setVisible(true);
+		vibrationTxt.setVisible(true);
+		ticSpr.setVisible(true);
+		cruceta_mas.setVisible(true);
+		cruceta_menos.setVisible(true);
+		controlSizeTxt.setVisible(true);
+		btn_1_mas.setVisible(true);
+		btn_1_menos.setVisible(true);
+		butonsSizeTxt.setVisible(true);
+		zoom_menos.setVisible(true);
+		zoomTxt.setVisible(true);
+		zoom_mas.setVisible(true);
 		restore.setVisible(true);
-		fondo.setVisible(true);		
+		fondo.setVisible(true);
 		marcador.setVisible(false);
 		menu.setVisible(false);
 	}
-	
-	
-	
+
 	public void apretarBotonPlantabomba() {
 		if (context.gameManager.pausa) {
 			return;
@@ -529,11 +609,28 @@ public class HudBomber {
 
 	public void attachScena(Scene scene) {
 		hud.attachChild(fondo);
+		hud.attachChild(music_menos);
+		hud.attachChild(music_mas);
+		hud.attachChild(musicTxt);
+		hud.attachChild(soundTxt);
+		hud.attachChild(sound_mas);
+		hud.attachChild(sound_menos);
+		hud.attachChild(cruceta_mas);
+		hud.attachChild(vibrationTxt);
+		hud.attachChild(cruceta_menos);
+		hud.attachChild(ticSpr);
+		hud.attachChild(zoom_mas);
+		hud.attachChild(zoom_menos);
+		hud.attachChild(controlSizeTxt);
+		hud.attachChild(btn_1_mas);
+		hud.attachChild(btn_1_menos);
+		hud.attachChild(butonsSizeTxt);
 		hud.attachChild(restore);
 		hud.attachChild(menu);
-		hud.setChildScene(mDigitalOnScreenControl);
-		
 		hud.attachChild(zoomTxt);
+
+		hud.setChildScene(mDigitalOnScreenControl);
+
 		hud.attachChild(pause);
 		hud.attachChild(btn_1);
 		hud.attachChild(btn_2);
@@ -567,19 +664,18 @@ public class HudBomber {
 		scene.registerUpdateHandler(timer);
 	}
 
-	public void update(){
-		ct_vidas.setText(":"+context.gameManager.vidas);
-		ct_bombas.setText(":"+context.gameManager.bombaNum);
-		ct_explosion.setText(":"+context.gameManager.bombaTam);
-		if (context.gameManager.detonador){
+	public void update() {
+		ct_vidas.setText(":" + context.gameManager.vidas);
+		ct_bombas.setText(":" + context.gameManager.bombaNum);
+		ct_explosion.setText(":" + context.gameManager.bombaTam);
+		if (context.gameManager.detonador) {
 			spr_detonador.setCurrentTileIndex(0);
-		}else{
+		} else {
 			spr_detonador.setCurrentTileIndex(5);
 		}
-		int cuenta = context.escenaJuego.datosMapa.getBoosterTotales()-context.gameManager.boostersCogidos-context.gameManager.boostersExplotados;
-		ct_monedas.setText(":"+cuenta);	
-		
+		int cuenta = context.escenaJuego.datosMapa.getBoosterTotales() - context.gameManager.boostersCogidos - context.gameManager.boostersExplotados;
+		ct_monedas.setText(":" + cuenta);
+
 	}
-	
-	
+
 }
