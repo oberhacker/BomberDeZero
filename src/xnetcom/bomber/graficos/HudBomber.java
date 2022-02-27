@@ -8,6 +8,8 @@ import org.andengine.engine.camera.hud.controls.BaseOnScreenControl.IOnScreenCon
 import org.andengine.engine.camera.hud.controls.DigitalOnScreenControl;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
+import org.andengine.entity.IEntity;
+import org.andengine.entity.modifier.MoveYModifier;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.sprite.TiledSprite;
@@ -206,13 +208,16 @@ public class HudBomber {
 			}
 
 			protected boolean onHandleControlBaseTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-
+				if(moviendoZoom){
+					return false;
+				}
 				if (pausa) {
 					Log.d("TOUCH", "getControlBase x " + getControlBase().getX());
 					Log.d("TOUCH", "pSceneTouchEvent x " + pSceneTouchEvent.getX());
-//					getControlBase().setPosition(pSceneTouchEvent.getX() / 2, pSceneTouchEvent.getY() / 2);
-					
-					getControlBase().setPosition(pSceneTouchEvent.getX() , pSceneTouchEvent.getY() );
+					// getControlBase().setPosition(pSceneTouchEvent.getX() / 2,
+					// pSceneTouchEvent.getY() / 2);
+
+					getControlBase().setPosition(pSceneTouchEvent.getX(), pSceneTouchEvent.getY());
 					refreshControlKnobPosition();
 
 				} else {
@@ -228,37 +233,52 @@ public class HudBomber {
 		btn_1 = new Sprite(0, 0, btn_1_TR, context.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				if (pSceneTouchEvent.getAction() == pSceneTouchEvent.ACTION_DOWN) {
-					apretarBotonPlantabomba();
+				if(moviendoZoom){
+					return false;
 				}
+				if (pausa) {
+					this.setPosition(pSceneTouchEvent.getX(), pSceneTouchEvent.getY());
+					return true;
+				} else {
+					if (pSceneTouchEvent.getAction() == pSceneTouchEvent.ACTION_DOWN) {
+						apretarBotonPlantabomba();
+					}
+				}
+
 				return false;
 			}
 		};
-//		btn_1.setOffsetCenter(0, 0);
+		// btn_1.setOffsetCenter(0, 0);
 		btn_1.setScale(btn_scale);
-//		btn_1.setScaleCenter(0, 0);
+		// btn_1.setScaleCenter(0, 0);
 		btn_1.setAlpha(0.5f);
 
 		btn_2 = new Sprite(0, 0, btn_2_TR, context.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				if (pSceneTouchEvent.getAction() == pSceneTouchEvent.ACTION_DOWN) {
-					apretarBotonExplosion();
+				if(moviendoZoom){
+					return false;
 				}
-
+				if (pausa) {
+					this.setPosition(pSceneTouchEvent.getX(), pSceneTouchEvent.getY());
+					return true;
+				} else {
+					if (pSceneTouchEvent.getAction() == pSceneTouchEvent.ACTION_DOWN) {
+						apretarBotonExplosion();
+					}
+				}
 				return false;
 			}
 		};
 
 		btn_2.setScale(btn_scale);
-		btn_2.setAlpha(0.5f);		
-		cargarPreferenciasBTN();		
+		btn_2.setAlpha(0.5f);
+		cargarPreferenciasBTN();
 
-		
 		menu = new Sprite(0, 0, menu_BTA_TR, context.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				if (pSceneTouchEvent.getAction() == pSceneTouchEvent.ACTION_DOWN && this.isVisible()) {
+				if (pSceneTouchEvent.getAction() == pSceneTouchEvent.ACTION_DOWN && this.isVisible() && !pausa && !context.tarjeta.sprTarjeta.isVisible()&&!moviendoZoom) {
 					toMenu();
 				}
 
@@ -273,7 +293,7 @@ public class HudBomber {
 		pause = new Sprite(0, 0, pause_BTA_TR, context.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				if (pSceneTouchEvent.getAction() == pSceneTouchEvent.ACTION_DOWN) {
+				if (pSceneTouchEvent.getAction() == pSceneTouchEvent.ACTION_DOWN && !context.tarjeta.sprTarjeta.isVisible() &&!moviendoZoom) {
 					pause();
 				}
 
@@ -287,18 +307,17 @@ public class HudBomber {
 		controlBase.setAlpha(0.5f);
 		// controlBase.setOffsetCenter(0, 0);
 		this.mDigitalOnScreenControl.getControlKnob().setScale(1.25f);
-//		this.mDigitalOnScreenControl.setScale(zControl);
-		
-		
+		// this.mDigitalOnScreenControl.setScale(zControl);
+
 		this.mDigitalOnScreenControl.getControlBase().setScale(zControl);
-//		this.mDigitalOnScreenControl.getControlKnob().setScale(zControl);
-		this.mDigitalOnScreenControl.refreshControlKnobPosition();		
+		// this.mDigitalOnScreenControl.getControlKnob().setScale(zControl);
+		this.mDigitalOnScreenControl.refreshControlKnobPosition();
 
 		fondo = new Sprite(context.CAMERA_WIDTH / 2, context.CAMERA_HEIGHT / 2, fondo_TR, context.getVertexBufferObjectManager());
 		fondo.setVisible(false);
 
 		// controlBase.setPosition(xControl+controlBase.getWidthScaled()/2,yControl+controlBase.getHeightScaled()/2);
-		controlBaseSetPosition(xControl, yControl,zControl);
+		controlBaseSetPosition(xControl, yControl, zControl);
 
 		mFont = FontFactory.createFromAsset(context.getFontManager(), context.getTextureManager(), 256, 256, TextureOptions.BILINEAR, context.getAssets(), "DD.ttf", 30, true,
 				android.graphics.Color.BLACK);// gles2
@@ -322,18 +341,78 @@ public class HudBomber {
 		zoomTxt.setOffsetCenter(0, 0);
 		zoomTxt.setPosition(20, 350);
 		zoomTxt.setVisible(false);
-		zoom_mas = new Sprite(190, 365, masTR, context.getVertexBufferObjectManager());
+		zoom_mas = new Sprite(190, 365, masTR, context.getVertexBufferObjectManager()) {
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.getAction() == 0 && isVisible()) {
+					float zoom = context.camaraJuego.getZoomFactor() + 0.2f;
+					if (zoom >= Constantes.ZOOM_MAX) {
+						zoom = Constantes.ZOOM_MAX;
+					}
+					context.camaraJuego.setZoomFactor(zoom);
+					registerEntityModifier(new MoveYModifier(1f, getY(), getY()) {
+						protected void onModifierStarted(IEntity pItem) {
+							moviendoZoom=true;
+							salMenuPausa();
+						};
+
+						protected void onModifierFinished(IEntity pItem) {
+							moviendoZoom=false;
+							muestraMenuPausa();
+						};
+					});
+				}
+				return false;
+			}
+		};
 		zoom_mas.setVisible(false);
 
-		zoom_menos = new Sprite(280, 365, menosTR, context.getVertexBufferObjectManager());
+		zoom_menos = new Sprite(280, 365, menosTR, context.getVertexBufferObjectManager()) {
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.getAction() == 0 && isVisible()) {
+					float zoom = context.camaraJuego.getZoomFactor() - 0.2f;
+					if (zoom <= Constantes.ZOOM_MIN) {
+						zoom = Constantes.ZOOM_MIN;
+					}
+					context.camaraJuego.setZoomFactor(zoom);
+					registerEntityModifier(new MoveYModifier(1f, getY(), getY()) {
+						protected void onModifierStarted(IEntity pItem) {
+							moviendoZoom=true;
+							salMenuPausa();
+						};
+
+						protected void onModifierFinished(IEntity pItem) {
+							moviendoZoom=false;
+							muestraMenuPausa();
+						};
+					});
+				}
+				return false;
+			}
+		};
 		zoom_menos.setVisible(false);
 
 		butonsSizeTxt.setOffsetCenter(0, 0);
 		butonsSizeTxt.setPosition(20, 420);
 		butonsSizeTxt.setVisible(false);
 
-		btn_1_mas = new Sprite(370, 440, masTR, context.getVertexBufferObjectManager());
-		btn_1_menos = new Sprite(460, 440, menosTR, context.getVertexBufferObjectManager());
+		btn_1_mas = new Sprite(370, 440, masTR, context.getVertexBufferObjectManager()) {
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.getAction() == 0 && isVisible()) {
+					btn_1.setScale(btn_1.getScaleX() + 0.2f);
+					btn_2.setScale(btn_2.getScaleX() + 0.2f);
+				}
+				return false;
+			}
+		};
+		btn_1_menos = new Sprite(460, 440, menosTR, context.getVertexBufferObjectManager()) {
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.getAction() == 0 && isVisible()) {
+					btn_1.setScale(btn_1.getScaleX() - 0.2f);
+					btn_2.setScale(btn_2.getScaleX() - 0.2f);
+				}
+				return false;
+			}
+		};
 		btn_1_mas.setVisible(false);
 		btn_1_menos.setVisible(false);
 
@@ -341,22 +420,22 @@ public class HudBomber {
 		controlSizeTxt.setPosition(20, 495);
 		controlSizeTxt.setVisible(false);
 
-		cruceta_mas = new Sprite(370, 515, masTR, context.getVertexBufferObjectManager()){
+		cruceta_mas = new Sprite(370, 515, masTR, context.getVertexBufferObjectManager()) {
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				if (pSceneTouchEvent.getAction() == 0 && isVisible()) {					
-					mDigitalOnScreenControl.getControlBase().setScale(mDigitalOnScreenControl.getControlBase().getScaleX()+0.2f);
-//					mDigitalOnScreenControl.getControlKnob().setScale(mDigitalOnScreenControl.getControlKnob().getScaleX()+0.2f);
+				if (pSceneTouchEvent.getAction() == 0 && isVisible()) {
+					mDigitalOnScreenControl.getControlBase().setScale(mDigitalOnScreenControl.getControlBase().getScaleX() + 0.2f);
+					// mDigitalOnScreenControl.getControlKnob().setScale(mDigitalOnScreenControl.getControlKnob().getScaleX()+0.2f);
 					mDigitalOnScreenControl.refreshControlKnobPosition();
 					guardarPreferencias();
 				}
 				return false;
 			}
 		};
-		cruceta_menos = new Sprite(460, 515, menosTR, context.getVertexBufferObjectManager()){
+		cruceta_menos = new Sprite(460, 515, menosTR, context.getVertexBufferObjectManager()) {
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
 				if (pSceneTouchEvent.getAction() == 0 && isVisible()) {
-					mDigitalOnScreenControl.getControlBase().setScale(mDigitalOnScreenControl.getControlBase().getScaleX()-0.2f);
-//					mDigitalOnScreenControl.getControlKnob().setScale(mDigitalOnScreenControl.getControlKnob().getScaleX()-0.2f);
+					mDigitalOnScreenControl.getControlBase().setScale(mDigitalOnScreenControl.getControlBase().getScaleX() - 0.2f);
+					// mDigitalOnScreenControl.getControlKnob().setScale(mDigitalOnScreenControl.getControlKnob().getScaleX()-0.2f);
 					mDigitalOnScreenControl.refreshControlKnobPosition();
 					guardarPreferencias();
 				}
@@ -367,43 +446,36 @@ public class HudBomber {
 		cruceta_mas.setVisible(false);
 		cruceta_menos.setVisible(false);
 
-		
-		
-		BitmapTextureAtlas ticBTA = new BitmapTextureAtlas(context.getTextureManager(),128, 64, TextureOptions.DEFAULT);	
+		BitmapTextureAtlas ticBTA = new BitmapTextureAtlas(context.getTextureManager(), 128, 64, TextureOptions.DEFAULT);
 		ticBTA.load();
-		TiledTextureRegion ticTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(ticBTA, context, "gfx/tic.png",0,0,2, 1);	
-		ticSpr = new TiledSprite(0, 0, ticTR,context.getVertexBufferObjectManager());
+		TiledTextureRegion ticTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(ticBTA, context, "gfx/tic.png", 0, 0, 2, 1);
+		ticSpr = new TiledSprite(0, 0, ticTR, context.getVertexBufferObjectManager());
 		ticSpr.setOffsetCenter(0, 0);
-		ticSpr.setPosition(context.CAMERA_WIDTH-90, 330);
-		ticSpr.setVisible(false);			
-		
+		ticSpr.setPosition(context.CAMERA_WIDTH - 90, 330);
+		ticSpr.setVisible(false);
+
 		vibrationTxt.setVisible(false);
 		vibrationTxt.setOffsetCenter(0, 0);
-		vibrationTxt.setPosition(context.CAMERA_WIDTH-355, 340);
-		
+		vibrationTxt.setPosition(context.CAMERA_WIDTH - 355, 340);
 
-		sound_mas = new Sprite(context.CAMERA_WIDTH-150, 440, masTR, context.getVertexBufferObjectManager());
-		sound_menos = new Sprite(context.CAMERA_WIDTH-60, 440, menosTR, context.getVertexBufferObjectManager());
+		sound_mas = new Sprite(context.CAMERA_WIDTH - 150, 440, masTR, context.getVertexBufferObjectManager());
+		sound_menos = new Sprite(context.CAMERA_WIDTH - 60, 440, menosTR, context.getVertexBufferObjectManager());
 		sound_menos.setVisible(false);
 		sound_mas.setVisible(false);
-		
+
 		soundTxt.setVisible(false);
 		soundTxt.setOffsetCenter(0, 0);
-		soundTxt.setPosition(context.CAMERA_WIDTH-550, 420);
-		
-		
-		music_mas = new Sprite(context.CAMERA_WIDTH-150, 515, masTR, context.getVertexBufferObjectManager());
-		music_menos= new Sprite(context.CAMERA_WIDTH-60, 515, menosTR, context.getVertexBufferObjectManager());
+		soundTxt.setPosition(context.CAMERA_WIDTH - 550, 420);
+
+		music_mas = new Sprite(context.CAMERA_WIDTH - 150, 515, masTR, context.getVertexBufferObjectManager());
+		music_menos = new Sprite(context.CAMERA_WIDTH - 60, 515, menosTR, context.getVertexBufferObjectManager());
 		music_mas.setVisible(false);
 		music_menos.setVisible(false);
-		
-		musicTxt.setPosition(context.CAMERA_WIDTH-550, 495);
+
+		musicTxt.setPosition(context.CAMERA_WIDTH - 550, 495);
 		musicTxt.setOffsetCenter(0, 0);
 		musicTxt.setVisible(false);
-		
-		
-		
-		
+
 		BitmapTextureAtlas restore_btn = new BitmapTextureAtlas(context.getTextureManager(), 256, 128, TextureOptions.DEFAULT);
 		restore_btn.load();
 		TextureRegion restoreTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(restore_btn, context, "gfx/restore_btn.png", 0, 0);
@@ -418,37 +490,39 @@ public class HudBomber {
 		restore.setVisible(false);
 
 	}
-	float btn1_x=Constantes.BTN1_X;
-	float btn1_y=Constantes.BTN1_Y;
-	
-	float btn2_x=Constantes.BTN2_X;
-	float btn2_y=Constantes.BTN2_Y;
-	float btn_scale=Constantes.BTN_SCALE;
-	
+
+	public boolean moviendoZoom=false;
+	float btn1_x = Constantes.BTN1_X;
+	float btn1_y = Constantes.BTN1_Y;
+
+	float btn2_x = Constantes.BTN2_X;
+	float btn2_y = Constantes.BTN2_Y;
+	float btn_scale = Constantes.BTN_SCALE;
+
 	private void cargarPreferenciasBTN() {
-		
-		btn_2.setPosition((context.CAMERA_WIDTH +60) - btn_2.getWidthScaled(), 110);
-		btn_1.setPosition((context.CAMERA_WIDTH +60) - (30 + btn_1.getWidthScaled() * 2), 110);
-		
-		float btn_scale=Preferencias.leerPreferenciasFloat("btn_scale");
-		
-		float btn1_x=Preferencias.leerPreferenciasFloat("btn1_x");
-		float btn1_y=Preferencias.leerPreferenciasFloat("btn1_y");
-		
-		float btn2_x=Preferencias.leerPreferenciasFloat("btn2_x");
-		float btn2_y=Preferencias.leerPreferenciasFloat("btn2_y");
-		
+
+		btn_2.setPosition((context.CAMERA_WIDTH + 60) - btn_2.getWidthScaled(), 110);
+		btn_1.setPosition((context.CAMERA_WIDTH + 60) - (30 + btn_1.getWidthScaled() * 2), 110);
+
+		float btn_scale = Preferencias.leerPreferenciasFloat("btn_scale");
+
+		float btn1_x = Preferencias.leerPreferenciasFloat("btn1_x");
+		float btn1_y = Preferencias.leerPreferenciasFloat("btn1_y");
+
+		float btn2_x = Preferencias.leerPreferenciasFloat("btn2_x");
+		float btn2_y = Preferencias.leerPreferenciasFloat("btn2_y");
+
 		if (btn_scale != -1) {
 			this.btn_scale = btn_scale;
 		}
 		btn_2.setScale(this.btn_scale);
 		btn_1.setScale(this.btn_scale);
-		
+
 		if (btn1_x != -1) {
 			this.btn1_x = btn1_x;
 			btn_1.setX(btn1_x);
-		}else{
-			btn_1.setX((context.CAMERA_WIDTH +60) - (30 + btn_1.getWidthScaled() * 2));			
+		} else {
+			btn_1.setX((context.CAMERA_WIDTH + 60) - (30 + btn_1.getWidthScaled() * 2));
 		}
 		if (btn1_y != -1) {
 			this.btn1_y = btn1_y;
@@ -456,15 +530,15 @@ public class HudBomber {
 		if (btn2_x != -1) {
 			this.btn2_x = btn2_x;
 			btn_2.setX(btn2_x);
-		}else{
-			btn_2.setX((context.CAMERA_WIDTH +60) - btn_2.getWidthScaled() );
+		} else {
+			btn_2.setX((context.CAMERA_WIDTH + 60) - btn_2.getWidthScaled());
 		}
 		if (btn2_y != -1) {
 			this.btn2_y = btn2_y;
 		}
-		
+
 		btn_2.setY(this.btn2_y);
-		btn_1.setY(this.btn1_y);		
+		btn_1.setY(this.btn1_y);
 	}
 
 	public void controlBaseSetPosition(float x, float y, float zControl) {
@@ -477,17 +551,13 @@ public class HudBomber {
 	float xControl = Constantes.PREFERENCIAS_CONTROL_X;
 	float yControl = Constantes.PREFERENCIAS_CONTROL_Y;
 	float zControl = Constantes.PREFERENCIAS_CONTROL_Z;
-	
-	
-
 
 	public void cargarPreferencias() {
-		
+
 		float xControl = Preferencias.leerPreferenciasFloat("xControl");
 		float yControl = Preferencias.leerPreferenciasFloat("yControl");
 		float zControl = Preferencias.leerPreferenciasFloat("zControl");
 
-		
 		if (xControl != -1) {
 			this.xControl = xControl;
 		}
@@ -503,33 +573,33 @@ public class HudBomber {
 		xControl = Constantes.PREFERENCIAS_CONTROL_X;
 		yControl = Constantes.PREFERENCIAS_CONTROL_Y;
 		zControl = Constantes.PREFERENCIAS_CONTROL_Z;
-		
-		btn_scale=Constantes.BTN_SCALE;
+
+		btn_scale = Constantes.BTN_SCALE;
 		btn_2.setScale(btn_scale);
 		btn_1.setScale(btn_scale);
-		
-		btn2_x=(context.CAMERA_WIDTH +60) - btn_2.getWidthScaled();
+
+		btn2_x = (context.CAMERA_WIDTH + 60) - btn_2.getWidthScaled();
 		btn_2.setX(btn2_x);
-		
-		btn1_x=(context.CAMERA_WIDTH +60) - (30 + btn_1.getWidthScaled() * 2) ;
+
+		btn1_x = (context.CAMERA_WIDTH + 60) - (30 + btn_1.getWidthScaled() * 2);
 		btn_1.setX(btn1_x);
-		
-		btn1_y=Constantes.BTN1_Y;		
-		btn2_y=Constantes.BTN2_Y;
-		
+
+		btn1_y = Constantes.BTN1_Y;
+		btn_1.setY(btn1_y);
+		btn2_y = Constantes.BTN2_Y;
+		btn_2.setY(btn2_y);
 		Preferencias.guardarPrefenrenciasFloat("xControl", xControl);
 		Preferencias.guardarPrefenrenciasFloat("yControl", yControl);
 		Preferencias.guardarPrefenrenciasFloat("zControl", zControl);
-		
+
 		Preferencias.guardarPrefenrenciasFloat("btn_scale", btn_scale);
 		Preferencias.guardarPrefenrenciasFloat("btn1_x", btn1_x);
 		Preferencias.guardarPrefenrenciasFloat("btn1_y", btn1_y);
-		
+
 		Preferencias.guardarPrefenrenciasFloat("btn2_x", btn2_x);
 		Preferencias.guardarPrefenrenciasFloat("btn2_y", btn2_y);
-		
-		
-		controlBaseSetPosition(xControl, yControl,zControl);
+
+		controlBaseSetPosition(xControl, yControl, zControl);
 
 	}
 
@@ -538,6 +608,15 @@ public class HudBomber {
 		Preferencias.guardarPrefenrenciasFloat("xControl", controlBase.getX() - controlBase.getWidthScaled() / 2);
 		Preferencias.guardarPrefenrenciasFloat("yControl", controlBase.getY() - controlBase.getHeightScaled() / 2);
 		Preferencias.guardarPrefenrenciasFloat("zControl", mDigitalOnScreenControl.getControlBase().getScaleX());
+
+		Preferencias.guardarPrefenrenciasFloat("btn_scale", btn_1.getScaleX());
+		Preferencias.guardarPrefenrenciasFloat("btn1_x", btn_1.getX());
+		Preferencias.guardarPrefenrenciasFloat("btn1_y", btn_1.getY());
+		Preferencias.guardarPrefenrenciasFloat("btn2_x", btn_2.getX());
+		Preferencias.guardarPrefenrenciasFloat("btn2_y", btn_2.getY());
+		Preferencias.guardarPrefenrenciasFloat("zoom", context.camaraJuego.getZoomFactor());
+		
+
 	}
 
 	public void toMenu() {
@@ -706,11 +785,6 @@ public class HudBomber {
 		System.out.println("APRETADOOOOOOO");
 	}
 
-//	public void recolocaElementos() {
-//		btn_2.setPosition((context.CAMERA_WIDTH - 30) - btn_2.getWidthScaled(), 10);
-//		btn_1.setPosition((context.CAMERA_WIDTH - 30) - (30 + btn_1.getWidthScaled() * 2), 10);
-//	}
-
 	TimerHandler timer;
 
 	public void attachScena(Scene scene) {
@@ -742,9 +816,14 @@ public class HudBomber {
 		hud.attachChild(btn_2);
 
 		hud.registerTouchArea(btn_1);
+		hud.registerTouchArea(zoom_menos);
+		hud.registerTouchArea(zoom_mas);
+		hud.registerTouchArea(btn_1_mas);
+		hud.registerTouchArea(btn_1_menos);
+
 		hud.registerTouchArea(cruceta_menos);
 		hud.registerTouchArea(cruceta_mas);
-		
+
 		hud.registerTouchArea(restore);
 		hud.registerTouchArea(btn_2);
 		hud.registerTouchArea(pause);
@@ -756,7 +835,6 @@ public class HudBomber {
 		hud.attachChild(creaMarcador());
 
 		context.getEngine().getCamera().setHUD(hud);
-
 
 		update();
 		if (timer == null) {

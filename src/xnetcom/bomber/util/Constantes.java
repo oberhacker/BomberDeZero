@@ -46,7 +46,8 @@ public class Constantes {
 	public static final int ZINDEX_MUROFRAGMENTOS = 900;
 	public static final int ZINDEX_ENEMIGOS = 199;
 	
-
+	public static final float ZOOM_MAX=2F;
+	public static final float ZOOM_MIN=0.8F;
 	
 	
 	
@@ -75,6 +76,7 @@ public class Constantes {
 	public static final float BTN1_Y = 110;
 	public static final float BTN1_X = 953;
 	public static final float BTN2_Y = 110;
+	public static final float ZOOM = 1.2f;
 	
 	
 	public static int TOTAL_MAPAS=45;

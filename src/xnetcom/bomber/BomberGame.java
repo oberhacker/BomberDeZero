@@ -84,9 +84,16 @@ public class BomberGame extends SimpleBaseGameActivity {
 		// "The tile the player is walking on will be highlighted.",
 		// Toast.LENGTH_LONG).show();
 		DetectorRatio();
+		Preferencias.inicia(this);
 		this.camaraJuego = new SmoothCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT, 1000f, 1000f, 1);
 		this.camaraJuego.setBoundsEnabled(false);
-		this.camaraJuego.setZoomFactor(1.2f);
+		float zoom=Preferencias.leerPreferenciasFloat("zoom");
+		if (zoom!=-1){
+			this.camaraJuego.setZoomFactor(zoom);
+		}else{
+			this.camaraJuego.setZoomFactor(1.2f);
+		}
+		
 		this.camaraNormal = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
 
 		EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_SENSOR, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.camaraJuego);
@@ -116,7 +123,7 @@ public class BomberGame extends SimpleBaseGameActivity {
 		bomberman = new BomberMan(this);
 		almacenBombas = new AlmacenBombas(this);
 		capaParedes = new CapaParedes(this);
-		Preferencias.inicia(this);
+		
 		basedatos = new DatabaseHandler(this);
 		parser = new ParserTMX(this);
 		databaseHandler = new DatabaseHandler(this);

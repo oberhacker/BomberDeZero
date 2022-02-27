@@ -18,7 +18,7 @@ import xnetcom.bomber.util.Constantes;
 public class Tarjeta {
 	
 	private BomberGame context;
-	private Sprite sprTarjeta;
+	public Sprite sprTarjeta;
 	private TiledSprite sprRetry;
 	private Sprite sprTomenu;
 	private TiledSprite sprNext;
@@ -70,7 +70,7 @@ public class Tarjeta {
 		sprTomenu = new Sprite(0, 0, tomenu_TR, context.getVertexBufferObjectManager()){
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				if (pSceneTouchEvent.getAction() == 0 ){					
+				if (pSceneTouchEvent.getAction() == 0 && sprTarjeta.isVisible()){					
 					context.menuMapas.verMenuMapas();
 				}
 				return false;
@@ -79,7 +79,7 @@ public class Tarjeta {
 		sprNext = new TiledSprite(0, 0, next_TR, context.getVertexBufferObjectManager()){
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				if (pSceneTouchEvent.getAction() == 0 && getCurrentTileIndex()==0){		
+				if (pSceneTouchEvent.getAction() == 0 && getCurrentTileIndex()==0&& sprTarjeta.isVisible()){		
 					context.loading.cargaMapa(context.escenaJuego.datosMapa.getNumeroMapa()+1);					
 				}
 				return false;
