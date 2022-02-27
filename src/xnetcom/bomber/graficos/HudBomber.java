@@ -290,7 +290,7 @@ public class HudBomber {
 		fondo.setVisible(false);
 
 		// controlBase.setPosition(xControl+controlBase.getWidthScaled()/2,yControl+controlBase.getHeightScaled()/2);
-		controlBaseSetPosition(xControl, yControl);
+		controlBaseSetPosition(xControl, yControl,zControl);
 
 		mFont = FontFactory.createFromAsset(context.getFontManager(), context.getTextureManager(), 256, 256, TextureOptions.BILINEAR, context.getAssets(), "DD.ttf", 30, true,
 				android.graphics.Color.BLACK);// gles2
@@ -333,8 +333,24 @@ public class HudBomber {
 		controlSizeTxt.setPosition(20, 495);
 		controlSizeTxt.setVisible(false);
 
-		cruceta_mas = new Sprite(370, 515, masTR, context.getVertexBufferObjectManager());
-		cruceta_menos = new Sprite(460, 515, menosTR, context.getVertexBufferObjectManager());
+		cruceta_mas = new Sprite(370, 515, masTR, context.getVertexBufferObjectManager()){
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.getAction() == 0 && isVisible()) {
+					mDigitalOnScreenControl.setScale(mDigitalOnScreenControl.getScaleX()*1.10f);
+					guardarPreferencias();
+				}
+				return false;
+			}
+		};
+		cruceta_menos = new Sprite(460, 515, menosTR, context.getVertexBufferObjectManager()){
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.getAction() == 0 && isVisible()) {
+					mDigitalOnScreenControl.setScale(mDigitalOnScreenControl.getScaleX()/1.10f);	
+					guardarPreferencias();
+				}
+				return false;
+			}
+		};
 
 		cruceta_mas.setVisible(false);
 		cruceta_menos.setVisible(false);
@@ -391,9 +407,10 @@ public class HudBomber {
 
 	}
 
-	public void controlBaseSetPosition(float x, float y) {
+	public void controlBaseSetPosition(float x, float y, float zControl) {
 		Sprite controlBase = this.mDigitalOnScreenControl.getControlBase();
 		controlBase.setPosition(x + controlBase.getWidthScaled() / 2, y + controlBase.getHeightScaled() / 2);
+		mDigitalOnScreenControl.setScale(zControl);
 	}
 
 	float xControl = Constantes.PREFERENCIAS_CONTROL_X;
@@ -423,7 +440,7 @@ public class HudBomber {
 		Preferencias.guardarPrefenrenciasFloat("xControl", xControl);
 		Preferencias.guardarPrefenrenciasFloat("yControl", yControl);
 		Preferencias.guardarPrefenrenciasFloat("zControl", zControl);
-		controlBaseSetPosition(xControl, yControl);
+		controlBaseSetPosition(xControl, yControl,zControl);
 
 	}
 
@@ -431,7 +448,7 @@ public class HudBomber {
 		Sprite controlBase = this.mDigitalOnScreenControl.getControlBase();
 		Preferencias.guardarPrefenrenciasFloat("xControl", controlBase.getX() - controlBase.getWidthScaled() / 2);
 		Preferencias.guardarPrefenrenciasFloat("yControl", controlBase.getY() - controlBase.getHeightScaled() / 2);
-		Preferencias.guardarPrefenrenciasFloat("zControl", zControl);
+		Preferencias.guardarPrefenrenciasFloat("zControl", mDigitalOnScreenControl.getScaleX());
 	}
 
 	public void toMenu() {
@@ -636,6 +653,9 @@ public class HudBomber {
 		hud.attachChild(btn_2);
 
 		hud.registerTouchArea(btn_1);
+		hud.registerTouchArea(cruceta_menos);
+		hud.registerTouchArea(cruceta_mas);
+		
 		hud.registerTouchArea(restore);
 		hud.registerTouchArea(btn_2);
 		hud.registerTouchArea(pause);
