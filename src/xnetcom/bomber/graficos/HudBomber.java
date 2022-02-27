@@ -210,7 +210,9 @@ public class HudBomber {
 				if (pausa) {
 					Log.d("TOUCH", "getControlBase x " + getControlBase().getX());
 					Log.d("TOUCH", "pSceneTouchEvent x " + pSceneTouchEvent.getX());
-					getControlBase().setPosition(pSceneTouchEvent.getX() / 2, pSceneTouchEvent.getY() / 2);
+//					getControlBase().setPosition(pSceneTouchEvent.getX() / 2, pSceneTouchEvent.getY() / 2);
+					
+					getControlBase().setPosition(pSceneTouchEvent.getX() , pSceneTouchEvent.getY() );
 					refreshControlKnobPosition();
 
 				} else {
@@ -232,9 +234,9 @@ public class HudBomber {
 				return false;
 			}
 		};
-		btn_1.setOffsetCenter(0, 0);
-		btn_1.setScale(0.6f);
-		btn_1.setScaleCenter(0, 0);
+//		btn_1.setOffsetCenter(0, 0);
+		btn_1.setScale(btn_scale);
+//		btn_1.setScaleCenter(0, 0);
 		btn_1.setAlpha(0.5f);
 
 		btn_2 = new Sprite(0, 0, btn_2_TR, context.getVertexBufferObjectManager()) {
@@ -247,11 +249,12 @@ public class HudBomber {
 				return false;
 			}
 		};
-		btn_2.setOffsetCenter(0, 0);
-		btn_2.setScale(0.6f);
-		btn_2.setScaleCenter(0, 0);
-		btn_2.setAlpha(0.5f);
 
+		btn_2.setScale(btn_scale);
+		btn_2.setAlpha(0.5f);		
+		cargarPreferenciasBTN();		
+
+		
 		menu = new Sprite(0, 0, menu_BTA_TR, context.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
@@ -284,7 +287,12 @@ public class HudBomber {
 		controlBase.setAlpha(0.5f);
 		// controlBase.setOffsetCenter(0, 0);
 		this.mDigitalOnScreenControl.getControlKnob().setScale(1.25f);
-		this.mDigitalOnScreenControl.setScale(zControl);
+//		this.mDigitalOnScreenControl.setScale(zControl);
+		
+		
+		this.mDigitalOnScreenControl.getControlBase().setScale(zControl);
+//		this.mDigitalOnScreenControl.getControlKnob().setScale(zControl);
+		this.mDigitalOnScreenControl.refreshControlKnobPosition();		
 
 		fondo = new Sprite(context.CAMERA_WIDTH / 2, context.CAMERA_HEIGHT / 2, fondo_TR, context.getVertexBufferObjectManager());
 		fondo.setVisible(false);
@@ -335,8 +343,10 @@ public class HudBomber {
 
 		cruceta_mas = new Sprite(370, 515, masTR, context.getVertexBufferObjectManager()){
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				if (pSceneTouchEvent.getAction() == 0 && isVisible()) {
-					mDigitalOnScreenControl.setScale(mDigitalOnScreenControl.getScaleX()*1.10f);
+				if (pSceneTouchEvent.getAction() == 0 && isVisible()) {					
+					mDigitalOnScreenControl.getControlBase().setScale(mDigitalOnScreenControl.getControlBase().getScaleX()+0.2f);
+//					mDigitalOnScreenControl.getControlKnob().setScale(mDigitalOnScreenControl.getControlKnob().getScaleX()+0.2f);
+					mDigitalOnScreenControl.refreshControlKnobPosition();
 					guardarPreferencias();
 				}
 				return false;
@@ -345,7 +355,9 @@ public class HudBomber {
 		cruceta_menos = new Sprite(460, 515, menosTR, context.getVertexBufferObjectManager()){
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
 				if (pSceneTouchEvent.getAction() == 0 && isVisible()) {
-					mDigitalOnScreenControl.setScale(mDigitalOnScreenControl.getScaleX()/1.10f);	
+					mDigitalOnScreenControl.getControlBase().setScale(mDigitalOnScreenControl.getControlBase().getScaleX()-0.2f);
+//					mDigitalOnScreenControl.getControlKnob().setScale(mDigitalOnScreenControl.getControlKnob().getScaleX()-0.2f);
+					mDigitalOnScreenControl.refreshControlKnobPosition();
 					guardarPreferencias();
 				}
 				return false;
@@ -406,22 +418,76 @@ public class HudBomber {
 		restore.setVisible(false);
 
 	}
+	float btn1_x=Constantes.BTN1_X;
+	float btn1_y=Constantes.BTN1_Y;
+	
+	float btn2_x=Constantes.BTN2_X;
+	float btn2_y=Constantes.BTN2_Y;
+	float btn_scale=Constantes.BTN_SCALE;
+	
+	private void cargarPreferenciasBTN() {
+		
+		btn_2.setPosition((context.CAMERA_WIDTH +60) - btn_2.getWidthScaled(), 110);
+		btn_1.setPosition((context.CAMERA_WIDTH +60) - (30 + btn_1.getWidthScaled() * 2), 110);
+		
+		float btn_scale=Preferencias.leerPreferenciasFloat("btn_scale");
+		
+		float btn1_x=Preferencias.leerPreferenciasFloat("btn1_x");
+		float btn1_y=Preferencias.leerPreferenciasFloat("btn1_y");
+		
+		float btn2_x=Preferencias.leerPreferenciasFloat("btn2_x");
+		float btn2_y=Preferencias.leerPreferenciasFloat("btn2_y");
+		
+		if (btn_scale != -1) {
+			this.btn_scale = btn_scale;
+		}
+		btn_2.setScale(this.btn_scale);
+		btn_1.setScale(this.btn_scale);
+		
+		if (btn1_x != -1) {
+			this.btn1_x = btn1_x;
+			btn_1.setX(btn1_x);
+		}else{
+			btn_1.setX((context.CAMERA_WIDTH +60) - (30 + btn_1.getWidthScaled() * 2));			
+		}
+		if (btn1_y != -1) {
+			this.btn1_y = btn1_y;
+		}
+		if (btn2_x != -1) {
+			this.btn2_x = btn2_x;
+			btn_2.setX(btn2_x);
+		}else{
+			btn_2.setX((context.CAMERA_WIDTH +60) - btn_2.getWidthScaled() );
+		}
+		if (btn2_y != -1) {
+			this.btn2_y = btn2_y;
+		}
+		
+		btn_2.setY(this.btn2_y);
+		btn_1.setY(this.btn1_y);		
+	}
 
 	public void controlBaseSetPosition(float x, float y, float zControl) {
 		Sprite controlBase = this.mDigitalOnScreenControl.getControlBase();
+		mDigitalOnScreenControl.getControlBase().setScale(zControl);
 		controlBase.setPosition(x + controlBase.getWidthScaled() / 2, y + controlBase.getHeightScaled() / 2);
-		mDigitalOnScreenControl.setScale(zControl);
+		mDigitalOnScreenControl.refreshControlKnobPosition();
 	}
 
 	float xControl = Constantes.PREFERENCIAS_CONTROL_X;
 	float yControl = Constantes.PREFERENCIAS_CONTROL_Y;
 	float zControl = Constantes.PREFERENCIAS_CONTROL_Z;
+	
+	
+
 
 	public void cargarPreferencias() {
+		
 		float xControl = Preferencias.leerPreferenciasFloat("xControl");
 		float yControl = Preferencias.leerPreferenciasFloat("yControl");
 		float zControl = Preferencias.leerPreferenciasFloat("zControl");
 
+		
 		if (xControl != -1) {
 			this.xControl = xControl;
 		}
@@ -437,9 +503,32 @@ public class HudBomber {
 		xControl = Constantes.PREFERENCIAS_CONTROL_X;
 		yControl = Constantes.PREFERENCIAS_CONTROL_Y;
 		zControl = Constantes.PREFERENCIAS_CONTROL_Z;
+		
+		btn_scale=Constantes.BTN_SCALE;
+		btn_2.setScale(btn_scale);
+		btn_1.setScale(btn_scale);
+		
+		btn2_x=(context.CAMERA_WIDTH +60) - btn_2.getWidthScaled();
+		btn_2.setX(btn2_x);
+		
+		btn1_x=(context.CAMERA_WIDTH +60) - (30 + btn_1.getWidthScaled() * 2) ;
+		btn_1.setX(btn1_x);
+		
+		btn1_y=Constantes.BTN1_Y;		
+		btn2_y=Constantes.BTN2_Y;
+		
 		Preferencias.guardarPrefenrenciasFloat("xControl", xControl);
 		Preferencias.guardarPrefenrenciasFloat("yControl", yControl);
 		Preferencias.guardarPrefenrenciasFloat("zControl", zControl);
+		
+		Preferencias.guardarPrefenrenciasFloat("btn_scale", btn_scale);
+		Preferencias.guardarPrefenrenciasFloat("btn1_x", btn1_x);
+		Preferencias.guardarPrefenrenciasFloat("btn1_y", btn1_y);
+		
+		Preferencias.guardarPrefenrenciasFloat("btn2_x", btn2_x);
+		Preferencias.guardarPrefenrenciasFloat("btn2_y", btn2_y);
+		
+		
 		controlBaseSetPosition(xControl, yControl,zControl);
 
 	}
@@ -448,7 +537,7 @@ public class HudBomber {
 		Sprite controlBase = this.mDigitalOnScreenControl.getControlBase();
 		Preferencias.guardarPrefenrenciasFloat("xControl", controlBase.getX() - controlBase.getWidthScaled() / 2);
 		Preferencias.guardarPrefenrenciasFloat("yControl", controlBase.getY() - controlBase.getHeightScaled() / 2);
-		Preferencias.guardarPrefenrenciasFloat("zControl", mDigitalOnScreenControl.getScaleX());
+		Preferencias.guardarPrefenrenciasFloat("zControl", mDigitalOnScreenControl.getControlBase().getScaleX());
 	}
 
 	public void toMenu() {
@@ -617,10 +706,10 @@ public class HudBomber {
 		System.out.println("APRETADOOOOOOO");
 	}
 
-	public void recolocaElementos() {
-		btn_2.setPosition((context.CAMERA_WIDTH - 30) - btn_2.getWidthScaled(), 10);
-		btn_1.setPosition((context.CAMERA_WIDTH - 30) - (30 + btn_1.getWidthScaled() * 2), 10);
-	}
+//	public void recolocaElementos() {
+//		btn_2.setPosition((context.CAMERA_WIDTH - 30) - btn_2.getWidthScaled(), 10);
+//		btn_1.setPosition((context.CAMERA_WIDTH - 30) - (30 + btn_1.getWidthScaled() * 2), 10);
+//	}
 
 	TimerHandler timer;
 
@@ -667,7 +756,7 @@ public class HudBomber {
 		hud.attachChild(creaMarcador());
 
 		context.getEngine().getCamera().setHUD(hud);
-		recolocaElementos();
+
 
 		update();
 		if (timer == null) {

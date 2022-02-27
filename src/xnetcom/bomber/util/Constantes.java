@@ -70,6 +70,11 @@ public class Constantes {
 	public static final float PREFERENCIAS_CONTROL_X = 20;
 	public static final float PREFERENCIAS_CONTROL_Y = 20;
 	public static final float PREFERENCIAS_CONTROL_Z = 2;
+	public static final float BTN_SCALE = 0.7f;
+	public static final float BTN2_X = 1161f;
+	public static final float BTN1_Y = 110;
+	public static final float BTN1_X = 953;
+	public static final float BTN2_Y = 110;
 	
 	
 	public static int TOTAL_MAPAS=45;
