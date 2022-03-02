@@ -204,4 +204,17 @@ public class SoundManager {
 
 	}
 
+	
+	public void setSoundVolumen(int sound_volumen) {		
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void setMusicVolumen(int music_volumen) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 }

@@ -338,6 +338,10 @@ public class HudBomber {
 		soundTxt = new Text(0, 0, mFont, " Sound level:00", context.getVertexBufferObjectManager());
 		vibrationTxt = new Text(0, 0, mFont, " Vibration: ", context.getVertexBufferObjectManager());
 
+		setMusicVolumen(music_volumen);
+		setSoundVolumen(sound_volumen);
+		
+		
 		zoomTxt.setOffsetCenter(0, 0);
 		zoomTxt.setPosition(20, 350);
 		zoomTxt.setVisible(false);
@@ -449,30 +453,93 @@ public class HudBomber {
 		BitmapTextureAtlas ticBTA = new BitmapTextureAtlas(context.getTextureManager(), 128, 64, TextureOptions.DEFAULT);
 		ticBTA.load();
 		TiledTextureRegion ticTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(ticBTA, context, "gfx/tic.png", 0, 0, 2, 1);
-		ticSpr = new TiledSprite(0, 0, ticTR, context.getVertexBufferObjectManager());
+		ticSpr = new TiledSprite(0, 0, ticTR, context.getVertexBufferObjectManager()){
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.getAction() == 0 && isVisible()) {
+					if (vibration==1){
+						vibration=0;
+						setCurrentTileIndex(1);
+					}else{
+						vibration=1;
+						setCurrentTileIndex(0);
+					}					
+					guardarPreferencias();				
+				}
+				return false;
+			}
+		};
 		ticSpr.setOffsetCenter(0, 0);
 		ticSpr.setPosition(context.CAMERA_WIDTH - 90, 330);
 		ticSpr.setVisible(false);
-
+		if (vibration==1){
+			ticSpr.setCurrentTileIndex(0);
+		}else{
+			ticSpr.setCurrentTileIndex(1);
+		}
+		
 		vibrationTxt.setVisible(false);
 		vibrationTxt.setOffsetCenter(0, 0);
 		vibrationTxt.setPosition(context.CAMERA_WIDTH - 355, 340);
 
-		sound_mas = new Sprite(context.CAMERA_WIDTH - 150, 440, masTR, context.getVertexBufferObjectManager());
-		sound_menos = new Sprite(context.CAMERA_WIDTH - 60, 440, menosTR, context.getVertexBufferObjectManager());
+		sound_mas = new Sprite(context.CAMERA_WIDTH - 150, 440, masTR, context.getVertexBufferObjectManager()){
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.getAction() == 0 && isVisible()) {
+					if (sound_volumen<10){
+						sound_volumen++;
+						setSoundVolumen(sound_volumen);
+						guardarPreferencias();
+					}				
+				}
+				return false;
+			}
+		};
+		sound_menos = new Sprite(context.CAMERA_WIDTH - 60, 440, menosTR, context.getVertexBufferObjectManager()){
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.getAction() == 0 && isVisible()) {
+					if (sound_volumen>0){
+						sound_volumen--;
+						setSoundVolumen(sound_volumen);
+						guardarPreferencias();
+					}				
+				}
+				return false;
+			}
+		};
 		sound_menos.setVisible(false);
 		sound_mas.setVisible(false);
 
 		soundTxt.setVisible(false);
 		soundTxt.setOffsetCenter(0, 0);
-		soundTxt.setPosition(context.CAMERA_WIDTH - 550, 420);
+		soundTxt.setPosition(context.CAMERA_WIDTH - 570, 420);
 
-		music_mas = new Sprite(context.CAMERA_WIDTH - 150, 515, masTR, context.getVertexBufferObjectManager());
-		music_menos = new Sprite(context.CAMERA_WIDTH - 60, 515, menosTR, context.getVertexBufferObjectManager());
+		music_mas = new Sprite(context.CAMERA_WIDTH - 150, 515, masTR, context.getVertexBufferObjectManager()){
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.getAction() == 0 && isVisible()) {
+					if (music_volumen<10){
+						music_volumen++;
+						setMusicVolumen(music_volumen);
+						guardarPreferencias();
+					}				
+				}
+				return false;
+			}
+		};
+		music_menos = new Sprite(context.CAMERA_WIDTH - 60, 515, menosTR, context.getVertexBufferObjectManager()){
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.getAction() == 0 && isVisible()) {
+					if (music_volumen>0){
+						music_volumen--;
+						setMusicVolumen(music_volumen);
+						guardarPreferencias();
+					}				
+				}
+				return false;
+			}
+		};
 		music_mas.setVisible(false);
 		music_menos.setVisible(false);
 
-		musicTxt.setPosition(context.CAMERA_WIDTH - 550, 495);
+		musicTxt.setPosition(context.CAMERA_WIDTH - 570, 495);
 		musicTxt.setOffsetCenter(0, 0);
 		musicTxt.setVisible(false);
 
@@ -491,6 +558,30 @@ public class HudBomber {
 
 	}
 
+	
+	public void setMusicVolumen(int volumen){
+		String txt=" Music level:";
+		if (volumen<10){	
+			txt=txt+"0";
+		}
+		txt=txt+volumen;
+		musicTxt.setText(txt);
+		context.soundManager.setMusicVolumen(volumen);
+		
+	}
+	
+	public void setSoundVolumen(int volumen){
+		String txt=" Sound level:";
+		if (volumen<10){	
+			txt=txt+"0";
+		}
+		txt=txt+volumen;
+		soundTxt.setText(txt);
+		context.soundManager.setSoundVolumen(volumen);
+	}
+	
+	
+	
 	public boolean moviendoZoom=false;
 	float btn1_x = Constantes.BTN1_X;
 	float btn1_y = Constantes.BTN1_Y;
@@ -551,12 +642,35 @@ public class HudBomber {
 	float xControl = Constantes.PREFERENCIAS_CONTROL_X;
 	float yControl = Constantes.PREFERENCIAS_CONTROL_Y;
 	float zControl = Constantes.PREFERENCIAS_CONTROL_Z;
-
+	int music_volumen;
+	int sound_volumen;
+	int vibration;
 	public void cargarPreferencias() {
 
 		float xControl = Preferencias.leerPreferenciasFloat("xControl");
 		float yControl = Preferencias.leerPreferenciasFloat("yControl");
 		float zControl = Preferencias.leerPreferenciasFloat("zControl");
+		
+		music_volumen =Preferencias.leerPreferenciasInt("music_volumen");	
+		if (music_volumen==-1){
+			music_volumen=Constantes.MUSIC_VOLUME;
+			Preferencias.guardarPrefenrenciasInt("music_volumen", Constantes.MUSIC_VOLUME);
+		}
+		sound_volumen =Preferencias.leerPreferenciasInt("sound_volumen");
+		if (sound_volumen==-1){
+			sound_volumen=Constantes.SOUND_VOLUME;
+			Preferencias.guardarPrefenrenciasInt("sound_volumen", Constantes.SOUND_VOLUME);
+		}
+		context.soundManager.setSoundVolumen(sound_volumen);
+		context.soundManager.setMusicVolumen(music_volumen);
+		
+		
+		vibration = Preferencias.leerPreferenciasInt("vibration");	
+		if (vibration==-1){
+			Preferencias.guardarPrefenrenciasInt("vibration", 1);
+			vibration=1;
+		}
+		
 
 		if (xControl != -1) {
 			this.xControl = xControl;
@@ -615,7 +729,9 @@ public class HudBomber {
 		Preferencias.guardarPrefenrenciasFloat("btn2_x", btn_2.getX());
 		Preferencias.guardarPrefenrenciasFloat("btn2_y", btn_2.getY());
 		Preferencias.guardarPrefenrenciasFloat("zoom", context.camaraJuego.getZoomFactor());
-		
+		Preferencias.guardarPrefenrenciasInt("sound_volumen", sound_volumen);
+		Preferencias.guardarPrefenrenciasInt("music_volumen", music_volumen);
+		Preferencias.guardarPrefenrenciasInt("vibration", vibration);
 
 	}
 
@@ -814,7 +930,13 @@ public class HudBomber {
 		hud.attachChild(pause);
 		hud.attachChild(btn_1);
 		hud.attachChild(btn_2);
-
+		hud.registerTouchArea(ticSpr);
+		hud.registerTouchArea(sound_mas);
+		hud.registerTouchArea(sound_menos);
+		
+		hud.registerTouchArea(music_mas);
+		hud.registerTouchArea(music_menos);
+		hud.registerTouchArea(btn_1);
 		hud.registerTouchArea(btn_1);
 		hud.registerTouchArea(zoom_menos);
 		hud.registerTouchArea(zoom_mas);

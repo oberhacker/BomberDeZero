@@ -339,6 +339,10 @@ public class GameManager {
 	public void cogeMonedaCorrer(){		
 		context.bomberman.boosterrapido();
 	}
+
+
+
+	
 	
 
 }
