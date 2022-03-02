@@ -77,9 +77,8 @@ public class GameManager {
 			};	
 			context.escenaJuego.scene.registerUpdateHandler(updater);
 		}
-	
-		
-		
+		Log.d("MUSICAA", "MUSICAA");
+		context.soundManager.playMusicaRandom();	
 	}
 	
 	Coordenadas coodenadasPuerta;
@@ -277,7 +276,8 @@ public class GameManager {
 	}
 
 
-	public void cogerMoneda(TipoMoneda tipoMonena) {			
+	public void cogerMoneda(TipoMoneda tipoMonena) {	
+		context.soundManager.sonarCogerMoneda();
 		boostersCogidos++;
 		switch (tipoMonena) {
 		case MBOMBA:

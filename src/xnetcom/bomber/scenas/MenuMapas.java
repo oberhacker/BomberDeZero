@@ -217,10 +217,10 @@ public class MenuMapas {
 	
 	
 	public void verMenuMapas(){		
+		context.soundManager.stopMusica();
 		refrescaMapas();
 		context.getMiEngine().setScene(context.menuMapas.escena);
-		context.getMiEngine().setCamaraNormal();
-		
+		context.getMiEngine().setCamaraNormal();		
 	}
 	
 	

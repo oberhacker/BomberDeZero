@@ -1044,6 +1044,7 @@ public class BomberMan {
 	public void boosterrapido() {
 		if (!rapido) {
 			rapido = true;
+			context.soundManager.pasosRapidos();
 			rapidez = 1.6f;
 			boostersrapido++;
 			tiempoPorPixxel = Constantes.TIEMPO_POR_PIXEL * 0.6f;
@@ -1072,6 +1073,7 @@ public class BomberMan {
 
 	public void rapidoOff() {
 		rapido = false;
+		context.soundManager.pasosNormales();
 		rapidez = 1;
 		physicsHandler.setVelocityX(physicsHandler.getVelocityX() / 1.6f);
 		physicsHandler.setVelocityY(physicsHandler.getVelocityY() / 1.6f);
