@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.andengine.entity.IEntity;
+import org.andengine.entity.modifier.AlphaModifier;
 import org.andengine.entity.modifier.DelayModifier;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.sprite.AnimatedSprite;
@@ -108,7 +109,7 @@ public class Bomba {
 	public void creaBatch() {
 		// Srpite maestro
 
-		sprCentro = new AnimatedSprite(0,0, context.almacenBombas.mFuegoCentroTR, context.getVertexBufferObjectManager()) {
+		sprCentro = new AnimatedSprite(0,0, context.almacenBombas.fuegoTR, context.getVertexBufferObjectManager()) {
 			public void setAlpha(float pAlpha) {
 				sprAbajo_1.setAlpha(pAlpha);
 				sprAbajo_2.setAlpha(pAlpha);
@@ -128,71 +129,77 @@ public class Bomba {
 				sprIzquierda_2.setAlpha(pAlpha);
 				super.setAlpha(pAlpha);
 			}
-
-			@Override
-			public void setCurrentTileIndex(int pTileIndex) {
-				sprAbajo_1.setCurrentTileIndex(pTileIndex);
-				sprAbajo_2.setCurrentTileIndex(pTileIndex);
-				sprArriba_1.setCurrentTileIndex(pTileIndex);
-				sprArriba_2.setCurrentTileIndex(pTileIndex);
-				sprAbajo_0.setCurrentTileIndex(pTileIndex);
-				sprArriba_0.setCurrentTileIndex(pTileIndex);
-				sprDerecha_0.setCurrentTileIndex(pTileIndex);
-				sprIzquierda_0.setCurrentTileIndex(pTileIndex);
-				sprDerecha_1.setCurrentTileIndex(pTileIndex);
-				sprDerecha_2.setCurrentTileIndex(pTileIndex);
-				sprAbajoFin.setCurrentTileIndex(pTileIndex);
-				sprArribaFin.setCurrentTileIndex(pTileIndex);
-				sprDerechaFin.setCurrentTileIndex(pTileIndex);
-				sprIzquierdaFin.setCurrentTileIndex(pTileIndex);
-				sprIzquierda_1.setCurrentTileIndex(pTileIndex);
-				sprIzquierda_2.setCurrentTileIndex(pTileIndex);
-				super.setCurrentTileIndex(pTileIndex);
-			}
-
 		};
-
+		sprCentro.setCurrentTileIndex(24);
 		normaliza(sprCentro);
 
-		sprDerecha_0 = new AnimatedSprite(sprCentro.getX() + sprCentro.getWidth(), sprCentro.getY(), context.almacenBombas.mFuegoCentroDerechaTR, context.getVertexBufferObjectManager());
+		sprDerecha_0 = new AnimatedSprite(sprCentro.getX() + sprCentro.getWidth(), sprCentro.getY(), context.almacenBombas.fuegoTR, context.getVertexBufferObjectManager());
 		normaliza(sprDerecha_0);
-
-		sprIzquierda_0 = new AnimatedSprite(sprCentro.getX() - sprCentro.getWidth(), sprCentro.getY(), context.almacenBombas.mFuegoCentroIzquierdaTR, context.getVertexBufferObjectManager());
+		sprDerecha_0.setCurrentTileIndex(25);
+		
+		sprIzquierda_0 = new AnimatedSprite(sprCentro.getX() - sprCentro.getWidth(), sprCentro.getY(), context.almacenBombas.fuegoTR, context.getVertexBufferObjectManager());
 		normaliza(sprIzquierda_0);
-		sprArriba_0 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() + sprCentro.getHeight(), context.almacenBombas.mFuegoCentroArribaTR, context.getVertexBufferObjectManager());
+		sprIzquierda_0.setCurrentTileIndex(23);
+		
+		sprArriba_0 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() + sprCentro.getHeight(), context.almacenBombas.fuegoTR, context.getVertexBufferObjectManager());
 		normaliza(sprArriba_0);
-		sprAbajo_0 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() - sprCentro.getHeight(), context.almacenBombas.mFuegoCentroAbajoTR, context.getVertexBufferObjectManager());
+		sprArriba_0.setCurrentTileIndex(17);
+		
+		sprAbajo_0 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() - sprCentro.getHeight(), context.almacenBombas.fuegoTR, context.getVertexBufferObjectManager());
 		normaliza(sprAbajo_0);
-		sprArriba_1 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() + (sprCentro.getHeight() * 2), context.almacenBombas.mFuegoVerticalTR, context.getVertexBufferObjectManager());
+		sprAbajo_0.setCurrentTileIndex(31);
+		
+		sprArriba_1 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() + (sprCentro.getHeight() * 2), context.almacenBombas.fuegoTR, context.getVertexBufferObjectManager());
 		normaliza(sprArriba_1);
-		sprArriba_2 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() + (sprCentro.getHeight() * 3), context.almacenBombas.mFuegoVerticalTR, context.getVertexBufferObjectManager());
+		sprArriba_1.setCurrentTileIndex(10);
+		
+		sprArriba_2 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() + (sprCentro.getHeight() * 3), context.almacenBombas.fuegoTR, context.getVertexBufferObjectManager());
 		normaliza(sprArriba_2);
-		sprAbajo_1 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() - (sprCentro.getHeight() * 2), context.almacenBombas.mFuegoVerticalTR, context.getVertexBufferObjectManager());
+		sprArriba_2.setCurrentTileIndex(10);
+		
+		sprAbajo_1 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() - (sprCentro.getHeight() * 2), context.almacenBombas.fuegoTR, context.getVertexBufferObjectManager());
 		normaliza(sprAbajo_1);
-		sprAbajo_2 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() - (sprCentro.getHeight() * 3), context.almacenBombas.mFuegoVerticalTR, context.getVertexBufferObjectManager());
+		sprAbajo_1.setCurrentTileIndex(38);
+		
+		sprAbajo_2 = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() - (sprCentro.getHeight() * 3), context.almacenBombas.fuegoTR, context.getVertexBufferObjectManager());
 		normaliza(sprAbajo_2);
-		sprDerecha_1 = new AnimatedSprite(sprCentro.getX() + (sprCentro.getWidth() * 2), sprCentro.getY(), context.almacenBombas.mFuegoHorizontalTR, context.getVertexBufferObjectManager());// gles2
+		sprAbajo_2.setCurrentTileIndex(38);
+		
+		sprDerecha_1 = new AnimatedSprite(sprCentro.getX() + (sprCentro.getWidth() * 2), sprCentro.getY(), context.almacenBombas.fuegoTR, context.getVertexBufferObjectManager());// gles2
 		normaliza(sprDerecha_1);
-		sprDerecha_2 = new AnimatedSprite(sprCentro.getX() + (sprCentro.getWidth() * 3), sprCentro.getY(), context.almacenBombas.mFuegoHorizontalTR, context.getVertexBufferObjectManager());// gles2
+		sprDerecha_1.setCurrentTileIndex(26);
+		
+		sprDerecha_2 = new AnimatedSprite(sprCentro.getX() + (sprCentro.getWidth() * 3), sprCentro.getY(), context.almacenBombas.fuegoTR, context.getVertexBufferObjectManager());// gles2
 		normaliza(sprDerecha_2);
-		sprIzquierda_1 = new AnimatedSprite(sprCentro.getX() - (sprCentro.getWidth() * 2), sprCentro.getY(), context.almacenBombas.mFuegoHorizontalTR, context.getVertexBufferObjectManager());// gles2
+		sprDerecha_2.setCurrentTileIndex(26);
+		
+		sprIzquierda_1 = new AnimatedSprite(sprCentro.getX() - (sprCentro.getWidth() * 2), sprCentro.getY(), context.almacenBombas.fuegoTR, context.getVertexBufferObjectManager());// gles2
 		normaliza(sprIzquierda_1);
-		sprIzquierda_2 = new AnimatedSprite(sprCentro.getX() - (sprCentro.getWidth() * 3), sprCentro.getY(), context.almacenBombas.mFuegoHorizontalTR, context.getVertexBufferObjectManager());// gles2
+		sprIzquierda_1.setCurrentTileIndex(22);
+		
+		sprIzquierda_2 = new AnimatedSprite(sprCentro.getX() - (sprCentro.getWidth() * 3), sprCentro.getY(), context.almacenBombas.fuegoTR, context.getVertexBufferObjectManager());// gles2
 		normaliza(sprIzquierda_2);
-
-		sprArribaFin = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() + (sprCentro.getHeight() * 4), context.almacenBombas.mFuegoFinArribaTR, context.getVertexBufferObjectManager());
+		sprIzquierda_2.setCurrentTileIndex(22);
+		
+		sprArribaFin = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() + (sprCentro.getHeight() * 4), context.almacenBombas.fuegoTR, context.getVertexBufferObjectManager());
 		normaliza(sprArribaFin);
-		sprAbajoFin = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() - (sprCentro.getHeight() * 4), context.almacenBombas.mFuegoFinAbajoTR, context.getVertexBufferObjectManager());
+		sprArribaFin.setCurrentTileIndex(3);// o 18
+		
+		sprAbajoFin = new AnimatedSprite(sprCentro.getX(), sprCentro.getY() - (sprCentro.getHeight() * 4), context.almacenBombas.fuegoTR, context.getVertexBufferObjectManager());
 		normaliza(sprAbajoFin);
-
-		sprDerechaFin = new AnimatedSprite(sprCentro.getX() + (sprCentro.getWidth() * 4), sprCentro.getY(), context.almacenBombas.mFuegoFinDerechaTR, context.getVertexBufferObjectManager());// gles2
+		sprAbajoFin.setCurrentTileIndex(45);// o 30
+		
+		sprDerechaFin = new AnimatedSprite(sprCentro.getX() + (sprCentro.getWidth() * 4), sprCentro.getY(), context.almacenBombas.fuegoTR, context.getVertexBufferObjectManager());// gles2
 		normaliza(sprDerechaFin);
-		sprIzquierdaFin = new AnimatedSprite(sprCentro.getX() - (sprCentro.getWidth() * 4), sprCentro.getY(), context.almacenBombas.mFuegoFinIzquierdaTR, context.getVertexBufferObjectManager());// gles2
+		sprDerechaFin.setCurrentTileIndex(27);// o 32
+		
+		sprIzquierdaFin = new AnimatedSprite(sprCentro.getX() - (sprCentro.getWidth() * 4), sprCentro.getY(), context.almacenBombas.fuegoTR, context.getVertexBufferObjectManager());// gles2
 		normaliza(sprIzquierdaFin);
+		sprIzquierdaFin.setCurrentTileIndex(21);// 16
+		
 
 
-
-		batch = new SpriteGroup(context.almacenBombas.fuegoBBTA, 21, context.getVertexBufferObjectManager());
+		batch = new SpriteGroup(context.almacenBombas.fuegoBTA, 21, context.getVertexBufferObjectManager());
 		batch.setOffsetCenter(0, 0);
 		batch.setScaleCenter(0, 0);
 		
@@ -274,8 +281,8 @@ public class Bomba {
 //		sprBomba.setVisible(false);
 	}
 
+	
 	public boolean plantarBomba(int tamExplosion, int secuencia, boolean detonadorRemoto) {
-		
 		
 		
 		coordenadas= new ArrayList<Coordenadas>();
@@ -380,7 +387,21 @@ public class Bomba {
 
 		context.escenaJuego.matriz.setValor(Matriz.NADA, fila, columna,null,null);
 		context.vibrar(300);		
-		sprCentro.animate(ANIMATE_DURATION, false, new ListenerExplotar());
+
+//		sprCentro.animate(ANIMATE_DURATION, false, new ListenerExplotar());
+		sprCentro.registerEntityModifier(new AlphaModifier(0.4f, 0, 1){
+			@Override
+			protected void onModifierFinished(IEntity pItem) {
+				sprCentro.registerEntityModifier(new AlphaModifier(0.4f, 1, 0){
+					@Override
+					protected void onModifierFinished(IEntity pItem) {
+						batch.reset();
+						reiniciaBatch();
+						batch.setIgnoreUpdate(true);	
+					}
+				});
+			}
+		});
 		// detonamos las demas bombas
 				
 		context.almacenBombas.bombasPlantadas.decrementAndGet();
@@ -421,6 +442,7 @@ public class Bomba {
 	
 	
 	
+	
 	public void centro(){	
 		Coordenadas coodenadas= new Coordenadas(columna, fila);
 		sprCentro.setVisible(true);
@@ -429,8 +451,10 @@ public class Bomba {
 	}
 	
 	public void cruzArriba(){
-		Sprite [] array = new Sprite[] {sprCentro, sprArriba_0, sprArriba_1,sprArriba_2, sprArribaFin};
+		AnimatedSprite [] array = new AnimatedSprite[] {sprCentro, sprArriba_0, sprArriba_1,sprArriba_2, sprArribaFin};
 		//centro+1	
+		
+		array[4].setCurrentTileIndex(3);
 		
 		int iAnterior=0;	
 		for (int i = 1; i <=tamExplosion; i++,iAnterior++) {
@@ -442,6 +466,7 @@ public class Bomba {
 			if (valor==Matriz.NADA){
 				// poner fagmento			
 				if (i==tamExplosion){
+					array[4].setCurrentTileIndex(18);
 					array[4].setPosition(getXFragmento(0), getYFragmento(i));
 					array[4].setVisible(true);
 				}else{
@@ -451,6 +476,9 @@ public class Bomba {
 
 				this.coordenadas.add(coodenadas);
 			}else if (valor==Matriz.PARED|| valor==Matriz.BOMBA){
+				if (i==1){
+					array[4].setCurrentTileIndex(18);
+				}
 				array[4].setPosition(getXFragmento(0), getYFragmento(i));
 				array[4].setVisible(true);
 				this.coordenadas.add(coodenadas);
@@ -467,8 +495,9 @@ public class Bomba {
 		}		
 	}
 	public void cruzIzquierda(){
-		Sprite [] array = new Sprite[] {sprCentro, sprIzquierda_0, sprIzquierda_1,sprIzquierda_2, sprIzquierdaFin};
+		AnimatedSprite [] array = new AnimatedSprite[] {sprCentro, sprIzquierda_0, sprIzquierda_1,sprIzquierda_2, sprIzquierdaFin};
 		//centro+1	
+		array[4].setCurrentTileIndex(21);
 		
 		int iAnterior=0;	
 		for (int i = 1; i <= tamExplosion; i++,iAnterior++) {
@@ -480,6 +509,7 @@ public class Bomba {
 			if (valor==Matriz.NADA){
 				// poner fagmento		
 				if (i==tamExplosion){
+					array[4].setCurrentTileIndex(16);
 					array[4].setPosition(getXFragmento(-i), getYFragmento(0));
 					array[4].setVisible(true);
 				}else{
@@ -489,6 +519,9 @@ public class Bomba {
 
 				this.coordenadas.add(coodenadas);
 			}else if (valor==Matriz.PARED|| valor==Matriz.BOMBA){
+				if (i==1){
+					array[4].setCurrentTileIndex(16);
+				}
 				array[4].setPosition(getXFragmento(-i), getYFragmento(0));
 				array[4].setVisible(true);
 				this.coordenadas.add(coodenadas);
@@ -506,9 +539,9 @@ public class Bomba {
 	}
 	
 	public void cruzDerecha(){
-		Sprite [] array = new Sprite[] {sprCentro, sprDerecha_0, sprDerecha_1,sprDerecha_2, sprDerechaFin};
+		AnimatedSprite [] array = new AnimatedSprite[] {sprCentro, sprDerecha_0, sprDerecha_1,sprDerecha_2, sprDerechaFin};
 		//centro+1	
-		
+		array[4].setCurrentTileIndex(27);
 		int iAnterior=0;	
 		for (int i = 1; i <=tamExplosion; i++,iAnterior++) {
 			int mColumna=columna+i;
@@ -519,6 +552,7 @@ public class Bomba {
 			if (valor==Matriz.NADA){
 				// poner fagmento			
 				if (i==tamExplosion){
+					array[4].setCurrentTileIndex(32);
 					array[4].setPosition(getXFragmento(i), getYFragmento(0));
 					array[4].setVisible(true);
 				}else{
@@ -528,6 +562,9 @@ public class Bomba {
 
 				this.coordenadas.add(coodenadas);
 			}else if (valor==Matriz.PARED|| valor==Matriz.BOMBA){
+				if (i==1){
+					array[4].setCurrentTileIndex(32);
+				}
 				array[4].setPosition(getXFragmento(i), getYFragmento(0));
 				array[4].setVisible(true);
 				this.coordenadas.add(coodenadas);
@@ -545,9 +582,9 @@ public class Bomba {
 	}
 	
 	public void cruzAbajo(){
-		Sprite [] array = new Sprite[] {sprCentro, sprAbajo_0, sprAbajo_1,sprAbajo_2, sprAbajoFin};
+		AnimatedSprite [] array = new AnimatedSprite[] {sprCentro, sprAbajo_0, sprAbajo_1,sprAbajo_2, sprAbajoFin};
 		//centro+1	
-		
+		array[4].setCurrentTileIndex(45);
 		int iAnterior=0;	
 		for (int i = 1; i <=tamExplosion; i++,iAnterior++) {
 			int mColumna=columna;
@@ -558,6 +595,7 @@ public class Bomba {
 			if (valor==Matriz.NADA){
 				// poner fagmento		
 				if (i==tamExplosion){
+					array[4].setCurrentTileIndex(30);
 					array[4].setPosition(getXFragmento(0), getYFragmento(-i));
 					array[4].setVisible(true);
 				}else{
@@ -567,6 +605,9 @@ public class Bomba {
 
 				this.coordenadas.add(coodenadas);
 			}else if (valor==Matriz.PARED || valor==Matriz.BOMBA){
+				if (i==1){
+					array[4].setCurrentTileIndex(30);
+				}
 				array[4].setPosition(getXFragmento(0), getYFragmento(-i));
 				array[4].setVisible(true);
 				this.coordenadas.add(coodenadas);
@@ -610,8 +651,9 @@ public class Bomba {
 
 		@Override
 		public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
-			sprCentro.animate(ANIMATE_DURATION,new int[]{4, 3, 2, 1, 0}, 0,new ListenerDesvanecer());
-			
+//			sprCentro.animate(ANIMATE_DURATION,new int[]{4, 3, 2, 1, 0}, 0,new ListenerDesvanecer());
+			sprCentro.setCurrentTileIndex(0);
+			sprCentro.registerEntityModifier(new AlphaModifier(4f, 1, 0));
 		}
 
 

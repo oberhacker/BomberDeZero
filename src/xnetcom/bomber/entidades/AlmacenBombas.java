@@ -25,21 +25,10 @@ public class AlmacenBombas {
 	private int nextBomba=0;
 	public AtomicInteger bombasPlantadas;
 	public BitmapTextureAtlas bombaBTA;
-	public BuildableBitmapTextureAtlas fuegoBBTA;
-	public TiledTextureRegion mFuegoCentroTR;
-	public TiledTextureRegion mFuegoCentroDerechaTR;
-	public TiledTextureRegion mFuegoCentroIzquierdaTR;
-	public TiledTextureRegion mFuegoCentroArribaTR;
-	public TiledTextureRegion mFuegoCentroAbajoTR;
-	public TiledTextureRegion mFuegoHorizontalTR;
-	public TiledTextureRegion mFuegoVerticalTR;
-
-	public TiledTextureRegion mFuegoFinDerechaTR;
-	public TiledTextureRegion mFuegoFinIzquierdaTR;
-	public TiledTextureRegion mFuegoFinArribaTR;
-	public TiledTextureRegion mFuegoFinAbajoTR;
 
 	public TiledTextureRegion bombaTR;
+	public BitmapTextureAtlas fuegoBTA;
+	public TiledTextureRegion fuegoTR;
 	
 	
 	public AlmacenBombas(BomberGame context) {
@@ -51,30 +40,12 @@ public class AlmacenBombas {
 				
 		
 		this.bombaBTA = new BitmapTextureAtlas(context.getTextureManager(), 512, 256, TextureOptions.DEFAULT);
-//		BitmapTextureAtlasTextureRegionFactory.createFromSource(bombaBTA, new TransparentBitmapTextureAtlasSource(512, 256), 0, 0);
-		this.fuegoBBTA = new BuildableBitmapTextureAtlas(context.getTextureManager(), 2048, 256, TextureOptions.REPEATING_BILINEAR);
-		this.mFuegoCentroTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_r_ani_74.png", 5, 1);
-		this.mFuegoCentroAbajoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_abajo_r_ani_74.png", 5, 1);
-		this.mFuegoCentroArribaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_arriba_r_ani_74.png", 5, 1);
-		this.mFuegoCentroDerechaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_derecha_r_ani_74.png", 5, 1);
-		this.mFuegoCentroIzquierdaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_centro_izquierda_r_ani_74.png", 5, 1);
-		this.mFuegoFinAbajoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_fin_abajo_r_ani_74.png", 5, 1);
-		this.mFuegoFinArribaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_fin_arriba_r_ani_74.png", 5, 1);
-		this.mFuegoFinDerechaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_fin_derecha_r_ani_74.png", 5, 1);
-		this.mFuegoFinIzquierdaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_fin_izquierda_r_ani_74.png", 5, 1);
-		this.mFuegoHorizontalTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_horizontal_r_ani_74.png", 5, 1);
-		this.mFuegoVerticalTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBBTA, context, "gfx/fuego_vertical_r_ani_74.png", 5, 1);
 		this.bombaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.bombaBTA, context, "gfx/bomba_ani90.png", 0, 0, 4, 2);
 
-		try {
-			fuegoBBTA.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(2, 2, 2));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.fuegoBTA = new BitmapTextureAtlas(context.getTextureManager(), 1024, 512, TextureOptions.DEFAULT);
+		this.fuegoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBTA, context, "gfx/cruz.png", 0, 0, 7, 7);
 		
-		
-		context.getEngine().getTextureManager().loadTexture(fuegoBBTA);
+		context.getEngine().getTextureManager().loadTexture(fuegoBTA);
 		context.getEngine().getTextureManager().loadTexture(bombaBTA);
 		
 		
