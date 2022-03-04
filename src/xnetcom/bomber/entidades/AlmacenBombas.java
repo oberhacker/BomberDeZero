@@ -42,14 +42,14 @@ public class AlmacenBombas {
 		this.bombaBTA = new BitmapTextureAtlas(context.getTextureManager(), 512, 256, TextureOptions.DEFAULT);
 		this.bombaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.bombaBTA, context, "gfx/bomba_ani90.png", 0, 0, 4, 2);
 
-		this.fuegoBTA = new BitmapTextureAtlas(context.getTextureManager(), 1024, 512, TextureOptions.DEFAULT);
+		this.fuegoBTA = new BitmapTextureAtlas(context.getTextureManager(), 1024, 512, TextureOptions.BILINEAR);
 		this.fuegoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBTA, context, "gfx/cruz.png", 0, 0, 7, 7);
 		
 		context.getEngine().getTextureManager().loadTexture(fuegoBTA);
 		context.getEngine().getTextureManager().loadTexture(bombaBTA);
 		
 		
-		
+				
 		almacen = new ArrayList<Bomba>();
 		Bomba mBomba = null;
 		for (int i = 0; i < Constantes.MAXIMOBOMBAS+5; i++) {

@@ -324,7 +324,9 @@ public class GameManager {
 	}
 
 	public void cogeMonedaPotenciador() {
-		this.bombaTam++;
+		if (bombaTam<Constantes.MAXIMOEXPLOSION){
+			this.bombaTam++;
+		}
 	}
 
 	public void cogeMonedaFantasma() {
