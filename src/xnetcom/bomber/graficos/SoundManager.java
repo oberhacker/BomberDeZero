@@ -21,7 +21,7 @@ public class SoundManager {
 	public BomberGame context;
 
 	private ArrayList<Sound> bomset = new ArrayList<Sound>();;
-	private Sound estrellas;
+	public Sound estrellas;
 
 	private ArrayList<Sound> explosion = new ArrayList<Sound>();
 	AtomicInteger nexExplosion = new AtomicInteger(0);
@@ -34,13 +34,17 @@ public class SoundManager {
 
 	boolean sonido = true;
 
-	float pasosVolumenBase = 0.3f;
+	float pasosVolumenBase = 0.5f;
 	float explosionVolumenBase = 2;
 	float bomsetVolumentBase = 1;
-	float estrellasVolumenBase = 1;
+	float estrellasVolumenBase = 0.8f;
 	float mechaVolumenBase = 1;
 
-	float monedaVolumenBase = 0.5f;
+	float campanaFinalVolumenBase=1f;
+	
+	
+	
+	float monedaVolumenBase = 0.3f;
 
 	float soundVolumen = 5;
 	float musicVolumen = 5;
@@ -57,6 +61,10 @@ public class SoundManager {
 	public Music musica8;
 	public Music booster;
 
+	
+
+	
+	
 	public SoundManager(BomberGame context) {
 		this.context = context;
 	}
@@ -73,18 +81,24 @@ public class SoundManager {
 		pasosB.setVolume(pasosVolumenBase * (soundVolumen / volumenBase));
 		mecha.setVolume(mechaVolumenBase * (soundVolumen / volumenBase));
 		monedasSound.setVolume(monedaVolumenBase * (soundVolumen / volumenBase));
-		estrellas.setVolume(estrellasVolumenBase * (soundVolumen / volumenBase));
+		estrellas.setVolume(estrellasVolumenBase * (soundVolumen / volumenBase));		
+		campanaFinal.setVolume(campanaFinalVolumenBase * (soundVolumen / volumenBase));
 
-		musica1.setVolume(1 * (musicVolumen / volumenBase));
-		musica2.setVolume(1 * (musicVolumen / volumenBase));
-		musica3.setVolume(1 * (musicVolumen / volumenBase));
-		musica4.setVolume(1 * (musicVolumen / volumenBase));
-		musica5.setVolume(1 * (musicVolumen / volumenBase));
-		musica6.setVolume(1 * (musicVolumen / volumenBase));
-		musica7.setVolume(1 * (musicVolumen / volumenBase));
-		musica8.setVolume(1 * (musicVolumen / volumenBase));
-		booster.setVolume(1 * (musicVolumen / volumenBase));
+		musica1.setVolume(musica1VolumenBase * (musicVolumen / volumenBase));
+		musica2.setVolume(musica2VolumenBase * (musicVolumen / volumenBase));
+		musica3.setVolume(musica3VolumenBase * (musicVolumen / volumenBase));
+		musica4.setVolume(musica4VolumenBase * (musicVolumen / volumenBase));
+		musica5.setVolume(musica5VolumenBase * (musicVolumen / volumenBase));
+		musica6.setVolume(musica6VolumenBase * (musicVolumen / volumenBase));
+		musica7.setVolume(musica7VolumenBase * (musicVolumen / volumenBase));
+		musica8.setVolume(musica8VolumenBase * (musicVolumen / volumenBase));
+		booster.setVolume(boosterVolumenBase * (musicVolumen / volumenBase));
 
+		
+	}
+	
+	public void playUltimoEnemigo() {
+		campanaFinal.play();
 	}
 
 	public void playBooster(){
@@ -116,7 +130,15 @@ public class SoundManager {
 		booster.play();
 	}
 
-
+	public float musica1VolumenBase=0.2f;
+	public float musica2VolumenBase=0.3f;
+	public float musica3VolumenBase=0.5f;
+	public float musica4VolumenBase=0.2f;
+	public float musica5VolumenBase=0.3f;
+	public float musica6VolumenBase=0.3f;
+	public float musica7VolumenBase=0.2f;
+	public float musica8VolumenBase=0.3f;
+	public float boosterVolumenBase=0.3f;
 
 	public void playMusicaRandom(){
 		Log.i("mierda", "playMusicaRandom");
@@ -125,6 +147,7 @@ public class SoundManager {
 		if (aleatorio!=1)aleatorio =Util.tomaDecision(1, 8);
 		stopMusica();
 		playMusica(aleatorio);
+		
 	}
 
 	public void jukebox() {
@@ -213,7 +236,7 @@ public class SoundManager {
 		
 	}
 
-	int musicaSonando = 0;
+	public int musicaSonando = 0;
 	boolean playinMusica=false;
 	public void playMusica( int cancion){
 		playinMusica=true;
@@ -328,7 +351,6 @@ public class SoundManager {
 				case 1:
 					musica1.resume();
 					break;
-
 				case 2:
 					musica2.resume();
 					break;
@@ -344,7 +366,7 @@ public class SoundManager {
 				case 7:
 					musica7.resume();
 					break;
-				default:
+				case 8:
 					musica8.resume();
 					break;
 				}
@@ -530,5 +552,7 @@ public class SoundManager {
 		musicVolumen = music_volumen;
 		aplicaVolumen();
 	}
+
+	
 
 }

@@ -94,8 +94,13 @@ public abstract class EnemigoBase {
 	}
 	
 	
+	int secuencia = -1;
 
-	
+	public void iniciaMonedaExplotada(int secuencia, int columna, int fila) {
+		this.secuencia = secuencia;
+		inicia(columna, fila);
+	}
+
 	public void inicia (int columna, int fila) {
 		
 		colidesTileRectangle.setVisible(true);
@@ -670,11 +675,13 @@ public abstract class EnemigoBase {
 			});
 			
 		}
-	}
+	}	
 	
-	
-	
-	public boolean matarPorCoordenadas(ArrayList<Coordenadas> coordenadas){
+	public boolean matarPorCoordenadas(ArrayList<Coordenadas> coordenadas, int secuencia){
+		// que no lo mate la bomba que lo creo
+		if (this.secuencia==secuencia){
+			return false;
+		}
 		for (Coordenadas coordenada : coordenadas) {
 			if (!muerto.get()){
 				if (getCoordenadas().getFila()==coordenada.getFila() && getCoordenadas().getColumna()==coordenada.getColumna()){				

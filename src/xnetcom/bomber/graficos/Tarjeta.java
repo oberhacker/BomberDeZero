@@ -66,7 +66,15 @@ public class Tarjeta {
 		
 		
 		sprTarjeta = new Sprite(0,0, tarjeta_TR, context.getVertexBufferObjectManager());		
-		sprRetry = new TiledSprite(0, 0, retry_TR, context.getVertexBufferObjectManager());
+		sprRetry = new TiledSprite(0, 0, retry_TR, context.getVertexBufferObjectManager()){
+			@Override
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.getAction() == 0 && sprTarjeta.isVisible() && getCurrentTileIndex()==0){					
+					context.loading.cargaMapa(context.escenaJuego.datosMapa.getNumeroMapa());	
+				}
+				return false;
+			}
+		};
 		sprTomenu = new Sprite(0, 0, tomenu_TR, context.getVertexBufferObjectManager()){
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
@@ -140,7 +148,7 @@ public class Tarjeta {
 		if (!sprTarjeta.hasParent()){
 			context.escenaJuego.hud.hud.registerTouchArea(sprTomenu);
 			context.escenaJuego.hud.hud.registerTouchArea(sprNext);
-			
+			context.escenaJuego.hud.hud.registerTouchArea(sprRetry);
 			context.escenaJuego.hud.hud.attachChild(sprTarjeta);
 		}
 				
@@ -153,6 +161,9 @@ public class Tarjeta {
 		reiniciaTarjeta();
 		new Thread() {
 			public void run() {				
+				context.soundManager.stopMusica();
+				context.soundManager.pararPasos();
+				context.soundManager.pararMecha();
 				try {
 					sprNext.setCurrentTileIndex(0);
 					sprRetry.setCurrentTileIndex(0);
@@ -161,22 +172,28 @@ public class Tarjeta {
 					case 1:
 						sprFailed.setVisible(false);
 						sprCleared.setVisible(true);
-						sprStar1.animate(50,false);			
+						sprStar1.animate(50,false);	
+						context.soundManager.estrellas.play();
 						break;
 					case 2:
 						sprFailed.setVisible(false);
 						sprCleared.setVisible(true);
 						sprStar1.animate(50,false);	
+						context.soundManager.estrellas.play();
 						sleep(500);
+						context.soundManager.estrellas.play();
 						sprStar2.animate(50,false);	
 						break;
 					case 3:
 						sprFailed.setVisible(false);
 						sprCleared.setVisible(true);
 						sprStar1.animate(50,false);	
-						sleep(500);
+						context.soundManager.estrellas.play();
+						sleep(500);						
 						sprStar2.animate(50,false);
+						context.soundManager.estrellas.play();
 						sleep(500);
+						context.soundManager.estrellas.play();
 						sprStar3.animate(50,false);	
 						break;
 					default:

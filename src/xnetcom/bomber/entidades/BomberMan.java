@@ -96,6 +96,7 @@ public class BomberMan {
 	}
 
 	public void reinicia() {
+		eliminaBoosters();
 		detenerPararAnimacion();
 		baseTileRectangle.setPosition(getXinicial(), getYinicial());
 		bomberAbajo.setCurrentTileIndex(0);
@@ -950,6 +951,7 @@ public class BomberMan {
 	public void boosterFantasma() {
 		if (!fantasma) {
 			fantasma = true;
+			context.soundManager.playBooster();
 			boostersFantasma++;
 			bomberAbajo.setAlpha(0.5f);
 			bomberArriba.setAlpha(0.5f);
@@ -978,6 +980,7 @@ public class BomberMan {
 	public boolean fantasmaOff;
 
 	public void fantasmaOff() {
+		context.soundManager.terminadoBooster();
 		if (context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla == Matriz.PARED) {
 			fantasmaOff = true;
 		} else {
@@ -1010,6 +1013,7 @@ public class BomberMan {
 	public void boosterSayan() {
 		if (!sayan) {
 			sayan = true;
+			context.soundManager.playBooster();
 			boosterssayan++;
 			aura.setVisible(true);
 			new Thread() {
@@ -1036,6 +1040,7 @@ public class BomberMan {
 	public void sayanOff() {
 		aura.setVisible(false);
 		sayan = false;
+		context.soundManager.terminadoBooster();
 	}
 
 	public boolean rapido;
@@ -1045,6 +1050,7 @@ public class BomberMan {
 		if (!rapido) {
 			rapido = true;
 			context.soundManager.pasosRapidos();
+			context.soundManager.playBooster();
 			rapidez = 1.6f;
 			boostersrapido++;
 			tiempoPorPixxel = Constantes.TIEMPO_POR_PIXEL * 0.6f;
@@ -1074,6 +1080,7 @@ public class BomberMan {
 	public void rapidoOff() {
 		rapido = false;
 		context.soundManager.pasosNormales();
+		context.soundManager.terminadoBooster();
 		rapidez = 1;
 		physicsHandler.setVelocityX(physicsHandler.getVelocityX() / 1.6f);
 		physicsHandler.setVelocityY(physicsHandler.getVelocityY() / 1.6f);
@@ -1097,6 +1104,12 @@ public class BomberMan {
 			}
 		}
 
+	}
+
+	public void eliminaBoosters() {
+		rapidoOff();
+		sayanOff();
+		fantasmaOff();
 	}
 
 }

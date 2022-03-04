@@ -278,6 +278,13 @@ public class AlmacenEnemigos {
 	 * crea un enemigo lo mete en el array de enemigos vivos y lo añade a la escena
 	 */
 	
+	public void creaEnemigoMoneda(Coordenadas coordenada, int secuencia){
+		EnemigoBase enemigo = spritePoolMoneda.obtainPoolItem();	
+		if (coordenada != null) {
+			enemigo.iniciaMonedaExplotada(secuencia,coordenada.getColumna(), coordenada.getFila());
+			almacen.add(enemigo);
+		}
+	}
 	
 	public void creaEnemigo( TipoEnemigo tipoEnemigo,int fila, int columna){
 		//completar logica
@@ -393,8 +400,8 @@ public class AlmacenEnemigos {
 	}
 	
 	
-	public void mataEnemigos(final ArrayList<Coordenadas> coordenadas) {
-
+	public void mataEnemigos(final ArrayList<Coordenadas> coordenadas, final int secuencia) {
+		
 		new Thread() {
 			public void run() {
 				try {
@@ -402,13 +409,16 @@ public class AlmacenEnemigos {
 						synchronized (almacen) {
 							ArrayList<EnemigoBase> eliminados = new ArrayList<EnemigoBase>();
 							for (EnemigoBase enemigo : almacen) {
-								if (enemigo.matarPorCoordenadas(coordenadas)) {
+								if (enemigo.matarPorCoordenadas(coordenadas,secuencia)) {
 									eliminados.add(enemigo);
 								}
 							}
 							for (EnemigoBase eliminado : eliminados) {
 								almacen.remove(eliminado);
 								dettachDePool(eliminado);
+							}
+							if (almacen.size()==0 && eliminados.size()!=0){
+								context.soundManager.playUltimoEnemigo();
 							}
 						}
 						sleep(200);

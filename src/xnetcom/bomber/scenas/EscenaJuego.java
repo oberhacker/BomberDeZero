@@ -193,7 +193,11 @@ public class EscenaJuego {
 							} else if (pTMXTileProperties.containsTMXProperty("moneda", "potenciador")) {
 								context.almacenMonedas.creaMoneda(TipoMoneda.MEXPLOSION, new Coordenadas(pTMXTile.getTileColumn(), pTMXTile.getTileRow()));
 								datosMapa.setM_potenciador(datosMapa.getM_potenciador()+1);
-							}							
+							} else if (pTMXTileProperties.containsTMXProperty("crono", "3:30")) {
+								context.gameManager.trestreintaminutos();
+							} else if (pTMXTileProperties.containsTMXProperty("crono", "5:00")) {
+								context.gameManager.cincominutos();
+							}						
 						}
 					});
 			

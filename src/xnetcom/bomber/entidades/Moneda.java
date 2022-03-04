@@ -5,6 +5,7 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import xnetcom.bomber.BomberGame;
+import xnetcom.bomber.enemigos.EnemigoBase.TipoEnemigo;
 import xnetcom.bomber.entidades.AlmacenMonedas.TipoMoneda;
 import xnetcom.bomber.util.Coordenadas;
 
@@ -34,8 +35,9 @@ public class Moneda extends TiledSprite{
 	}
 	
 	public boolean explotaMoneda(Coordenadas coordenadas, int secuencia){
-		if (this.secuencia!=secuencia && this.coordenadas.getColumna()==coordenadas.getColumna() && this.coordenadas.getFila()==coordenadas.getFila()){
+		if (isVisible()&&this.secuencia!=secuencia && this.coordenadas.getColumna()==coordenadas.getColumna() && this.coordenadas.getFila()==coordenadas.getFila()){
 			setVisible(false);
+			context.almacenEnemigos.creaEnemigoMoneda(coordenadas,  secuencia);
 			return true;
 		}else{
 			return false;

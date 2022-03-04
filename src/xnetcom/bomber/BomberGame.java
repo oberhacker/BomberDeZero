@@ -226,4 +226,22 @@ public class BomberGame extends SimpleBaseGameActivity {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+	
+	
+	
+	@Override
+	protected void onPause() {		
+		try{
+			soundManager.stopMusica();
+		}catch(Exception e){}
+		super.onPause();
+	}
+	
+	@Override
+	protected synchronized void onResume() {
+		try{
+			soundManager.terminadoBooster();
+		}catch(Exception e){}
+		super.onResume();
+	}
 }

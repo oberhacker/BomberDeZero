@@ -783,7 +783,7 @@ public class HudBomber {
 		ct_vidas.setY(7);
 		marcador.attachChild(ct_vidas);
 
-		spr_detonador.setX(393 + 5);
+		spr_detonador.setX(376 + 5);
 		spr_detonador.setY(8);
 		marcador.attachChild(spr_detonador);
 
@@ -795,11 +795,11 @@ public class HudBomber {
 		ct_bombas.setY(7);
 		marcador.attachChild(ct_bombas);
 
-		spr_explosion.setX(555 + 5 + 5);
+		spr_explosion.setX(555  );
 		spr_explosion.setY(8);
 		marcador.attachChild(spr_explosion);
 
-		ct_explosion.setX(582 + 5 + 8);
+		ct_explosion.setX(582  + 3);
 		ct_explosion.setY(7);
 		marcador.attachChild(ct_explosion);
 
@@ -973,6 +973,7 @@ public class HudBomber {
 		scene.registerUpdateHandler(timer);
 	}
 
+
 	public void update() {
 		ct_vidas.setText(":" + context.gameManager.vidas);
 		ct_bombas.setText(":" + context.gameManager.bombaNum);
@@ -984,7 +985,41 @@ public class HudBomber {
 		}
 		int cuenta = context.escenaJuego.datosMapa.getBoosterTotales() - context.gameManager.boostersCogidos - context.gameManager.boostersExplotados;
 		ct_monedas.setText(":" + cuenta);
+		
+		if (crono){
+			if (minutos==0 && segundos==0){
+				context.gameManager.terminaPartida(false);
+				crono=false;
+			}else{
+				if (segundos>0){
+					segundos--;
+				}else{
+					minutos--;
+					segundos=59;
+				}
+			}
+		}
+		String segundosString=segundos+"";
+		if (segundos<10){
+			segundosString="0"+segundos+"";
+		}
+		ct_tiempo.setText("TIME "+minutos+":"+segundosString);		
 
+	}
+
+	public void iniciaCuentaAtras(){
+		crono=true;
+	}
+	public void paraCrono(){
+		crono=false;
+	}
+	boolean crono=false;
+	int minutos;
+	int segundos;
+	public void settTempo(int minutos, int segundos) {
+		this.minutos=minutos;
+		this.segundos=segundos;		
+		ct_tiempo.setText("TIME "+minutos+":"+segundos);
 	}
 
 }

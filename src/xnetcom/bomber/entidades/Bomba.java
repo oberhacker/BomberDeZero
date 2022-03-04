@@ -385,7 +385,7 @@ public class Bomba {
 				
 		context.almacenBombas.bombasPlantadas.decrementAndGet();
 		context.escenaJuego.matriz.explota(coordenadas,secuencia);
-		context.almacenEnemigos.mataEnemigos(coordenadas);
+		context.almacenEnemigos.mataEnemigos(coordenadas,secuencia);
 		context.gameManager.matarPorCoordenadas(coordenadas);
 		context.almacenMonedas.explotarMonedas(coordenadas,secuencia);
 		
