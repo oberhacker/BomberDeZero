@@ -114,7 +114,7 @@ public class Bomba {
 		// Srpite maestro
 		
 		this.fuegoBTA = new BitmapTextureAtlas(context.getTextureManager(), 1024, 512, TextureOptions.BILINEAR);
-		this.fuegoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBTA, context, "gfx/cruz.png", 0, 0, 7, 7);
+		this.fuegoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBTA, context, "gfx/cruz2.png", 0, 0, 7, 7);
 				
 		context.getEngine().getTextureManager().loadTexture(fuegoBTA);
 
@@ -409,11 +409,12 @@ public class Bomba {
 		final float alpha = sprCentro.getAlpha();
 //		sprCentro.animate(ANIMATE_DURATION, false, new ListenerExplotar());
 		
+		
 		batch.setVisible(true);
 		final long time= System.currentTimeMillis();
 		Log.d("EXP", "inicio "+time);
 		sprCentro.clearEntityModifiers();
-		sprCentro.registerEntityModifier(new AlphaModifier(0.4f, 0, alpha){
+		sprCentro.registerEntityModifier(new AlphaModifier(0.1f, 0, alpha){
 			@Override
 			protected void onManagedInitialize(IEntity pItem) {
 				super.onManagedInitialize(pItem);
@@ -489,7 +490,6 @@ public class Bomba {
 		AnimatedSprite [] array = new AnimatedSprite[] {sprCentro, sprArriba_0, sprArriba_1,sprArriba_2, sprArribaFin};
 		//centro+1	
 		
-		array[4].setCurrentTileIndex(3);
 		
 		int iAnterior=0;	
 		for (int i = 1; i <=tamExplosion; i++,iAnterior++) {
@@ -501,7 +501,6 @@ public class Bomba {
 			if (valor==Matriz.NADA){
 				// poner fagmento			
 				if (i==tamExplosion){
-					array[4].setCurrentTileIndex(18);
 					array[4].setPosition(getXFragmento(0), getYFragmento(i));
 					array[4].setVisible(true);
 				}else{
@@ -511,9 +510,6 @@ public class Bomba {
 
 				this.coordenadas.add(coodenadas);
 			}else if (valor==Matriz.PARED|| valor==Matriz.BOMBA){
-				if (i==1){
-					array[4].setCurrentTileIndex(18);
-				}
 				array[4].setPosition(getXFragmento(0), getYFragmento(i));
 				array[4].setVisible(true);
 				this.coordenadas.add(coodenadas);
@@ -532,7 +528,6 @@ public class Bomba {
 	public void cruzIzquierda(){
 		AnimatedSprite [] array = new AnimatedSprite[] {sprCentro, sprIzquierda_0, sprIzquierda_1,sprIzquierda_2, sprIzquierdaFin};
 		//centro+1	
-		array[4].setCurrentTileIndex(21);
 		
 		int iAnterior=0;	
 		for (int i = 1; i <= tamExplosion; i++,iAnterior++) {
@@ -544,19 +539,14 @@ public class Bomba {
 			if (valor==Matriz.NADA){
 				// poner fagmento		
 				if (i==tamExplosion){
-					array[4].setCurrentTileIndex(16);
 					array[4].setPosition(getXFragmento(-i), getYFragmento(0));
 					array[4].setVisible(true);
 				}else{
 					array[i].setVisible(true);
 					array[i].setPosition(getXFragmento(-i), getYFragmento(0));	
 				}
-
 				this.coordenadas.add(coodenadas);
 			}else if (valor==Matriz.PARED|| valor==Matriz.BOMBA){
-				if (i==1){
-					array[4].setCurrentTileIndex(16);
-				}
 				array[4].setPosition(getXFragmento(-i), getYFragmento(0));
 				array[4].setVisible(true);
 				this.coordenadas.add(coodenadas);
@@ -576,7 +566,6 @@ public class Bomba {
 	public void cruzDerecha(){
 		AnimatedSprite [] array = new AnimatedSprite[] {sprCentro, sprDerecha_0, sprDerecha_1,sprDerecha_2, sprDerechaFin};
 		//centro+1	
-		array[4].setCurrentTileIndex(27);
 		int iAnterior=0;	
 		for (int i = 1; i <=tamExplosion; i++,iAnterior++) {
 			int mColumna=columna+i;
@@ -587,7 +576,6 @@ public class Bomba {
 			if (valor==Matriz.NADA){
 				// poner fagmento			
 				if (i==tamExplosion){
-					array[4].setCurrentTileIndex(32);
 					array[4].setPosition(getXFragmento(i), getYFragmento(0));
 					array[4].setVisible(true);
 				}else{
@@ -597,9 +585,6 @@ public class Bomba {
 
 				this.coordenadas.add(coodenadas);
 			}else if (valor==Matriz.PARED|| valor==Matriz.BOMBA){
-				if (i==1){
-					array[4].setCurrentTileIndex(32);
-				}
 				array[4].setPosition(getXFragmento(i), getYFragmento(0));
 				array[4].setVisible(true);
 				this.coordenadas.add(coodenadas);
@@ -619,7 +604,7 @@ public class Bomba {
 	public void cruzAbajo(){
 		AnimatedSprite [] array = new AnimatedSprite[] {sprCentro, sprAbajo_0, sprAbajo_1,sprAbajo_2, sprAbajoFin};
 		//centro+1	
-		array[4].setCurrentTileIndex(45);
+
 		int iAnterior=0;	
 		for (int i = 1; i <=tamExplosion; i++,iAnterior++) {
 			int mColumna=columna;
@@ -630,19 +615,14 @@ public class Bomba {
 			if (valor==Matriz.NADA){
 				// poner fagmento		
 				if (i==tamExplosion){
-					array[4].setCurrentTileIndex(30);
 					array[4].setPosition(getXFragmento(0), getYFragmento(-i));
 					array[4].setVisible(true);
 				}else{
 					array[i].setVisible(true);
 					array[i].setPosition(getXFragmento(0), getYFragmento(-i));
 				}
-
 				this.coordenadas.add(coodenadas);
 			}else if (valor==Matriz.PARED || valor==Matriz.BOMBA){
-				if (i==1){
-					array[4].setCurrentTileIndex(30);
-				}
 				array[4].setPosition(getXFragmento(0), getYFragmento(-i));
 				array[4].setVisible(true);
 				this.coordenadas.add(coodenadas);
