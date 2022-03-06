@@ -35,8 +35,8 @@ public class GameManager {
 	int segundos;
 
 	public void trestreintaminutos() {
-		minutos = 3;
-		segundos = 30;
+		minutos = 0;
+		segundos = 10;
 	}
 
 	public void cincominutos() {
@@ -166,13 +166,19 @@ public class GameManager {
 				guardaEstrellas(estrellas, context.escenaJuego.datosMapa.getNumeroMapa());
 			} else {
 				estrellas = 0;
-				this.detonador = false;
-				this.bombaNum = Constantes.INICIO_BOMBAS;
-				this.bombaTam = Constantes.INICIO_EXPLOSION;
-				guardarDatos();
+				if(context.gameManager.vidas==0){
+					pierdeBoosters();
+				}
 			}
 			context.tarjeta.muestraTarjeta(estrellas);
 		}
+	}
+	
+	public void pierdeBoosters(){
+		this.detonador = false;
+		this.bombaNum = Constantes.INICIO_BOMBAS;
+		this.bombaTam = Constantes.INICIO_EXPLOSION;
+		guardarDatos();
 	}
 
 	public void checkpuerta() {
@@ -308,7 +314,7 @@ public class GameManager {
 		}
 
 		guardarDatos();
-
+		context.escenaJuego.hud.update(true);
 	}
 
 	public void cogeMonedaCorazon() {
@@ -320,7 +326,9 @@ public class GameManager {
 	}
 
 	public void cogeMonedaBomba() {
-		this.bombaNum++;
+		if (bombaNum<Constantes.MAXIMOBOMBAS){
+			this.bombaNum++;
+		}
 	}
 
 	public void cogeMonedaPotenciador() {

@@ -83,6 +83,7 @@ public class HudBomber {
 	private Sprite zoom_mas, zoom_menos;
 	private Sprite music_mas, music_menos, sound_mas, sound_menos;
 	private TiledSprite ticSpr;
+	private Sprite nextsong;
 
 	private void screenControl(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
 		if (context.gameManager.pausa) {
@@ -233,7 +234,7 @@ public class HudBomber {
 		btn_1 = new Sprite(0, 0, btn_1_TR, context.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				if(moviendoZoom){
+				if(moviendoZoom || context.bomberman.isMuerto()){
 					return false;
 				}
 				if (pausa) {
@@ -256,7 +257,7 @@ public class HudBomber {
 		btn_2 = new Sprite(0, 0, btn_2_TR, context.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				if(moviendoZoom){
+				if(moviendoZoom ||  context.bomberman.isMuerto()){
 					return false;
 				}
 				if (pausa) {
@@ -459,9 +460,11 @@ public class HudBomber {
 					if (vibration==1){
 						vibration=0;
 						setCurrentTileIndex(1);
+						context.setVibrar(false);
 					}else{
 						vibration=1;
 						setCurrentTileIndex(0);
+						context.setVibrar(true);
 					}					
 					guardarPreferencias();				
 				}
@@ -543,6 +546,20 @@ public class HudBomber {
 		musicTxt.setOffsetCenter(0, 0);
 		musicTxt.setVisible(false);
 
+		
+		BitmapTextureAtlas nextsong_btn = new BitmapTextureAtlas(context.getTextureManager(), 256, 128, TextureOptions.DEFAULT);
+		nextsong_btn.load();
+		TextureRegion nextsongTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(nextsong_btn, context, "gfx/nextsong.png", 0, 0);
+		nextsong = new Sprite(150, (context.CAMERA_HEIGHT)-70, nextsongTR, context.getVertexBufferObjectManager()) {
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.getAction() == 0 && isVisible()) {
+					context.soundManager.playNextMusica();
+				}
+				return false;
+			}
+		};
+		nextsong.setVisible(false);
+		
 		BitmapTextureAtlas restore_btn = new BitmapTextureAtlas(context.getTextureManager(), 256, 128, TextureOptions.DEFAULT);
 		restore_btn.load();
 		TextureRegion restoreTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(restore_btn, context, "gfx/restore_btn.png", 0, 0);
@@ -644,7 +661,7 @@ public class HudBomber {
 	float zControl = Constantes.PREFERENCIAS_CONTROL_Z;
 	int music_volumen;
 	int sound_volumen;
-	int vibration;
+	public int vibration;
 	public void cargarPreferencias() {
 
 		float xControl = Preferencias.leerPreferenciasFloat("xControl");
@@ -670,7 +687,11 @@ public class HudBomber {
 			Preferencias.guardarPrefenrenciasInt("vibration", 1);
 			vibration=1;
 		}
-		
+		if (vibration==1){
+			context.setVibrar(true);
+		}else{
+			context.setVibrar(false);
+		}
 
 		if (xControl != -1) {
 			this.xControl = xControl;
@@ -829,6 +850,7 @@ public class HudBomber {
 		} else {
 			muestraMenuPausa();
 			context.gameManager.pausa();
+			context.bomberman.detenerPararAnimacion();
 			pausa = true;
 		}
 
@@ -856,6 +878,7 @@ public class HudBomber {
 		marcador.setVisible(true);
 		menu.setVisible(true);
 		restore.setVisible(false);
+		nextsong.setVisible(false);
 	}
 
 	public void muestraMenuPausa() {
@@ -880,6 +903,7 @@ public class HudBomber {
 		fondo.setVisible(true);
 		marcador.setVisible(false);
 		menu.setVisible(false);
+		nextsong.setVisible(true);
 	}
 
 	public void apretarBotonPlantabomba() {
@@ -930,7 +954,9 @@ public class HudBomber {
 		hud.attachChild(pause);
 		hud.attachChild(btn_1);
 		hud.attachChild(btn_2);
+		hud.attachChild(nextsong);
 		hud.registerTouchArea(ticSpr);
+		hud.registerTouchArea(nextsong);
 		hud.registerTouchArea(sound_mas);
 		hud.registerTouchArea(sound_menos);
 		
@@ -958,13 +984,13 @@ public class HudBomber {
 
 		context.getEngine().getCamera().setHUD(hud);
 
-		update();
+		update(true);
 		if (timer == null) {
 			timer = new TimerHandler(1f, true, new ITimerCallback() {
 				@Override
 				public void onTimePassed(final TimerHandler pTimerHandler) {
 					try {
-						update();
+						update(false);
 					} catch (Exception e) {
 					}
 				}
@@ -974,20 +1000,12 @@ public class HudBomber {
 	}
 
 
-	public void update() {
-		ct_vidas.setText(":" + context.gameManager.vidas);
-		ct_bombas.setText(":" + context.gameManager.bombaNum);
-		ct_explosion.setText(":" + context.gameManager.bombaTam);
-		if (context.gameManager.detonador) {
-			spr_detonador.setCurrentTileIndex(0);
-		} else {
-			spr_detonador.setCurrentTileIndex(5);
-		}
-		int cuenta = context.escenaJuego.datosMapa.getBoosterTotales() - context.gameManager.boostersCogidos - context.gameManager.boostersExplotados;
-		ct_monedas.setText(":" + cuenta);
-		
-		if (crono){
+	public void update(boolean noTime) {
+
+		if ((crono && !noTime)&& !context.gameManager.pausa ){
 			if (minutos==0 && segundos==0){
+				context.gameManager.vidas--;
+				context.gameManager.guardarDatos();
 				context.gameManager.terminaPartida(false);
 				crono=false;
 			}else{
@@ -999,6 +1017,18 @@ public class HudBomber {
 				}
 			}
 		}
+		ct_vidas.setText(":" + context.gameManager.vidas);
+		ct_bombas.setText(":" + context.gameManager.bombaNum);
+		ct_explosion.setText(":" + context.gameManager.bombaTam);
+		if (context.gameManager.detonador) {
+			spr_detonador.setCurrentTileIndex(0);
+		} else {
+			spr_detonador.setCurrentTileIndex(5);
+		}
+		int cuenta = context.escenaJuego.datosMapa.getBoosterTotales() - context.gameManager.boostersCogidos - context.gameManager.boostersExplotados;
+		ct_monedas.setText(":" + cuenta);
+		
+		
 		String segundosString=segundos+"";
 		if (segundos<10){
 			segundosString="0"+segundos+"";

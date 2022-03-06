@@ -127,7 +127,13 @@ public class SoundManager {
 			try{musica8.pause();}catch(Exception e){};
 		}
 		booster.seekTo(0);
-		booster.play();
+		
+		new Thread() {
+			public void run() {
+				booster.play();
+			};
+		}.start();
+
 	}
 
 	public float musica1VolumenBase=0.2f;
@@ -142,11 +148,30 @@ public class SoundManager {
 
 	public void playMusicaRandom(){
 		Log.i("mierda", "playMusicaRandom");
-		int aleatorio =Util.tomaDecision(1, 8);
-		if (aleatorio!=1)aleatorio =Util.tomaDecision(1, 8);
-		if (aleatorio!=1)aleatorio =Util.tomaDecision(1, 8);
+		final int aleatorio =Util.tomaDecision(1, 8);
 		stopMusica();
-		playMusica(aleatorio);
+		new Thread() {
+			public void run() {
+				playMusica(aleatorio);
+			};
+		}.start();
+
+		
+	}
+	
+	public void playNextMusica(){
+		stopMusica();
+		if(musicaSonando==8){
+			musicaSonando=1;
+		}else{
+			musicaSonando++;
+		}
+		new Thread() {
+			public void run() {
+				playMusica(musicaSonando);
+			};
+		}.start();
+
 		
 	}
 

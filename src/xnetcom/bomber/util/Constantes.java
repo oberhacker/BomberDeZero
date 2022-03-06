@@ -59,7 +59,7 @@ public class Constantes {
 	public static int TIEMPO_TEMPORIZADOR_BOMBA;
 	
 	
-	public static int MAXIMOBOMBAS=9;
+	public static int MAXIMOBOMBAS=5;
 	public static int MAXIMOEXPLOSION=4;
 	
 	public static final int INICIO_BOMBAS = 1;

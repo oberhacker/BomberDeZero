@@ -735,12 +735,15 @@ public class BomberMan {
 		baseTileRectangle.clearEntityModifiers();
 	}
 
+	public boolean pausa=false;
 	public void pausa() {
+		pausa=true;
 		baseTileRectangle.setIgnoreUpdate(true);
 		bomberAbajo.setIgnoreUpdate(true);
 	}
 
 	public void play() {
+		pausa=false;
 		baseTileRectangle.setIgnoreUpdate(false);
 		bomberAbajo.setIgnoreUpdate(false);
 	}

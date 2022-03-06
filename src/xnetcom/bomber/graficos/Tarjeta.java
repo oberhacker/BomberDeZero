@@ -198,7 +198,9 @@ public class Tarjeta {
 						break;
 					default:
 						sprNext.setCurrentTileIndex(1);
-						sprRetry.setCurrentTileIndex(1);
+						if (context.gameManager.vidas==0){
+							sprRetry.setCurrentTileIndex(1);
+						}
 						sprFailed.setVisible(true);
 						sprCleared.setVisible(false);
 						break;
