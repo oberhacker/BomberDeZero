@@ -35,13 +35,17 @@ public class GameManager {
 	int segundos;
 
 	public void trestreintaminutos() {
-		minutos = 0;
-		segundos = 10;
+		minutos = 3;
+		segundos = 30;
 	}
 
 	public void cincominutos() {
 		minutos = 5;
 		segundos = 0;
+	}
+	public void tiempoInfinito(){
+		minutos=0;
+		segundos=0;
 	}
 
 	public void cargaDatos() {
@@ -68,6 +72,10 @@ public class GameManager {
 	public void inicia() {
 		context.escenaJuego.hud.paraCrono();
 		context.escenaJuego.hud.settTempo(minutos, segundos);
+		context.escenaJuego.hud.update(false);
+		context.escenaJuego.hud.ct_tiempo.clearEntityModifiers();
+		context.escenaJuego.hud.ct_tiempo.clearEntityModifiers();
+		context.escenaJuego.hud.ct_tiempo.setAlpha(1f);
 		play();
 		muertoVeces = 0;
 		boostersCogidos = 0;
@@ -91,7 +99,10 @@ public class GameManager {
 		}
 		Log.d("MUSICAA", "MUSICAA");
 		context.soundManager.playMusicaRandom();
-		context.escenaJuego.hud.iniciaCuentaAtras();
+		if (minutos!=0 && segundos!=0){
+			context.escenaJuego.hud.iniciaCuentaAtras();
+		}
+
 	}
 
 	Coordenadas coodenadasPuerta;
@@ -121,12 +132,13 @@ public class GameManager {
 		coodenadasPuerta = context.capaParedes.listaMuros.get(seleccion).coodenadas;
 	}
 
+	
 	public void descubrePuerta(ArrayList<Coordenadas> coodenadas) {
 		if (!context.escenaJuego.spritePuerta.isVisible()) {
 			for (Coordenadas coordenadas : coodenadas) {
 				if (coordenadas.getColumna() == coodenadasPuerta.getColumna() && coordenadas.getFila() == coodenadasPuerta.getFila()) {
 					context.escenaJuego.spritePuerta.setVisible(true);
-					context.escenaJuego.spritePuerta.setPosition(coodenadasPuerta.getX() - 4f, coodenadasPuerta.getYCorregido() - 4);
+					context.escenaJuego.spritePuerta.setPosition(coodenadasPuerta.getX() - 2f, coodenadasPuerta.getYCorregido());
 					return;
 				}
 			}

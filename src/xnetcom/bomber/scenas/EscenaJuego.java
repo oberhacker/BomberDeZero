@@ -28,6 +28,7 @@ import xnetcom.bomber.sql.DatosMapa;
 import xnetcom.bomber.util.Constantes;
 import xnetcom.bomber.util.Coordenadas;
 import xnetcom.bomber.util.Matriz;
+import xnetcom.bomber.util.Util;
 
 public class EscenaJuego {
 
@@ -65,8 +66,8 @@ public class EscenaJuego {
 		TextureRegion puerta_TR =  BitmapTextureAtlasTextureRegionFactory.createFromAsset(puerta_BTA, context, "gfx/puerta.png", 0, 0);
 		
 		spritePuerta = new Sprite(0,0, puerta_TR,context.getEngine().getVertexBufferObjectManager());
-		spritePuerta.setWidth(Constantes.TILE_WIDTH+5);
-		spritePuerta.setHeight(Constantes.TILE_HEIGHT+8);
+		spritePuerta.setWidth(Constantes.TILE_WIDTH+3);
+		spritePuerta.setHeight(Constantes.TILE_HEIGHT+6);
 		spritePuerta.setVisible(false);
 		spritePuerta.setZIndex(Constantes.ZINDEX_BOMBERMAN_ABAJO-10);		
 		spritePuerta.setOffsetCenter(0, 0);
@@ -89,7 +90,54 @@ public class EscenaJuego {
 		context.bomberman.reinicia();
 	}
 	
-	
+	public void playTrainig() {			
+		int numMap = 0;
+		context.gameManager.tiempoInfinito();
+		scene=onCreateScene(numMap);
+		
+		int filaAnterior = 0;
+		int columnaAnterior = 0;
+		
+		for (int i = 0; i < 50; i++) {	
+
+			boolean puesto=false;
+			do{
+				boolean salida=false;
+				int fila=2;
+				int columna=2;
+				do{
+					fila = Util.tomaDecision(2, 12);
+					columna = Util.tomaDecision(2, 22);	
+					if (columna<=5 &&fila <=5 ){
+						salida=false;
+					}else{
+						salida=true;
+					}
+				}while(!salida);
+				
+				if (filaAnterior!=0 &&  columnaAnterior!=0){					
+					// tenemos un 30 por ciento de posibilidades de continuar a la derecha
+					int decision = Util.tomaDecision(1, 100);
+					if (decision<=50){
+						columna=columnaAnterior;
+						columna++;
+						fila=filaAnterior;
+					}
+				}
+
+				filaAnterior=fila;
+				columnaAnterior=columna;
+				if(matriz.getValor(fila, columna).tipoCasilla!=Matriz.MURO && matriz.getValor(fila, columna).tipoCasilla!=Matriz.PARED ){
+					context.capaParedes.ponParedInicial(columna, fila,true);
+					puesto=true;					
+				}				
+			}while(!puesto);		
+		}
+		context.capaParedes.recalculaPared();
+		context.gameManager.inicia();
+		context.getEngine().setScene(scene);		
+		
+	}
 	
 	public Scene onCreateScene(int numMap) {		
 		boolean primeraCarga;
@@ -290,6 +338,8 @@ public class EscenaJuego {
 			context.capaParedes.onSceneCreated();
 			scene.attachChild(spritePuerta);  
 		}
+		
+		
 //		context.camaraJuego.setCenter(0, 832);
 //		context.camaraJuego.updateChaseEntity();
 //		context.camaraJuego.onUpdate(0.02f);
@@ -301,7 +351,9 @@ public class EscenaJuego {
 		
 		context.tarjeta.attachScene();
 		scene.sortChildren();
-		context.gameManager.inicia();
+		if (numMap!=0){
+			context.gameManager.inicia();
+		}
 		return scene;
 	}
 

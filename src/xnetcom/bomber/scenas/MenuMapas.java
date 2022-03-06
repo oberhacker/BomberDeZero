@@ -176,7 +176,7 @@ public class MenuMapas {
 		Sprite entrenamiento = new Sprite(0,0,trainingTR,context.getVertexBufferObjectManager()){
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {				
-
+				context.escenaJuego.playTrainig();
 				return false;
 			}
 		};

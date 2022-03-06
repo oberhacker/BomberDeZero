@@ -9,8 +9,13 @@ import org.andengine.engine.camera.hud.controls.DigitalOnScreenControl;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.IEntity;
+import org.andengine.entity.modifier.AlphaModifier;
+import org.andengine.entity.modifier.ColorModifier;
+import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.MoveYModifier;
+import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.scene.background.modifier.LoopBackgroundModifier;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.sprite.TiledSprite;
 import org.andengine.entity.text.Text;
@@ -24,6 +29,9 @@ import org.andengine.opengl.texture.bitmap.AssetBitmapTexture;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
+import org.andengine.util.adt.color.Color;
+import org.andengine.util.modifier.LoopModifier;
+import org.andengine.util.modifier.SequenceModifier;
 
 import xnetcom.bomber.BomberGame;
 import xnetcom.bomber.preferencias.Preferencias;
@@ -66,7 +74,7 @@ public class HudBomber {
 	private TextureRegion hudTR;
 	private TiledTextureRegion iconosHUDTR;
 	private Font mFontDigital;
-	private Text ct_tiempo;
+	public Text ct_tiempo;
 	private Text ct_vidas;
 	private Text ct_bombas;
 	private Text ct_explosion;
@@ -1016,6 +1024,12 @@ public class HudBomber {
 					segundos=59;
 				}
 			}
+
+			if (minutos==0&& segundos==30){
+				SequenceEntityModifier seq= new SequenceEntityModifier(new AlphaModifier(0.2f, 1, 0),new AlphaModifier(0.2f, 0, 1));
+				LoopEntityModifier loop= new LoopEntityModifier(seq);				
+				ct_tiempo.registerEntityModifier(loop);
+			}
 		}
 		ct_vidas.setText(":" + context.gameManager.vidas);
 		ct_bombas.setText(":" + context.gameManager.bombaNum);
@@ -1036,6 +1050,7 @@ public class HudBomber {
 		ct_tiempo.setText("TIME "+minutos+":"+segundosString);		
 
 	}
+	
 
 	public void iniciaCuentaAtras(){
 		crono=true;

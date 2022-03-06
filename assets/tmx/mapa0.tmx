@@ -92,6 +92,11 @@
     <property name="muro" value="true"/>
    </properties>
   </tile>
+  <tile id="69">
+   <properties>
+    <property name="crono" value="3:30"/>
+   </properties>
+  </tile>
   <tile id="73">
    <properties>
     <property name="muro" value="true"/>
@@ -140,6 +145,11 @@
   <tile id="89">
    <properties>
     <property name="muro" value="true"/>
+   </properties>
+  </tile>
+  <tile id="91">
+   <properties>
+    <property name="" value=""/>
    </properties>
   </tile>
   <tile id="93">
@@ -244,7 +254,7 @@
   </tile>
   <tile id="143">
    <properties>
-    <property name="pared" value="true"/>
+    <property name="pared" value="false"/>
    </properties>
   </tile>
   <tile id="145">
@@ -1373,31 +1383,31 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
+   <tile gid="144"/>
   </data>
  </layer>
  <layer name="bordeAbajo" width="25" height="15">
@@ -2184,7 +2194,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="150"/>
+   <tile gid="115"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>

@@ -37,6 +37,8 @@ public class Moneda extends TiledSprite{
 	public boolean explotaMoneda(Coordenadas coordenadas, int secuencia){
 		if (isVisible()&&this.secuencia!=secuencia && this.coordenadas.getColumna()==coordenadas.getColumna() && this.coordenadas.getFila()==coordenadas.getFila()){
 			setVisible(false);
+			context.gameManager.boostersExplotados++;
+			context.escenaJuego.hud.update(true);
 			context.almacenEnemigos.creaEnemigoMoneda(coordenadas,  secuencia);
 			return true;
 		}else{

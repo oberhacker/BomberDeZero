@@ -157,7 +157,8 @@ public class Tarjeta {
 	
 	
 	public void muestraTarjeta(final int estrellas){
-
+		context.escenaJuego.hud.ct_tiempo.clearEntityModifiers();
+		context.escenaJuego.hud.ct_tiempo.setAlpha(1f);
 		reiniciaTarjeta();
 		new Thread() {
 			public void run() {				
