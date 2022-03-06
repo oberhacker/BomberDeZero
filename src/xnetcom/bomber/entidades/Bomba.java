@@ -110,11 +110,12 @@ public class Bomba {
 	}
 	
 
+	
 	public void creaBatch() {
 		// Srpite maestro
 		
 		this.fuegoBTA = new BitmapTextureAtlas(context.getTextureManager(), 1024, 512, TextureOptions.BILINEAR);
-		this.fuegoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBTA, context, "gfx/cruz2.png", 0, 0, 7, 7);
+		this.fuegoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBTA, context, "gfx/cruz10.png", 0, 0, 7, 7);
 				
 		context.getEngine().getTextureManager().loadTexture(fuegoBTA);
 
@@ -355,6 +356,7 @@ public class Bomba {
 		this.setDetonada(true);		
 		
 	}
+	
 	public void detonarConDelay(){
 		if (isDetonada()){
 			return;
@@ -414,7 +416,7 @@ public class Bomba {
 		final long time= System.currentTimeMillis();
 		Log.d("EXP", "inicio "+time);
 		sprCentro.clearEntityModifiers();
-		sprCentro.registerEntityModifier(new AlphaModifier(0.1f, 0, alpha){
+		sprCentro.registerEntityModifier(new AlphaModifier(0.2f, 0, alpha){
 			@Override
 			protected void onManagedInitialize(IEntity pItem) {
 				super.onManagedInitialize(pItem);
@@ -481,9 +483,64 @@ public class Bomba {
 	
 	public void centro(){	
 		Coordenadas coodenadas= new Coordenadas(columna, fila);
-		sprCentro.setVisible(true);
+		sprCentro.setCurrentTileIndex(24);
+		
+	
+		
+		int valorArriba=context.escenaJuego.matriz.getValor(coodenadas.getFila()-1, coodenadas.getColumna()).tipoCasilla;
+		int valorAbajo=context.escenaJuego.matriz.getValor(coodenadas.getFila()+1, coodenadas.getColumna()).tipoCasilla;
+		int valorDerecha=context.escenaJuego.matriz.getValor(coodenadas.getFila(), coodenadas.getColumna()+1).tipoCasilla;
+		int valorIzquierda=context.escenaJuego.matriz.getValor(coodenadas.getFila(), coodenadas.getColumna()-1).tipoCasilla;
+		
+		//arriba
+		if (valorArriba==Matriz.MURO && valorAbajo!=Matriz.MURO && valorDerecha!=Matriz.MURO && valorIzquierda!=Matriz.MURO ){
+			sprCentro.setCurrentTileIndex(36);
+		}
+		//abajo
+		if (valorArriba!=Matriz.MURO && valorAbajo==Matriz.MURO && valorDerecha!=Matriz.MURO && valorIzquierda!=Matriz.MURO ){
+			sprCentro.setCurrentTileIndex(7);
+		}
+		//arriba abajo
+		if (valorArriba==Matriz.MURO && valorAbajo==Matriz.MURO && valorDerecha!=Matriz.MURO && valorIzquierda!=Matriz.MURO ){
+			sprCentro.setCurrentTileIndex(22);
+		}
+		//derecha
+		if (valorArriba!=Matriz.MURO && valorAbajo!=Matriz.MURO && valorDerecha==Matriz.MURO && valorIzquierda!=Matriz.MURO ){
+			sprCentro.setCurrentTileIndex(40);
+		}
+		
+		//izquierda
+		if (valorArriba!=Matriz.MURO && valorAbajo!=Matriz.MURO && valorDerecha!=Matriz.MURO && valorIzquierda==Matriz.MURO ){
+			sprCentro.setCurrentTileIndex(0);
+		}
+		
+		//izquierda derecha
+		if (valorArriba!=Matriz.MURO && valorAbajo!=Matriz.MURO && valorDerecha==Matriz.MURO && valorIzquierda==Matriz.MURO ){
+			sprCentro.setCurrentTileIndex(10);
+		}
+		
+		
+		//arriba izquierda 
+		if (valorArriba==Matriz.MURO && valorAbajo!=Matriz.MURO && valorDerecha!=Matriz.MURO && valorIzquierda==Matriz.MURO ){
+			sprCentro.setCurrentTileIndex(5);
+		}
+		//arriba derecha 
+		if (valorArriba==Matriz.MURO && valorAbajo!=Matriz.MURO && valorDerecha==Matriz.MURO && valorIzquierda!=Matriz.MURO ){
+			sprCentro.setCurrentTileIndex(6);
+		}
+		//abajo derecha 
+		if (valorArriba!=Matriz.MURO && valorAbajo==Matriz.MURO && valorDerecha==Matriz.MURO && valorIzquierda!=Matriz.MURO ){
+			sprCentro.setCurrentTileIndex(13);
+		}
+		//abajo izquierda 
+		if (valorArriba!=Matriz.MURO && valorAbajo==Matriz.MURO && valorDerecha!=Matriz.MURO && valorIzquierda==Matriz.MURO ){
+			sprCentro.setCurrentTileIndex(12);
+		}
+		
+		
 		this.coordenadas.add(coodenadas);
 		
+		sprCentro.setVisible(true);
 	}
 	
 	public void cruzArriba(){

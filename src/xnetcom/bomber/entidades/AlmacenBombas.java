@@ -27,9 +27,7 @@ public class AlmacenBombas {
 	public BitmapTextureAtlas bombaBTA;
 
 	public TiledTextureRegion bombaTR;
-	public BitmapTextureAtlas fuegoBTA;
-	public TiledTextureRegion fuegoTR;
-	
+
 	
 	public AlmacenBombas(BomberGame context) {
 		this.context = context;
@@ -42,10 +40,6 @@ public class AlmacenBombas {
 		this.bombaBTA = new BitmapTextureAtlas(context.getTextureManager(), 512, 256, TextureOptions.DEFAULT);
 		this.bombaTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.bombaBTA, context, "gfx/bomba_ani90.png", 0, 0, 4, 2);
 
-		this.fuegoBTA = new BitmapTextureAtlas(context.getTextureManager(), 1024, 512, TextureOptions.BILINEAR);
-		this.fuegoTR = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.fuegoBTA, context, "gfx/cruz.png", 0, 0, 7, 7);
-		
-		context.getEngine().getTextureManager().loadTexture(fuegoBTA);
 		context.getEngine().getTextureManager().loadTexture(bombaBTA);
 		
 		
