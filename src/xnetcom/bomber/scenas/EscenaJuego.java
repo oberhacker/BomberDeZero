@@ -135,6 +135,7 @@ public class EscenaJuego {
 		}
 		context.capaParedes.recalculaPared();
 		context.gameManager.inicia();
+		context.gameManager.iniciaTraining();
 		context.getEngine().setScene(scene);		
 		
 	}

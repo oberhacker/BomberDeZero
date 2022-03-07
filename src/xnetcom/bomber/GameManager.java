@@ -43,9 +43,10 @@ public class GameManager {
 		minutos = 5;
 		segundos = 0;
 	}
-	public void tiempoInfinito(){
-		minutos=0;
-		segundos=0;
+
+	public void tiempoInfinito() {
+		minutos = 0;
+		segundos = 0;
 	}
 
 	public void cargaDatos() {
@@ -99,7 +100,7 @@ public class GameManager {
 		}
 		Log.d("MUSICAA", "MUSICAA");
 		context.soundManager.playMusicaRandom();
-		if (minutos!=0 && segundos!=0){
+		if (minutos != 0 && segundos != 0) {
 			context.escenaJuego.hud.iniciaCuentaAtras();
 		}
 
@@ -132,7 +133,6 @@ public class GameManager {
 		coodenadasPuerta = context.capaParedes.listaMuros.get(seleccion).coodenadas;
 	}
 
-	
 	public void descubrePuerta(ArrayList<Coordenadas> coodenadas) {
 		if (!context.escenaJuego.spritePuerta.isVisible()) {
 			for (Coordenadas coordenadas : coodenadas) {
@@ -178,15 +178,15 @@ public class GameManager {
 				guardaEstrellas(estrellas, context.escenaJuego.datosMapa.getNumeroMapa());
 			} else {
 				estrellas = 0;
-				if(context.gameManager.vidas==0){
+				if (context.gameManager.vidas == 0) {
 					pierdeBoosters();
 				}
 			}
 			context.tarjeta.muestraTarjeta(estrellas);
 		}
 	}
-	
-	public void pierdeBoosters(){
+
+	public void pierdeBoosters() {
 		this.detonador = false;
 		this.bombaNum = Constantes.INICIO_BOMBAS;
 		this.bombaTam = Constantes.INICIO_EXPLOSION;
@@ -338,13 +338,13 @@ public class GameManager {
 	}
 
 	public void cogeMonedaBomba() {
-		if (bombaNum<Constantes.MAXIMOBOMBAS){
+		if (bombaNum < Constantes.MAXIMOBOMBAS) {
 			this.bombaNum++;
 		}
 	}
 
 	public void cogeMonedaPotenciador() {
-		if (bombaTam<Constantes.MAXIMOEXPLOSION){
+		if (bombaTam < Constantes.MAXIMOEXPLOSION) {
 			this.bombaTam++;
 		}
 	}
@@ -359,6 +359,135 @@ public class GameManager {
 
 	public void cogeMonedaCorrer() {
 		context.bomberman.boosterrapido();
+	}
+
+	DatosMapa datosMapaAcumilados;
+
+	public void iniciaTraining() {
+
+		// cargar datos ded los mapas anteriores
+		datosMapaAcumilados = new DatosMapa();
+		boolean terminado = false;
+		int numMapa = 1;
+		do {
+
+			DatosMapa datosMapa = context.databaseHandler.getMapa(numMapa);
+			numMapa++;
+			if (datosMapa.getEstrellas() < 1) {
+				terminado = true;
+			} else {
+				datosMapaAcumilados.setEnemigo_fantasma(datosMapaAcumilados.getEnemigo_fantasma() + datosMapa.getEnemigo_fantasma());
+				datosMapaAcumilados.setEnemigo_globo(datosMapaAcumilados.getEnemigo_globo() + datosMapa.getEnemigo_globo());
+				datosMapaAcumilados.setEnemigo_moco(datosMapaAcumilados.getEnemigo_moco() + datosMapa.getEnemigo_moco());
+				datosMapaAcumilados.setEnemigo_moneda(datosMapaAcumilados.getEnemigo_moneda() + datosMapa.getEnemigo_moneda());
+				datosMapaAcumilados.setEnemigo_gota(datosMapaAcumilados.getEnemigo_gota() + datosMapa.getEnemigo_gota());
+				datosMapaAcumilados.setEnemigo_gotaNaranja(datosMapaAcumilados.getEnemigo_gotaNaranja() + datosMapa.getEnemigo_gotaNaranja());
+				datosMapaAcumilados.setEnemigo_globoAzul(datosMapaAcumilados.getEnemigo_globoAzul() + datosMapa.getEnemigo_globoAzul());
+				datosMapaAcumilados.setEnemigo_mocoRojo(datosMapaAcumilados.getEnemigo_mocoRojo() + datosMapa.getEnemigo_mocoRojo());
+				datosMapaAcumilados.setEnemigo_monedaMarron(datosMapaAcumilados.getEnemigo_monedaMarron() + datosMapa.getEnemigo_monedaMarron());
+				datosMapaAcumilados.setEnemigo_gotaRoja(datosMapaAcumilados.getEnemigo_gotaRoja() + datosMapa.getEnemigo_gotaRoja());
+				datosMapaAcumilados.setM_bomba(datosMapaAcumilados.getM_bomba() + datosMapa.getM_bomba());
+				datosMapaAcumilados.setM_corazon(datosMapaAcumilados.getM_corazon() + datosMapa.getM_corazon());
+				datosMapaAcumilados.setM_correr(datosMapaAcumilados.getM_correr() + datosMapa.getM_correr());
+				datosMapaAcumilados.setM_detonador(datosMapaAcumilados.getM_detonador() + datosMapa.getM_detonador());
+				datosMapaAcumilados.setM_fantasma(datosMapaAcumilados.getM_fantasma() + datosMapa.getM_fantasma());
+				datosMapaAcumilados.setM_fuerza(datosMapaAcumilados.getM_fuerza() + datosMapa.getM_fuerza());
+				datosMapaAcumilados.setM_potenciador(datosMapaAcumilados.getM_potenciador() + datosMapa.getM_potenciador());
+			}
+		} while (!terminado);
+
+		datosMapaAcumilados.setM_bomba(datosMapaAcumilados.getM_bomba() - bombaNum + 1);
+		if (datosMapaAcumilados.getM_bomba() > Constantes.MAXIMOBOMBAS) {
+			datosMapaAcumilados.setM_bomba(Constantes.MAXIMOBOMBAS);
+		}
+
+		datosMapaAcumilados.setM_corazon(datosMapaAcumilados.getM_corazon() - vidas + 1);
+		if (datosMapaAcumilados.getM_corazon() > Constantes.MAXIMO_VIDAS) {
+			datosMapaAcumilados.setM_corazon(Constantes.MAXIMO_VIDAS);
+		}
+
+		if (datosMapaAcumilados.getM_detonador() > 0) {
+			datosMapaAcumilados.setM_detonador(1);
+		}
+
+		datosMapaAcumilados.setM_potenciador(datosMapaAcumilados.getM_potenciador() - bombaTam + 1);
+		if (datosMapaAcumilados.getM_potenciador() > Constantes.MAXIMOEXPLOSION) {
+			datosMapaAcumilados.setM_potenciador(Constantes.MAXIMOEXPLOSION);
+		}
+
+		// crea tres monedas
+		int monedasPuestas = 0;
+		int monedasMaximas = 0;
+		// crea tres monedas
+		if (datosMapaAcumilados.getBoosterTotales() >= 3) {
+			monedasMaximas = 3;
+		} else {
+			monedasMaximas = datosMapaAcumilados.getBoosterTotales();
+		}
+
+		if (monedasMaximas > 0) {
+			do {
+				if (trainingCreaMonedas(null)) {
+					monedasPuestas++;
+				}
+			} while (monedasPuestas < monedasMaximas);
+
+			context.almacenMonedas.barajeaMonedas();
+		}
+
+	}
+
+	public boolean trainingCreaMonedas(Coordenadas coordenadas) {
+
+		if (coordenadas == null) {
+			coordenadas = new Coordenadas(0, 0);
+		}
+		int numero = Util.tomaDecision(1, 7);
+
+		if (numero == 1 && datosMapaAcumilados.getM_bomba() >= 1) {
+			datosMapaAcumilados.setM_bomba(datosMapaAcumilados.getM_bomba() - 1);
+			context.almacenMonedas.creaMoneda(TipoMoneda.MBOMBA, coordenadas);
+			return true;
+		}
+
+		if (numero == 2 && datosMapaAcumilados.getM_corazon() >= 1) {
+			datosMapaAcumilados.setM_corazon(datosMapaAcumilados.getM_corazon() - 1);
+			context.almacenMonedas.creaMoneda(TipoMoneda.MCORAZON, coordenadas);
+			return true;
+		}
+
+		if (numero == 3 && datosMapaAcumilados.getM_correr() >= 1) {
+			datosMapaAcumilados.setM_correr(datosMapaAcumilados.getM_correr() - 1);
+			context.almacenMonedas.creaMoneda(TipoMoneda.MVELOCIDAD, coordenadas);
+			return true;
+		}
+
+		if (numero == 4 && datosMapaAcumilados.getM_detonador() >= 1) {
+			datosMapaAcumilados.setM_detonador(datosMapaAcumilados.getM_detonador() - 1);
+			context.almacenMonedas.creaMoneda(TipoMoneda.MDETONADOR, coordenadas);
+			return true;
+		}
+
+		if (numero == 5 && datosMapaAcumilados.getM_fantasma() >= 1) {
+			datosMapaAcumilados.setM_fantasma(datosMapaAcumilados.getM_fantasma() - 1);
+			context.almacenMonedas.creaMoneda(TipoMoneda.MFANTASMA, coordenadas);
+			return true;
+		}
+
+		if (numero == 6 && datosMapaAcumilados.getM_fuerza() >= 1) {
+			datosMapaAcumilados.setM_fuerza(datosMapaAcumilados.getM_fuerza() - 1);
+			context.almacenMonedas.creaMoneda(TipoMoneda.MFUERZA, coordenadas);
+			return true;
+		}
+
+		if (numero == 7 && datosMapaAcumilados.getM_potenciador() >= 1) {
+			datosMapaAcumilados.setM_potenciador(datosMapaAcumilados.getM_potenciador() - 1);
+			context.almacenMonedas.creaMoneda(TipoMoneda.MEXPLOSION, coordenadas);
+			return true;
+		}
+
+		return false;
+
 	}
 
 }

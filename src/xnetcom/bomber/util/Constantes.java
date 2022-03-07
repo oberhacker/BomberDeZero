@@ -79,6 +79,7 @@ public class Constantes {
 	public static final float ZOOM = 1.2f;
 	public static final int MUSIC_VOLUME = 5;
 	public static final int SOUND_VOLUME = 5;
+	public static final int MAXIMO_VIDAS = 10;
 	
 	
 	public static int TOTAL_MAPAS=45;
