@@ -3,8 +3,10 @@ package xnetcom.bomber;
 import java.util.ArrayList;
 
 import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.engine.handler.timer.TimerHandler;
 
 import android.util.Log;
+import xnetcom.bomber.enemigos.AlmacenEnemigos.TipoEnemigo;
 import xnetcom.bomber.enemigos.EnemigoBase;
 import xnetcom.bomber.entidades.AlmacenMonedas.TipoMoneda;
 import xnetcom.bomber.preferencias.Preferencias;
@@ -12,6 +14,7 @@ import xnetcom.bomber.sql.DatabaseHandler;
 import xnetcom.bomber.sql.DatosMapa;
 import xnetcom.bomber.util.Constantes;
 import xnetcom.bomber.util.Coordenadas;
+import xnetcom.bomber.util.Matriz;
 import xnetcom.bomber.util.Util;
 
 public class GameManager {
@@ -427,17 +430,192 @@ public class GameManager {
 
 		if (monedasMaximas > 0) {
 			do {
-				if (trainingCreaMonedas(null)) {
+				if (trainingCreaMonedasIniciales(null)) {
 					monedasPuestas++;
 				}
 			} while (monedasPuestas < monedasMaximas);
 
 			context.almacenMonedas.barajeaMonedas();
 		}
+		trainingPlaceInicialEnemigos();
+	}
+
+	public void trainingPlaceInicialEnemigos() {
+
+		boolean puesto = false;
+		int fila = 2;
+		int columna = 2;
+		do {
+			boolean salida = false;
+
+			do {
+				fila = Util.tomaDecision(2, 12);
+				columna = Util.tomaDecision(2, 22);
+				if (columna <= 5 && fila <= 5) {
+					salida = false;
+				} else {
+					salida = true;
+				}
+			} while (!salida);
+
+			if (context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla != Matriz.MURO && context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla != Matriz.PARED) {
+				context.capaParedes.ponParedInicial(columna, fila, true);
+				puesto = true;
+			}
+		} while (!puesto);
+
+		context.almacenEnemigos.creaEnemigo(TipoEnemigo.GLOBO, fila, columna);
 
 	}
 
-	public boolean trainingCreaMonedas(Coordenadas coordenadas) {
+	int tiksParaEnemigo=0;
+	int tikPared=0;
+	public void trainingUpdater(TimerHandler pTimerHandler) {
+		Log.d("trainingUpdater", "getTimerSeconds " + pTimerHandler.getTimerSeconds() + " TimerSecondsElapsed " + pTimerHandler.getTimerSecondsElapsed());
+		if (pausa) {
+			return;
+		}
+
+		new Thread() {
+			public void run() {		
+				
+				if (tikPared>5){
+					tikPared=0;
+					ponParedAleatoria();	
+					context.escenaJuego.matriz.pintaMatriz();
+				}else{
+					tikPared++;
+				}
+				
+				
+				if (context.almacenEnemigos.almacen.size() < 5&& tiksParaEnemigo>10) {
+					// crear enemigo aleatorio
+					crearEnemigoAleatorio();
+					tiksParaEnemigo=0;
+				}else{
+					tiksParaEnemigo++;
+				}				
+			};
+		}.start();
+		
+
+
+	}
+
+	public void ponParedAleatoria(){
+		
+			boolean puesto=false;
+			do{
+				boolean salida=false;
+				int fila=2;
+				int columna=2;
+				do{
+					fila = Util.tomaDecision(2, 12);
+					columna = Util.tomaDecision(2, 22);	
+					int bomberColumna=context.bomberman.getColumna();
+					int bomberFila=context.bomberman.getFila();
+					if ( Math.abs(fila-bomberFila)<2 &&  Math.abs(columna-bomberColumna)<2){
+						salida =false;
+					}else{
+						salida=true;
+					}
+
+				}while(!salida);
+
+				if(context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla==Matriz.NADA){
+					context.capaParedes.ponParedInicial(columna, fila,true);
+					puesto=true;					
+				}	
+				
+			}while(!puesto);
+			context.capaParedes.recalculaPared();
+			
+	}
+	
+	
+	
+	
+	public void crearEnemigoAleatorio() {
+	
+			TipoEnemigo tipoEnemigo=null;
+			do {
+				int numeroEnemigo = Util.tomaDecision(1, 10);				
+				switch (numeroEnemigo) {
+				case 1:					
+					if(datosMapaAcumilados.getEnemigo_globo()>0){
+						tipoEnemigo=TipoEnemigo.GLOBO;		
+					}
+					break;
+				case 2:
+					if(datosMapaAcumilados.getEnemigo_fantasma()>0){
+						tipoEnemigo=TipoEnemigo.FANTASMA;
+					}
+					break;
+				case 3:
+					if(datosMapaAcumilados.getEnemigo_globoAzul()>0){
+						tipoEnemigo=TipoEnemigo.GLOBO_AZUL;	
+					}
+								
+					break;
+				case 4:
+					if(datosMapaAcumilados.getEnemigo_globoAzul()>0){
+					tipoEnemigo=TipoEnemigo.GOTA_AZUL;				
+					}
+					break;
+				case 5:
+					if(datosMapaAcumilados.getEnemigo_gotaNaranja()>0){
+					tipoEnemigo=TipoEnemigo.GOTA_NARANJA;				
+					}
+					break;
+				case 6:
+					if(datosMapaAcumilados.getEnemigo_gotaNaranja()>0){
+					tipoEnemigo=TipoEnemigo.GOTA_ROJA;				
+					}
+					break;
+				case 7:
+					if(datosMapaAcumilados.getEnemigo_moco()>0){
+					tipoEnemigo=TipoEnemigo.MOCO;				
+					}
+					break;
+				case 8:
+					if(datosMapaAcumilados.getEnemigo_mocoRojo()>0){
+						tipoEnemigo=TipoEnemigo.MOCO_ROJO;	
+					}								
+					break;
+				case 9:
+					if(datosMapaAcumilados.getEnemigo_moneda()>0){
+						tipoEnemigo=TipoEnemigo.MONEDA;	
+					}								
+					break;
+				default:
+					if(datosMapaAcumilados.getEnemigo_monedaMarron()>0){
+						tipoEnemigo=TipoEnemigo.MONEDA_MARRON;
+					}									
+					break;			
+				}				
+				
+			} while (tipoEnemigo==null);		
+			
+			
+			
+			boolean salida = false;
+			int fila;
+			int columna;			
+			do {
+				fila = Util.tomaDecision(2, 12);
+				columna = Util.tomaDecision(2, 22);
+				if (context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla != Matriz.MURO && context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla != Matriz.PARED) {
+					salida=true;
+				}else{
+					salida=false;
+				}
+			} while (!salida);			
+
+		context.almacenEnemigos.creaEnemigo(tipoEnemigo, fila, columna);
+
+	}
+
+	public boolean trainingCreaMonedasIniciales(Coordenadas coordenadas) {
 
 		if (coordenadas == null) {
 			coordenadas = new Coordenadas(0, 0);
@@ -448,39 +626,27 @@ public class GameManager {
 			datosMapaAcumilados.setM_bomba(datosMapaAcumilados.getM_bomba() - 1);
 			context.almacenMonedas.creaMoneda(TipoMoneda.MBOMBA, coordenadas);
 			return true;
-		}
-
-		if (numero == 2 && datosMapaAcumilados.getM_corazon() >= 1) {
+		} else if (numero == 2 && datosMapaAcumilados.getM_corazon() >= 1) {
 			datosMapaAcumilados.setM_corazon(datosMapaAcumilados.getM_corazon() - 1);
 			context.almacenMonedas.creaMoneda(TipoMoneda.MCORAZON, coordenadas);
 			return true;
-		}
-
-		if (numero == 3 && datosMapaAcumilados.getM_correr() >= 1) {
+		} else if (numero == 3 && datosMapaAcumilados.getM_correr() >= 1) {
 			datosMapaAcumilados.setM_correr(datosMapaAcumilados.getM_correr() - 1);
 			context.almacenMonedas.creaMoneda(TipoMoneda.MVELOCIDAD, coordenadas);
 			return true;
-		}
-
-		if (numero == 4 && datosMapaAcumilados.getM_detonador() >= 1) {
+		} else if (numero == 4 && datosMapaAcumilados.getM_detonador() >= 1) {
 			datosMapaAcumilados.setM_detonador(datosMapaAcumilados.getM_detonador() - 1);
 			context.almacenMonedas.creaMoneda(TipoMoneda.MDETONADOR, coordenadas);
 			return true;
-		}
-
-		if (numero == 5 && datosMapaAcumilados.getM_fantasma() >= 1) {
+		} else if (numero == 5 && datosMapaAcumilados.getM_fantasma() >= 1) {
 			datosMapaAcumilados.setM_fantasma(datosMapaAcumilados.getM_fantasma() - 1);
 			context.almacenMonedas.creaMoneda(TipoMoneda.MFANTASMA, coordenadas);
 			return true;
-		}
-
-		if (numero == 6 && datosMapaAcumilados.getM_fuerza() >= 1) {
+		} else if (numero == 6 && datosMapaAcumilados.getM_fuerza() >= 1) {
 			datosMapaAcumilados.setM_fuerza(datosMapaAcumilados.getM_fuerza() - 1);
 			context.almacenMonedas.creaMoneda(TipoMoneda.MFUERZA, coordenadas);
 			return true;
-		}
-
-		if (numero == 7 && datosMapaAcumilados.getM_potenciador() >= 1) {
+		} else if (numero == 7 && datosMapaAcumilados.getM_potenciador() >= 1) {
 			datosMapaAcumilados.setM_potenciador(datosMapaAcumilados.getM_potenciador() - 1);
 			context.almacenMonedas.creaMoneda(TipoMoneda.MEXPLOSION, coordenadas);
 			return true;

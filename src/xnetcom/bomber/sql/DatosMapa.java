@@ -115,6 +115,10 @@ public class DatosMapa {
 		return (m_bomba+m_corazon+m_correr+m_detonador+m_fantasma+m_fuerza+m_potenciador);
 	}
 
+	public int getEnemigosTotal(){
+		return enemigo_moco+enemigo_moneda+enemigo_gota+enemigo_globo+enemigo_fantasma+enemigo_gotaNaranja+enemigo_globoAzul+enemigo_mocoRojo+enemigo_monedaMarron+enemigo_gotaRoja;
+	}
+	
 	public int getNumeroMapa() {
 		return numeroMapa;
 	}

@@ -2,6 +2,9 @@ package xnetcom.bomber.scenas;
 
 import java.io.IOException;
 
+import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.tmx.TMXLayer;
@@ -91,6 +94,10 @@ public class EscenaJuego {
 	}
 	
 	public void playTrainig() {			
+		if (updateHandlerTraining!=null){
+			scene.unregisterUpdateHandler(updateHandlerTraining);
+		}
+		
 		int numMap = 0;
 		context.gameManager.tiempoInfinito();
 		scene=onCreateScene(numMap);
@@ -98,7 +105,7 @@ public class EscenaJuego {
 		int filaAnterior = 0;
 		int columnaAnterior = 0;
 		
-		for (int i = 0; i < 50; i++) {	
+		for (int i = 0; i < 25; i++) {	
 
 			boolean puesto=false;
 			do{
@@ -130,17 +137,35 @@ public class EscenaJuego {
 				if(matriz.getValor(fila, columna).tipoCasilla!=Matriz.MURO && matriz.getValor(fila, columna).tipoCasilla!=Matriz.PARED ){
 					context.capaParedes.ponParedInicial(columna, fila,true);
 					puesto=true;					
-				}				
+				}	
+				
 			}while(!puesto);		
 		}
 		context.capaParedes.recalculaPared();
 		context.gameManager.inicia();
 		context.gameManager.iniciaTraining();
-		context.getEngine().setScene(scene);		
-		
+		context.getEngine().setScene(scene);			
+		iniciaInteligenciaTraining();
 	}
 	
-	public Scene onCreateScene(int numMap) {		
+	TimerHandler updateHandlerTraining=null;	
+	public void iniciaInteligenciaTraining(){		
+
+			updateHandlerTraining= new TimerHandler(1,true, new ITimerCallback() {			
+				@Override
+				public void onTimePassed(TimerHandler pTimerHandler) {
+					context.gameManager.trainingUpdater(pTimerHandler);			
+				}
+			});
+			scene.registerUpdateHandler(updateHandlerTraining);		
+	}
+	
+	
+	public Scene onCreateScene(int numMap) {	
+		if (updateHandlerTraining!=null){
+			scene.unregisterUpdateHandler(updateHandlerTraining);
+		}
+		
 		boolean primeraCarga;
 		if (scene!=null){			
 			primeraCarga=false;

@@ -120,9 +120,9 @@ public class Matriz{
 	}
 	
 	public void pintaMatriz(){		
-		for (int i = 0; i < 13; i++) {
+		for (int i = 2; i < 13; i++) {
 			String cadena="";
-			for (int j = 0; j < matriz.length; j++) {
+			for (int j = 2; j < 23; j++) {
 				cadena+="["+matriz[i][j].tipoCasilla+"]";
 			}	
 			Log.d("puerta",cadena);

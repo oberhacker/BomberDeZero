@@ -53,7 +53,8 @@ public class SpritePoolParedes extends GenericPool<AnimatedSprite> {
 //				pSprite.detachSelf();
 //			}
 //		});    	
-    	pSprite.setVisible(false);    	
+//    	pSprite.setVisible(false);    
+//    	pSprite.setX(-500);    	
     	Log.d("POOL", "onHandleRecycleItem");
     	
     }

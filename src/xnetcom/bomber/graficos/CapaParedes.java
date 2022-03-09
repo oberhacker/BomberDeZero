@@ -47,9 +47,12 @@ public class CapaParedes {
 
 	
 	public void reiniciaPared(){
+		context.escenaJuego.matriz.eliminaParedesMatriz();
 		for (TrozoPared trozo : listaMuros) {
-			spritePoolArriba.recyclePoolItem(trozo.trozoArriba);
-			spritePoolAbajo.recyclePoolItem(trozo.trozoAbajo);
+//			spritePoolArriba.recyclePoolItem(trozo.trozoArriba);
+//			spritePoolAbajo.recyclePoolItem(trozo.trozoAbajo);			
+			reciclaPared(trozo.trozoArriba, trozo.trozoAbajo);
+			
 		}
 		listaMuros.clear();		
 	}
@@ -276,17 +279,31 @@ public class CapaParedes {
 //			trozoAbajo.detachSelf();
 			context.almacenMonedas.revelaMoneda(coodenadas,secuencia);			
 			
-			spritePoolAbajo.recyclePoolItem(trozoAbajo);
-			spritePoolArriba.recyclePoolItem(trozoArriba);
+//			spritePoolAbajo.recyclePoolItem(trozoAbajo);
+//			spritePoolArriba.recyclePoolItem(trozoArriba);
+//			
+//			trozoAbajo.setVisible(false);
+//			trozoArriba.setVisible(false);
 			
-			trozoAbajo.setVisible(false);
-			trozoArriba.setVisible(false);
+			reciclaPared(trozoArriba, trozoAbajo);
 			
 			pintaExplosion(coodenadas);
 			context.capaParedes.recalculaTrozosLaterales(coodenadas);
 		}
 	}
 
+	
+	public void reciclaPared(final AnimatedSprite spriteArriba, final AnimatedSprite spriteAbajo ){
+		new Thread() {
+			public void run() {
+				spriteAbajo.setX(-500);
+				spriteArriba.setX(-500);	
+				spritePoolAbajo.recyclePoolItem(spriteAbajo);
+				spritePoolArriba.recyclePoolItem(spriteArriba);				
+			};
+		}.start();
+	}
+	
 	
 	public class ListenerExplotar implements IAnimationListener{
 

@@ -287,6 +287,7 @@ public class AlmacenEnemigos {
 	}
 	
 	public void creaEnemigo( TipoEnemigo tipoEnemigo,int fila, int columna){
+		inicializaGrupos();
 		//completar logica
 		EnemigoBase enemigo;
 //		Coordenadas coordenada=eligePosiciones();
