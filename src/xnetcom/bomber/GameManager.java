@@ -457,9 +457,8 @@ public class GameManager {
 					salida = true;
 				}
 			} while (!salida);
-
+			context.escenaJuego.matriz.pintaMatriz();
 			if (context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla != Matriz.MURO && context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla != Matriz.PARED) {
-				context.capaParedes.ponParedInicial(columna, fila, true);
 				puesto = true;
 			}
 		} while (!puesto);
@@ -523,7 +522,7 @@ public class GameManager {
 				}while(!salida);
 
 				if(context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla==Matriz.NADA){
-					context.capaParedes.ponParedInicial(columna, fila,true);
+					context.capaParedes.ponParedInicial(columna, fila);
 					puesto=true;					
 				}	
 				
@@ -533,13 +532,29 @@ public class GameManager {
 	}
 	
 	
+
+	public int calculaPotenciaFuego(){		
+		
+//		minimo  2 + 3 =6
+//		maximo 10+ 16+10=36
+		float potencia=(bombaNum*2)+(bombaTam*4);
+		if (detonador){
+			potencia=potencia+10;
+		}
+		
+		potencia=potencia/3.6f;
+		int salida= Float.valueOf(potencia).intValue();
+		return salida;
+	}
+	
 	
 	
 	public void crearEnemigoAleatorio() {
 	
 			TipoEnemigo tipoEnemigo=null;
 			do {
-				int numeroEnemigo = Util.tomaDecision(1, 10);				
+				int enemigoMaximo =calculaPotenciaFuego();
+				int numeroEnemigo = Util.tomaDecision(1, enemigoMaximo);				
 				switch (numeroEnemigo) {
 				case 1:					
 					if(datosMapaAcumilados.getEnemigo_globo()>0){
@@ -547,51 +562,51 @@ public class GameManager {
 					}
 					break;
 				case 2:
-					if(datosMapaAcumilados.getEnemigo_fantasma()>0){
-						tipoEnemigo=TipoEnemigo.FANTASMA;
-					}
-					break;
-				case 3:
 					if(datosMapaAcumilados.getEnemigo_globoAzul()>0){
 						tipoEnemigo=TipoEnemigo.GLOBO_AZUL;	
-					}
-								
+					}								
 					break;
-				case 4:
-					if(datosMapaAcumilados.getEnemigo_globoAzul()>0){
-					tipoEnemigo=TipoEnemigo.GOTA_AZUL;				
-					}
-					break;
-				case 5:
-					if(datosMapaAcumilados.getEnemigo_gotaNaranja()>0){
-					tipoEnemigo=TipoEnemigo.GOTA_NARANJA;				
-					}
-					break;
-				case 6:
-					if(datosMapaAcumilados.getEnemigo_gotaNaranja()>0){
-					tipoEnemigo=TipoEnemigo.GOTA_ROJA;				
-					}
-					break;
-				case 7:
+				case 3:
 					if(datosMapaAcumilados.getEnemigo_moco()>0){
 					tipoEnemigo=TipoEnemigo.MOCO;				
 					}
 					break;
-				case 8:
+				case 4:
 					if(datosMapaAcumilados.getEnemigo_mocoRojo()>0){
 						tipoEnemigo=TipoEnemigo.MOCO_ROJO;	
-					}								
+					}
 					break;
-				case 9:
+				case 5:
+					if(datosMapaAcumilados.getEnemigo_fantasma()>0){
+						tipoEnemigo=TipoEnemigo.FANTASMA;
+					}
+					break;
+				case 6:
+					if(datosMapaAcumilados.getEnemigo_globoAzul()>0){
+					tipoEnemigo=TipoEnemigo.GOTA_AZUL;				
+					}
+					break;
+				case 7:
 					if(datosMapaAcumilados.getEnemigo_moneda()>0){
 						tipoEnemigo=TipoEnemigo.MONEDA;	
 					}								
 					break;
-				default:
+				case 8:
 					if(datosMapaAcumilados.getEnemigo_monedaMarron()>0){
 						tipoEnemigo=TipoEnemigo.MONEDA_MARRON;
 					}									
-					break;			
+					break;	
+
+				case 9:
+					if(datosMapaAcumilados.getEnemigo_gotaNaranja()>0){
+					tipoEnemigo=TipoEnemigo.GOTA_NARANJA;				
+					}
+					break;
+				case 10:
+					if(datosMapaAcumilados.getEnemigo_gotaNaranja()>0){
+					tipoEnemigo=TipoEnemigo.GOTA_ROJA;				
+					}
+					break;		
 				}				
 				
 			} while (tipoEnemigo==null);		
@@ -600,15 +615,24 @@ public class GameManager {
 			
 			boolean salida = false;
 			int fila;
-			int columna;			
+			int columna;				
+
+	
 			do {
 				fila = Util.tomaDecision(2, 12);
 				columna = Util.tomaDecision(2, 22);
-				if (context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla != Matriz.MURO && context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla != Matriz.PARED) {
-					salida=true;
+				int bomberColumna=context.bomberman.getColumna();
+				int bomberFila=context.bomberman.getFila();
+				if ( Math.abs(fila-bomberFila)<2 &&  Math.abs(columna-bomberColumna)<2){
+					salida =false;
 				}else{
-					salida=false;
-				}
+					if (context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla != Matriz.MURO && context.escenaJuego.matriz.getValor(fila, columna).tipoCasilla != Matriz.PARED) {
+						salida=true;
+					}else{
+						salida=false;
+					}
+				}				
+
 			} while (!salida);			
 
 		context.almacenEnemigos.creaEnemigo(tipoEnemigo, fila, columna);

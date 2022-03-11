@@ -22,79 +22,69 @@ import xnetcom.bomber.util.MiSpriteGroup;
 import xnetcom.bomber.util.SpritePoolParedes;
 
 public class CapaParedes {
-	
+
 	public BomberGame context;
 	public SpritePoolParedes spritePoolArriba;
 	public MiSpriteGroup spriteGroupArriba;
-	
+
 	public SpritePoolParedes spritePoolAbajo;
 	public MiSpriteGroup spriteGroupAbajo;
-	
+
 	public ArrayList<TrozoPared> listaMuros;
-	public ArrayList<TrozoPared> listaMurosMentira;
-	
+
 	private Iterator<AnimatedSprite> itr;
 	private ArrayList<AnimatedSprite> almacenExplosiones;
 	public MiSpriteGroup grupoExplosiones;
-	
-	
-	public CapaParedes(final BomberGame context){
-		this.context=context;
-		this.listaMuros=new ArrayList<TrozoPared>();
-		this.listaMurosMentira=new ArrayList<TrozoPared>();
-		
+
+	public CapaParedes(final BomberGame context) {
+		this.context = context;
+		this.listaMuros = new ArrayList<TrozoPared>();
 	}
 
-	
-	public void reiniciaPared(){
+	public void reiniciaPared() {
 		context.escenaJuego.matriz.eliminaParedesMatriz();
 		for (TrozoPared trozo : listaMuros) {
-//			spritePoolArriba.recyclePoolItem(trozo.trozoArriba);
-//			spritePoolAbajo.recyclePoolItem(trozo.trozoAbajo);			
 			reciclaPared(trozo.trozoArriba, trozo.trozoAbajo);
-			
 		}
-		listaMuros.clear();		
+		listaMuros.clear();
 	}
-	
-	
-	public void pintaExplosion(Coordenadas coodenadas){
-		if (!itr.hasNext()){
-			itr= almacenExplosiones.iterator();
+
+	public void pintaExplosion(Coordenadas coodenadas) {
+		if (!itr.hasNext()) {
+			itr = almacenExplosiones.iterator();
 		}
 		AnimatedSprite spr = itr.next();
-		spr.setPosition(coodenadas.getX()-80,coodenadas.getY()+50);
+		spr.setPosition(coodenadas.getX() - 80, coodenadas.getY() + 50);
 		spr.setVisible(true);
 		spr.setZIndex(Constantes.ZINDEX_MUROFRAGMENTOS);
-		
-		spr.animate(30, false, new ListenerExplotar(spr));		
+
+		spr.animate(30, false, new ListenerExplotar(spr));
 		if (!spr.hasParent()) {
-//			context.escenaJuego.scene.attachChild(spr);
+			// context.escenaJuego.scene.attachChild(spr);
 			grupoExplosiones.attachChild(spr);
 		}
 	}
-	
-	
+
 	public void carga() {
 
 		BitmapTextureAtlas explosionBTA = new BitmapTextureAtlas(context.getTextureManager(), 512, 512, TextureOptions.NEAREST_PREMULTIPLYALPHA);
 		explosionBTA.load();
-		
-		
+
 		almacenExplosiones = new ArrayList<AnimatedSprite>();
-		grupoExplosiones= new MiSpriteGroup(explosionBTA, 30, context.getVertexBufferObjectManager());
+		grupoExplosiones = new MiSpriteGroup(explosionBTA, 30, context.getVertexBufferObjectManager());
 		grupoExplosiones.setOffsetCenter(0, 0);
 		grupoExplosiones.setPosition(0, 0);
 		grupoExplosiones.setZIndex(Constantes.ZINDEX_MUROFRAGMENTOS);
-		
+
 		for (int i = 0; i < 20; i++) {
-			AnimatedSprite ans =new AnimatedSprite(0, 0, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(explosionBTA, context, "gfx/pared_explo.png", 0, 0, 2, 2),context.getVertexBufferObjectManager());
+			AnimatedSprite ans = new AnimatedSprite(0, 0, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(explosionBTA, context, "gfx/pared_explo.png", 0, 0, 2, 2),
+					context.getVertexBufferObjectManager());
 			ans.setScaleCenter(0, 0);
 			ans.setOffsetCenter(0, 0);
 			almacenExplosiones.add(ans);
-			
-		}	
-		itr= almacenExplosiones.iterator();
+
+		}
+		itr = almacenExplosiones.iterator();
 
 		BitmapTextureAtlas btaParedAbajo = new BitmapTextureAtlas(context.getTextureManager(), 1024, 256, TextureOptions.DEFAULT);
 		BitmapTextureAtlas btaParedArriba = new BitmapTextureAtlas(context.getTextureManager(), 1024, 256, TextureOptions.DEFAULT);
@@ -118,233 +108,217 @@ public class CapaParedes {
 		spriteGroupAbajo.setPosition(-1 * Constantes.TILE_WIDTH, 1 * Constantes.TILE_HEIGHT);
 
 	}
-	
 
-	public void restauraInicial(){
+	public void restauraInicial() {
 		context.escenaJuego.matriz.eliminaParedesMatriz();
 		reiniciaPared();
-		Casilla[][] matriz = context.escenaJuego.matriz.getMatrizmuros();			
+		Casilla[][] matriz = context.escenaJuego.matriz.getMatrizmuros();
 		for (int y = 2; y < matriz.length; y++) {
-			for (int x = 2; x < matriz.length; x++) {			
-				if(matriz[y][x].tipoCasilla!=Matriz.PARED && matriz[y][x].paredInicial){
-					matriz[y][x].tipoCasilla=Matriz.PARED;
-					ponParedInicial(x,y, true);
+			for (int x = 2; x < matriz.length; x++) {
+				if (matriz[y][x].tipoCasilla != Matriz.PARED && matriz[y][x].paredInicial) {
+					matriz[y][x].tipoCasilla = Matriz.PARED;
+					ponParedInicial(x, y);
 				}
 			}
 		}
-		recalculaPared();		
+		recalculaPared();
 	}
-	
-	
-	int paredesDeMentidaMAX=23;
-	int totalParecesMentira=0;
-	public void ponParedInicial(int columna,int fila, boolean paredVerdadera){
-		if (!paredVerdadera && totalParecesMentira>=paredesDeMentidaMAX){
-			Log.w("PAREDES", "SUFICIENTES");
-			return;
-		}
-		
-		AnimatedSprite spriteArriba = spritePoolArriba.obtainPoolItem();		
+
+	int paredesDeMentidaMAX = 23;
+	int totalParecesMentira = 0;
+
+	public void ponParedInicial(int columna, int fila) {
+
+		AnimatedSprite spriteArriba = spritePoolArriba.obtainPoolItem();
 		AnimatedSprite spriteAbajo = spritePoolAbajo.obtainPoolItem();
-		Coordenadas coodenadas= new Coordenadas(columna, fila);
-		
-		spriteArriba.setPosition(coodenadas.getX(), coodenadas.getY()+3);	
-		if (spriteArriba.hasParent()){
+		Coordenadas coodenadas = new Coordenadas(columna, fila);
+
+		spriteArriba.setPosition(coodenadas.getX(), coodenadas.getY() + 3);
+		if (spriteArriba.hasParent()) {
 			System.out.println("tiene parent");
-		}else{
-			spriteGroupArriba.attachChild(spriteArriba);	
+		} else {
+			spriteGroupArriba.attachChild(spriteArriba);
 		}
-		
-		
-		spriteAbajo.setPosition(coodenadas.getX(), coodenadas.getY()+3);		
-		if (spriteAbajo.hasParent()){
+
+		spriteAbajo.setPosition(coodenadas.getX(), coodenadas.getY() + 3);
+		if (spriteAbajo.hasParent()) {
 			System.out.println("tiene parent");
-		}else{
-			spriteGroupAbajo.attachChild(spriteAbajo);	
+		} else {
+			spriteGroupAbajo.attachChild(spriteAbajo);
 		}
-		
+
 		spriteArriba.setVisible(true);
 		spriteGroupAbajo.setVisible(true);
-		TrozoPared trozo= new TrozoPared(context,spriteArriba, spriteAbajo,coodenadas,paredVerdadera);
-		
-		if (paredVerdadera){
-			listaMuros.add(trozo);
-			context.escenaJuego.matriz.setParedInicial(fila, columna, trozo);
-		}else{
-			listaMurosMentira.add(trozo);
-			totalParecesMentira++;
-		}
-		
-		
+		TrozoPared trozo = new TrozoPared(context, spriteArriba, spriteAbajo, coodenadas);
+
+		listaMuros.add(trozo);
+		context.escenaJuego.matriz.setParedInicial(fila, columna, trozo);
+
 	}
-	
-	
-	
-	public void onSceneCreated(){
+
+	public void onSceneCreated() {
 		context.escenaJuego.scene.attachChild(spriteGroupAbajo);
 		context.escenaJuego.scene.attachChild(spriteGroupArriba);
 		context.escenaJuego.scene.attachChild(grupoExplosiones);
 	}
-	
-	
-	public static int SOLO=0;
-	public static int IZQUIERDA=1;
-	public static int CENTRO=2;
-	public static int DERECHA=3;
-	
-	public void recalculaPared(){
-		Casilla[][] matriz = context.escenaJuego.matriz.getMatrizmuros();		
+
+	public static int SOLO = 0;
+	public static int IZQUIERDA = 1;
+	public static int CENTRO = 2;
+	public static int DERECHA = 3;
+
+	public void recalculaPared() {
+		Casilla[][] matriz = context.escenaJuego.matriz.getMatrizmuros();
 		for (int y = 2; y < matriz.length; y++) {
 			for (int x = 2; x < matriz.length; x++) {
 				Casilla casilla = matriz[y][x];
 				int trozo = matriz[y][x].tipoCasilla;
-				if (trozo==Matriz.PARED){
+				if (trozo == Matriz.PARED) {
 					// miramos si hay toro a la derecha
-					 if (matriz[y][x+1].tipoCasilla==Matriz.PARED && matriz[y][x-1].tipoCasilla==Matriz.PARED){
+					if (matriz[y][x + 1].tipoCasilla == Matriz.PARED && matriz[y][x - 1].tipoCasilla == Matriz.PARED) {
 						casilla.trozoPared.trozoAbajo.setCurrentTileIndex(CENTRO);
 						casilla.trozoPared.trozoArriba.setCurrentTileIndex(CENTRO);
-					}else if (matriz[y][x+1].tipoCasilla==Matriz.PARED ){
+					} else if (matriz[y][x + 1].tipoCasilla == Matriz.PARED) {
 						casilla.trozoPared.trozoAbajo.setCurrentTileIndex(IZQUIERDA);
 						casilla.trozoPared.trozoArriba.setCurrentTileIndex(IZQUIERDA);
-					}else if (matriz[y][x-1].tipoCasilla==Matriz.PARED ){
+					} else if (matriz[y][x - 1].tipoCasilla == Matriz.PARED) {
 						casilla.trozoPared.trozoAbajo.setCurrentTileIndex(DERECHA);
 						casilla.trozoPared.trozoArriba.setCurrentTileIndex(DERECHA);
-					}else if (matriz[y][x+1].tipoCasilla!=Matriz.PARED){
+					} else if (matriz[y][x + 1].tipoCasilla != Matriz.PARED) {
 						casilla.trozoPared.trozoAbajo.setCurrentTileIndex(SOLO);
 						casilla.trozoPared.trozoArriba.setCurrentTileIndex(SOLO);
 					}
 				}
 
-			}				
-		}		
+			}
+		}
 	}
-	
-	
-	public void recalculaTrozosLaterales(Coordenadas coordenada){
-		Coordenadas coordenadaDerecha= new Coordenadas(coordenada.getColumna()+1, coordenada.getFila());
-		Coordenadas coordenadaIzquierda= new Coordenadas(coordenada.getColumna()-1, coordenada.getFila());		
+
+	public void recalculaTrozosLaterales(Coordenadas coordenada) {
+		Coordenadas coordenadaDerecha = new Coordenadas(coordenada.getColumna() + 1, coordenada.getFila());
+		Coordenadas coordenadaIzquierda = new Coordenadas(coordenada.getColumna() - 1, coordenada.getFila());
 		recalculaTrozo(coordenadaDerecha);
 		recalculaTrozo(coordenadaIzquierda);
 	}
-	
-	public void recalculaTrozo(Coordenadas coordenada){
+
+	public void recalculaTrozo(Coordenadas coordenada) {
 		Casilla[][] matriz = context.escenaJuego.matriz.getMatrizmuros();
-		Casilla casilla = context.escenaJuego.matriz.getValor(coordenada.getFila(), coordenada.getColumna());	
-		if (casilla.tipoCasilla==Matriz.PARED){
+		Casilla casilla = context.escenaJuego.matriz.getValor(coordenada.getFila(), coordenada.getColumna());
+		if (casilla.tipoCasilla == Matriz.PARED) {
 			// miramos si hay toro a la derecha
-			 if (matriz[coordenada.getFila()][coordenada.getColumna()+1].tipoCasilla==Matriz.PARED && matriz[coordenada.getFila()][coordenada.getColumna()-1].tipoCasilla==Matriz.PARED){
+			if (matriz[coordenada.getFila()][coordenada.getColumna() + 1].tipoCasilla == Matriz.PARED && matriz[coordenada.getFila()][coordenada.getColumna() - 1].tipoCasilla == Matriz.PARED) {
 				casilla.trozoPared.trozoAbajo.setCurrentTileIndex(CENTRO);
 				casilla.trozoPared.trozoArriba.setCurrentTileIndex(CENTRO);
-			}else if (matriz[coordenada.getFila()][coordenada.getColumna()+1].tipoCasilla==Matriz.PARED ){
+			} else if (matriz[coordenada.getFila()][coordenada.getColumna() + 1].tipoCasilla == Matriz.PARED) {
 				casilla.trozoPared.trozoAbajo.setCurrentTileIndex(IZQUIERDA);
 				casilla.trozoPared.trozoArriba.setCurrentTileIndex(IZQUIERDA);
-			}else if (matriz[coordenada.getFila()][coordenada.getColumna()-1].tipoCasilla==Matriz.PARED ){
+			} else if (matriz[coordenada.getFila()][coordenada.getColumna() - 1].tipoCasilla == Matriz.PARED) {
 				casilla.trozoPared.trozoAbajo.setCurrentTileIndex(DERECHA);
 				casilla.trozoPared.trozoArriba.setCurrentTileIndex(DERECHA);
-			}else if (matriz[coordenada.getFila()][coordenada.getColumna()+1].tipoCasilla!=Matriz.PARED){
+			} else if (matriz[coordenada.getFila()][coordenada.getColumna() + 1].tipoCasilla != Matriz.PARED) {
 				casilla.trozoPared.trozoAbajo.setCurrentTileIndex(SOLO);
 				casilla.trozoPared.trozoArriba.setCurrentTileIndex(SOLO);
 			}
 		}
 
-		
 	}
-	
-	
-	public class TrozoPared{		
-		
+
+	public class TrozoPared {
+
 		public AnimatedSprite trozoArriba;
 		public AnimatedSprite trozoAbajo;
 		public Coordenadas coodenadas;
 		public BomberGame context;
 		public boolean verdadera;
-		
-		public void setVidible(boolean visible){
+
+		public void setVidible(boolean visible) {
 			trozoArriba.setVisible(visible);
 			trozoAbajo.setVisible(visible);
 		}
-		
-		public TrozoPared(BomberGame context, AnimatedSprite trozoArriba, AnimatedSprite trozoAbajo,Coordenadas coodenadas, boolean verdadera){
-			this.trozoArriba=trozoArriba;
-			this.trozoAbajo=trozoAbajo;
-			this.coodenadas=coodenadas;
-			this.context=context;
-			this.verdadera=verdadera;
+
+		public TrozoPared(BomberGame context, AnimatedSprite trozoArriba, AnimatedSprite trozoAbajo, Coordenadas coodenadas) {
+			this.trozoArriba = trozoArriba;
+			this.trozoAbajo = trozoAbajo;
+			this.coodenadas = coodenadas;
+			this.context = context;
 		}
-		
-		public void explota(int secuencia){			
+
+		public void explota(int secuencia) {
 			context.escenaJuego.matriz.setValor(Matriz.NADA, coodenadas.getFila(), coodenadas.getColumna(), null, null);
-			
-//			trozoArriba.detachSelf();
-//			trozoAbajo.detachSelf();
-			context.almacenMonedas.revelaMoneda(coodenadas,secuencia);			
-			
-//			spritePoolAbajo.recyclePoolItem(trozoAbajo);
-//			spritePoolArriba.recyclePoolItem(trozoArriba);
-//			
-//			trozoAbajo.setVisible(false);
-//			trozoArriba.setVisible(false);
-			
+
+			// trozoArriba.detachSelf();
+			// trozoAbajo.detachSelf();
+			context.almacenMonedas.revelaMoneda(coodenadas, secuencia);
+
+			// spritePoolAbajo.recyclePoolItem(trozoAbajo);
+			// spritePoolArriba.recyclePoolItem(trozoArriba);
+			//
+			// trozoAbajo.setVisible(false);
+			// trozoArriba.setVisible(false);
+
 			reciclaPared(trozoArriba, trozoAbajo);
-			
+
 			pintaExplosion(coodenadas);
 			context.capaParedes.recalculaTrozosLaterales(coodenadas);
 		}
 	}
 
-	
-	public void reciclaPared(final AnimatedSprite spriteArriba, final AnimatedSprite spriteAbajo ){
+	public void reciclaPared(final AnimatedSprite spriteArriba, final AnimatedSprite spriteAbajo) {
 		new Thread() {
 			public void run() {
 				spriteAbajo.setX(-500);
-				spriteArriba.setX(-500);	
+				spriteArriba.setX(-500);
 				spritePoolAbajo.recyclePoolItem(spriteAbajo);
-				spritePoolArriba.recyclePoolItem(spriteArriba);				
+				spritePoolArriba.recyclePoolItem(spriteArriba);
 			};
 		}.start();
 	}
-	
-	
-	public class ListenerExplotar implements IAnimationListener{
 
-		private AnimatedSprite sprt;		
+	public class ListenerExplotar implements IAnimationListener {
 
-		public ListenerExplotar(AnimatedSprite sprt){
-			this.sprt=sprt;
+		private AnimatedSprite sprt;
+
+		public ListenerExplotar(AnimatedSprite sprt) {
+			this.sprt = sprt;
 		}
 
 		@Override
-		public void onAnimationStarted(AnimatedSprite pAnimatedSprite,
-				int pInitialLoopCount) {
+		public void onAnimationStarted(AnimatedSprite pAnimatedSprite, int pInitialLoopCount) {
 			// TODO Auto-generated method stub
-			
+
 		}
+
 		@Override
-		public void onAnimationFrameChanged(AnimatedSprite pAnimatedSprite,
-				int pOldFrameIndex, int pNewFrameIndex) {
+		public void onAnimationFrameChanged(AnimatedSprite pAnimatedSprite, int pOldFrameIndex, int pNewFrameIndex) {
 			// TODO Auto-generated method stub
-			
+
 		}
+
 		@Override
-		public void onAnimationLoopFinished(AnimatedSprite pAnimatedSprite,
-				int pRemainingLoopCount, int pInitialLoopCount) {
-	
-			
+		public void onAnimationLoopFinished(AnimatedSprite pAnimatedSprite, int pRemainingLoopCount, int pInitialLoopCount) {
+
 		}
+
 		@Override
 		public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
 			// TODO Auto-generated method stub
 			context.runOnUpdateThread(new Runnable() {
 				public void run() {
 					sprt.detachSelf();
-				}});
-//			this.sprt.setVisible(false);
+				}
+			});
+			// this.sprt.setVisible(false);
 		}
-		
+
 	}
-	
-	
-	
-	
+
+	public void detachTrozos() {
+		try {
+			grupoExplosiones.detachChildren();
+		} catch (Exception e) {
+			Log.e("grupoExplosiones.detachChildren();", "grupoExplosiones.detachChildren();");
+		}
+
+	}
 
 }

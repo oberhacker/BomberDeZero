@@ -135,7 +135,7 @@ public class EscenaJuego {
 				filaAnterior=fila;
 				columnaAnterior=columna;
 				if(matriz.getValor(fila, columna).tipoCasilla!=Matriz.MURO && matriz.getValor(fila, columna).tipoCasilla!=Matriz.PARED ){
-					context.capaParedes.ponParedInicial(columna, fila,true);
+					context.capaParedes.ponParedInicial(columna, fila);
 					puesto=true;					
 				}	
 				
@@ -182,7 +182,7 @@ public class EscenaJuego {
 			scene= new Scene();	
 		}
 		
-
+//		context.capaParedes.detachTrozos();
 		try {
 			context.almacenEnemigos.inicializaAlmacen();
 			
@@ -195,10 +195,7 @@ public class EscenaJuego {
 								matriz.setValor(Matriz.MURO, pTMXTile.getTileRow(), pTMXTile.getTileColumn(),null,null);
 								
 							} else if (pTMXTileProperties.containsTMXProperty("pared", "true")) {
-								context.capaParedes.ponParedInicial(pTMXTile.getTileColumn(), pTMXTile.getTileRow(),true);
-								
-							} else if (pTMXTileProperties.containsTMXProperty("pared", "false")) {
-								context.capaParedes.ponParedInicial(pTMXTile.getTileColumn(), pTMXTile.getTileRow(),false);				
+								context.capaParedes.ponParedInicial(pTMXTile.getTileColumn(), pTMXTile.getTileRow());
 								
 							} else if (pTMXTileProperties.containsTMXProperty("enemigo", "moco")) {
 								context.almacenEnemigos.creaEnemigoInicial(TipoEnemigo.MOCO,pTMXTile.getTileRow(),pTMXTile.getTileColumn());
@@ -371,7 +368,7 @@ public class EscenaJuego {
 //		context.camaraJuego.onUpdate(0.02f);
 //		context.camaraJuego.setYMax(960);
 		
-
+		
 		context.miengine.setCaramaJuego();		
 		context.capaParedes.recalculaPared();		
 		

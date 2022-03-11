@@ -120,6 +120,7 @@ public class Matriz{
 	}
 	
 	public void pintaMatriz(){		
+		Log.d("puerta","----------------------------------------");
 		for (int i = 2; i < 13; i++) {
 			String cadena="";
 			for (int j = 2; j < 23; j++) {
@@ -127,7 +128,7 @@ public class Matriz{
 			}	
 			Log.d("puerta",cadena);
 		}
-		
+		Log.d("puerta","----------------------------------------");
 	}
 	public  void setValor(int valor, int fila, int columna, Bomba bomba, TrozoPared trozoPared){
 		synchronized (matriz) {

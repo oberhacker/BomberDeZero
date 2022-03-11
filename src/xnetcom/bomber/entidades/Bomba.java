@@ -498,7 +498,7 @@ public class Bomba {
 		}
 		//abajo
 		if (valorArriba!=Matriz.MURO && valorAbajo==Matriz.MURO && valorDerecha!=Matriz.MURO && valorIzquierda!=Matriz.MURO ){
-			sprCentro.setCurrentTileIndex(7);
+			sprCentro.setCurrentTileIndex(8);
 		}
 		//arriba abajo
 		if (valorArriba==Matriz.MURO && valorAbajo==Matriz.MURO && valorDerecha!=Matriz.MURO && valorIzquierda!=Matriz.MURO ){
@@ -511,7 +511,7 @@ public class Bomba {
 		
 		//izquierda
 		if (valorArriba!=Matriz.MURO && valorAbajo!=Matriz.MURO && valorDerecha!=Matriz.MURO && valorIzquierda==Matriz.MURO ){
-			sprCentro.setCurrentTileIndex(0);
+			sprCentro.setCurrentTileIndex(7);
 		}
 		
 		//izquierda derecha

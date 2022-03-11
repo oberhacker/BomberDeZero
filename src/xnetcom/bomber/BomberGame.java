@@ -134,9 +134,10 @@ public class BomberGame extends SimpleBaseGameActivity {
 		// esto pal final del metodo
 		inicializaPrimeraVez();
 	}
+	
+	public void inicializaPrimeraVez() {	
 
-	public void inicializaPrimeraVez() {
-
+		
 		if (Preferencias.leerPreferenciasString("primeravez") == null) {
 
 			Preferencias.guardarPrefenrenciasString("primeravez", "NO");
